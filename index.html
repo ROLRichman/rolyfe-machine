@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>RO'Lyfe Machine</title>
+
+<style>
+body{background:#0b0f1a;color:#fff;font-family:Arial;padding:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:10px}
+.card{background:#141a2a;padding:10px;border-radius:10px}
+.btn{background:#1f2a44;padding:6px;margin:3px;display:inline-block;cursor:pointer}
+.btn:hover{background:#2e3c66}
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<h2>🔥 RO’Lyfe Funding Machine</h2>
+<div class="grid" id="grid"></div>
+
+<script>
+
+const USER_EMAIL="richman@rootoflyfe.com";
+
+const leads=[
+{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000},
+{address:"1929 Elston St Philadelphia PA",arv:230000,repairs:60000},
+{address:"843 E Price St Philadelphia PA",arv:200000,repairs:50000}
+];
+
+while(leads.length<50){
+leads.push({...leads[leads.length%3]});
+}
+
+function calc(d){
+let cash=d.arv*0.5;
+let carry=d.arv*0.65;
+let down=carry*0.05;
+return {cash,carry,down};
+}
+
+function build(){
+
+let grid=document.getElementById("grid");
+
+leads.forEach(d=>{
+let c=calc(d);
+
+let div=document.createElement("div");
+div.className="card";
+
+div.innerHTML=`
+<b>${d.address}</b><br>
+ARV: $${d.arv.toLocaleString()}<br>
+
+<div class="btn" onclick="this.nextElementSibling.classList.toggle('hidden')">▶ Open</div>
+
+<div class="hidden">
+
+Cash: $${Math.round(c.cash)}<br>
+Carry: $${Math.round(c.carry)}<br>
+Down: $${Math.round(c.down)}<br>
+
+<br>
+
+<a href="mailto:${USER_EMAIL}?subject=Offer ${d.address}&body=Cash Offer $${Math.round(c.cash)}">📧 Send Offer</a><br>
+
+<a href="https://www.zillow.com/homes/${d.address.replaceAll(' ','-')}" target="_blank">Zillow</a><br>
+
+<a href="https://www.redfin.com/search?q=${d.address.replaceAll(' ','%20')}" target="_blank">Redfin</a>
+
+</div>
+`;
+
+grid.appendChild(div);
+});
+
+}
+
+build();
+
+</script>
+
+</body>
+</html>
