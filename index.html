@@ -1,6 +1,8 @@
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<title>RO'Lyfe Deal OS</title>
 
 <style>
 body{background:#0b0f1a;color:#fff;font-family:Arial;padding:10px}
@@ -10,17 +12,13 @@ body{background:#0b0f1a;color:#fff;font-family:Arial;padding:10px}
 .btn:hover{background:#2e3c66}
 .hidden{display:none}
 input{width:100%;padding:6px;margin-top:5px;background:#0b0f1a;color:#fff;border:1px solid #333}
-textarea{width:100%;background:#0b0f1a;color:#fff}
+a{color:#4da3ff}
 </style>
 </head>
 
 <body>
 
-<h2>🔥 RO’Lyfe Deal OS — CLOSER MODE</h2>
-
-<input type="file" id="csvFile" class="btn">
-
-<div class="btn" onclick="bulkSMS()">📲 Bulk SMS</div>
+<h2>🔥 RO’Lyfe Deal OS — LIVE MODE</h2>
 
 <div class="grid" id="grid"></div>
 
@@ -29,13 +27,14 @@ textarea{width:100%;background:#0b0f1a;color:#fff}
 const EMAIL="richman@rootoflyfe.com";
 const PHONE="2674326734";
 
-let leads = JSON.parse(localStorage.getItem("leads")) || [
-{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,owner:"",status:"new"},
-{address:"1929 Elston St Philadelphia PA",arv:230000,repairs:60000,owner:"",status:"new"}
+const leads=[
+{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,owner:""},
+{address:"1929 Elston St Philadelphia PA",arv:230000,repairs:60000,owner:""},
+{address:"843 E Price St Philadelphia PA",arv:200000,repairs:50000,owner:""}
 ];
 
-function saveLeads(){
-localStorage.setItem("leads",JSON.stringify(leads));
+while(leads.length<100){
+leads.push({...leads[leads.length%3]});
 }
 
 function calc(d){
@@ -54,25 +53,35 @@ let c=calc(d);
 let body = `
 Hi ${d.owner || "there"},
 
-Regarding your property:
+I wanted to reach out regarding your property:
+
 ${d.address}
 
-We can offer:
+We can purchase the property as-is with a fast and simple closing.
 
-💰 Cash Offer: $${Math.round(c.cash)}
-🤝 Seller Carry: $${Math.round(c.carry)}
-🏦 Seller Financing: $${Math.round(c.creative)}
+Here are your options:
+
+All-Cash Offer:
+$${Math.round(c.cash)}
+
+Seller Carry Option:
+$${Math.round(c.carry)}
+
+Seller Financing Option:
+$${Math.round(c.creative)}
 
 Terms:
-- No repairs
-- Close fast
-- AS-IS
+- No repairs needed
+- No agent commissions
+- Close in 14–30 days
+- Property sold AS-IS
 
-Let me know what works.
+If this works for you, I can send over the agreement immediately.
 
-Richardson L
+Best regards,
+Richardson L.
 RO’Lyfe Holdings
-${EMAIL}
+richman@rootoflyfe.com
 `;
 
 window.location.href=`mailto:${EMAIL}?subject=Offer for ${d.address}&body=${encodeURIComponent(body)}`;
@@ -80,111 +89,76 @@ window.location.href=`mailto:${EMAIL}?subject=Offer for ${d.address}&body=${enco
 
 function sendSMS(d){
 let c=calc(d);
-
-let msg = `
-Hi, this is Richardson from RO’Lyfe Holdings.
-
-Property:
-${d.address}
-
-Cash Offer: $${Math.round(c.cash)}
-
-We buy as-is and close fast.
-
-Interested?
-`;
-
+let msg=`Offer for ${d.address} - Cash: $${Math.round(c.cash)}. Interested?`;
 window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
 }
 
-function bulkSMS(){
-leads.slice(0,5).forEach(l=>sendSMS(l));
-}
-
-function downloadPDF(filename, text){
-let win = window.open("", "_blank");
-win.document.write(`<pre style="font-family:Arial;padding:40px">${text}</pre>`);
-win.document.close();
-setTimeout(()=>{win.print();},500);
+function downloadContract(name,content){
+let blob=new Blob([content],{type:"text/plain"});
+let a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download=name;
+a.click();
 }
 
 function sellerContract(d){
 let c=calc(d);
 
-downloadPDF("Seller.pdf",`
-PURCHASE AND SALE AGREEMENT
+downloadContract("Seller_Contract.txt",`
+PURCHASE & SALE AGREEMENT
 
 Property: ${d.address}
 
-Buyer: Richardson L and/or Assigns
+Buyer: Richardson L. and/or Assigns
 
-Price: $${Math.round(c.cash)}
+Purchase Price: $${Math.round(c.cash)}
 
-EMD: $500
-Inspection: 14 days
-Closing: 30 days
-AS-IS
+Earnest Deposit: $500
+Inspection: 14 Days
+Closing: 30 Days
+Condition: AS-IS
 
-Assignment allowed
+Assignment Allowed
 
-Buyer: __________
-Seller: __________
+Buyer Signature: __________
+Seller Signature: __________
 `);
 }
 
 function assignmentContract(d){
 let c=calc(d);
 
-downloadPDF("Assignment.pdf",`
+downloadContract("Assignment.txt",`
 ASSIGNMENT AGREEMENT
 
 Property: ${d.address}
 
-Price: $${Math.round(c.cash)}
+Assignor: RO'Lyfe Holdings
+Assignee: __________________
 
-Assignor: RO’Lyfe Holdings
+Original Price: $${Math.round(c.cash)}
+Assignment Fee: __________
 
-Fee: ______
-
-Signature: ______
+Signature Assignor: ________
+Signature Assignee: ________
 `);
 }
 
 function pof(){
-downloadPDF("POF.pdf",`
+downloadContract("POF.txt",`
 PROOF OF FUNDS
 
-RO’Lyfe Holdings confirms funds available.
+RO’Lyfe Holdings confirms funds available for acquisition.
 
 Contact:
-${EMAIL}
+richman@rootoflyfe.com
 `);
 }
 
-function updateValue(i,val){
-leads[i].arv=val;
-saveLeads();
+function updateValue(index,val){
+leads[index].arv=val;
 render();
 }
-
-document.getElementById("csvFile").addEventListener("change",function(e){
-let file=e.target.files[0];
-let reader=new FileReader();
-
-reader.onload=function(e){
-let rows=e.target.result.split("\n");
-
-leads = rows.map(r=>{
-let cols=r.split(",");
-return {address:cols[0],arv:cols[1]||200000,repairs:50000,owner:""};
-});
-
-saveLeads();
-render();
-};
-
-reader.readAsText(file);
-});
 
 function render(){
 
@@ -211,14 +185,15 @@ div.innerHTML=`
 Cash: $${Math.round(c.cash)}<br>
 Carry: $${Math.round(c.carry)}<br>
 Creative: $${Math.round(c.creative)}<br>
+Down: $${Math.round(c.down)}<br>
 
 <br>
 
 <div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Send Offer</div>
 <div class="btn" onclick='sendSMS(${JSON.stringify(d)})'>📱 SMS</div>
 
-<div class="btn" onclick='sellerContract(${JSON.stringify(d)})'>📄 Seller</div>
-<div class="btn" onclick='assignmentContract(${JSON.stringify(d)})'>📄 Assign</div>
+<div class="btn" onclick='sellerContract(${JSON.stringify(d)})'>📄 Seller Contract</div>
+<div class="btn" onclick='assignmentContract(${JSON.stringify(d)})'>📄 Assignment</div>
 <div class="btn" onclick='pof()'>💼 POF</div>
 
 <br>
@@ -226,14 +201,22 @@ Creative: $${Math.round(c.creative)}<br>
 <a href="https://www.zillow.com/homes/${d.address.replaceAll(" ","-")}" target="_blank">Zillow</a><br>
 <a href="https://www.redfin.com/search?q=${d.address.replaceAll(" ","%20")}" target="_blank">Redfin</a><br>
 
-<br><b>Funding</b><br>
+<a href="https://property.phila.gov" target="_blank">Property Lookup</a><br>
 
-<a href="https://rootoflyfe.blnsoftware.com/" target="_blank">BLN Portal</a><br>
-<a href="https://rcncapital.com/application/?intk=GFletcher@rcncapital.com" target="_blank">RCN Apply</a><br>
+<br>
 
-<br><b>Credit</b><br>
+<b>Funding & Tools</b><br>
 
-<a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures</a><br>
+<a href="https://rootoflyfe.blnsoftware.com/" target="_blank">Apply Funding</a><br>
+<a href="https://form.jotform.com/2530967310210469" target="_blank">Funding Intake</a><br>
+<a href="https://www.jotform.com/agent/019a5b67fad97a4db24b28e44f970158c0f1" target="_blank">AI Agent</a><br>
+
+<br>
+
+<b>Credit & Affiliate</b><br>
+
+<a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures Credit</a><br>
+<a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR" target="_blank">Corporate Credit</a><br>
 
 </div>
 `;
