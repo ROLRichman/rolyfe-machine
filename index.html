@@ -1,8 +1,6 @@
-<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>RO'Lyfe Deal OS</title>
 
 <style>
 body{background:#0b0f1a;color:#fff;font-family:Arial;padding:10px}
@@ -11,14 +9,24 @@ body{background:#0b0f1a;color:#fff;font-family:Arial;padding:10px}
 .btn{background:#1f2a44;padding:7px;margin:4px;display:inline-block;cursor:pointer;border-radius:6px}
 .btn:hover{background:#2e3c66}
 .hidden{display:none}
-input{width:100%;padding:6px;margin-top:5px;background:#0b0f1a;color:#fff;border:1px solid #333}
-a{color:#4da3ff}
+input,select,textarea{width:100%;padding:6px;margin-top:5px;background:#0b0f1a;color:#fff;border:1px solid #333}
+canvas{background:#fff;border-radius:6px;margin-top:10px}
 </style>
 </head>
 
 <body>
 
-<h2>🔥 RO’Lyfe Deal OS — LIVE MODE</h2>
+<h2>🔥 RO’Lyfe Deal OS — CLOSER MODE</h2>
+
+<select id="strategy">
+<option>Wholesale</option>
+<option>Fix & Flip</option>
+<option>Rental</option>
+<option>Bridge</option>
+</select>
+
+<input type="file" id="csvFile" class="btn">
+<div class="btn" onclick="bulkSMS()">📲 Bulk SMS</div>
 
 <div class="grid" id="grid"></div>
 
@@ -27,14 +35,15 @@ a{color:#4da3ff}
 const EMAIL="richman@rootoflyfe.com";
 const PHONE="2674326734";
 
-const leads=[
-{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,owner:""},
-{address:"1929 Elston St Philadelphia PA",arv:230000,repairs:60000,owner:""},
-{address:"843 E Price St Philadelphia PA",arv:200000,repairs:50000,owner:""}
+let leads = JSON.parse(localStorage.getItem("leads")) || [
+{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,owner:"",status:"New"}
 ];
 
-while(leads.length<100){
-leads.push({...leads[leads.length%3]});
+let buyers = JSON.parse(localStorage.getItem("buyers")) || [];
+
+function save(){
+localStorage.setItem("leads",JSON.stringify(leads));
+localStorage.setItem("buyers",JSON.stringify(buyers));
 }
 
 function calc(d){
@@ -50,115 +59,113 @@ down:(arv*0.65)*0.05
 function sendEmail(d){
 let c=calc(d);
 
-let body = `
-Hi ${d.owner || "there"},
+let body=`Hi,
 
-I wanted to reach out regarding your property:
+Property: ${d.address}
 
-${d.address}
+Cash Offer: $${Math.round(c.cash)}
 
-We can purchase the property as-is with a fast and simple closing.
+We can close fast, buy as-is, no fees.
 
-Here are your options:
+Let me know if interested.
 
-All-Cash Offer:
-$${Math.round(c.cash)}
+Richardson L
+${EMAIL}`;
 
-Seller Carry Option:
-$${Math.round(c.carry)}
-
-Seller Financing Option:
-$${Math.round(c.creative)}
-
-Terms:
-- No repairs needed
-- No agent commissions
-- Close in 14–30 days
-- Property sold AS-IS
-
-If this works for you, I can send over the agreement immediately.
-
-Best regards,
-Richardson L.
-RO’Lyfe Holdings
-richman@rootoflyfe.com
-`;
-
-window.location.href=`mailto:${EMAIL}?subject=Offer for ${d.address}&body=${encodeURIComponent(body)}`;
+window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(body)}`;
+d.status="Sent";
+save();
+render();
 }
 
 function sendSMS(d){
 let c=calc(d);
-let msg=`Offer for ${d.address} - Cash: $${Math.round(c.cash)}. Interested?`;
+
+let msg=`Hi, this is Richardson.
+
+Property: ${d.address}
+
+Cash Offer: $${Math.round(c.cash)}
+
+We buy as-is and close fast.
+
+Interested?`;
+
 window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
 }
 
-function downloadContract(name,content){
-let blob=new Blob([content],{type:"text/plain"});
-let a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
-a.download=name;
-a.click();
+function bulkSMS(){
+leads.slice(0,10).forEach(l=>sendSMS(l));
 }
 
-function sellerContract(d){
+function signPad(id){
+let canvas=document.getElementById(id);
+let ctx=canvas.getContext("2d");
+let drawing=false;
+
+canvas.onmousedown=()=>drawing=true;
+canvas.onmouseup=()=>drawing=false;
+canvas.onmousemove=e=>{
+if(!drawing) return;
+ctx.fillRect(e.offsetX,e.offsetY,2,2);
+};
+}
+
+function sellerContract(d,i){
 let c=calc(d);
 
-downloadContract("Seller_Contract.txt",`
-PURCHASE & SALE AGREEMENT
+let win=window.open("","_blank");
 
-Property: ${d.address}
+win.document.write(`
+<h2>Purchase Agreement</h2>
+<p>${d.address}</p>
+<p>Price: $${Math.round(c.cash)}</p>
 
-Buyer: Richardson L. and/or Assigns
+<canvas id="sig" width="300" height="100"></canvas>
 
-Purchase Price: $${Math.round(c.cash)}
+<button onclick="window.print()">Print / Save PDF</button>
 
-Earnest Deposit: $500
-Inspection: 14 Days
-Closing: 30 Days
-Condition: AS-IS
-
-Assignment Allowed
-
-Buyer Signature: __________
-Seller Signature: __________
+<script>
+(${signPad.toString()})("sig")
+<\/script>
 `);
+
+d.status="Signed";
+save();
 }
 
-function assignmentContract(d){
-let c=calc(d);
+function matchBuyer(d){
+if(buyers.length===0) return alert("No buyers yet");
 
-downloadContract("Assignment.txt",`
-ASSIGNMENT AGREEMENT
+let b=buyers[Math.floor(Math.random()*buyers.length)];
 
-Property: ${d.address}
-
-Assignor: RO'Lyfe Holdings
-Assignee: __________________
-
-Original Price: $${Math.round(c.cash)}
-Assignment Fee: __________
-
-Signature Assignor: ________
-Signature Assignee: ________
-`);
+window.location.href=`mailto:${b.email}?subject=Deal ${d.address}&body=Deal Available: ${d.address}`;
 }
 
-function pof(){
-downloadContract("POF.txt",`
-PROOF OF FUNDS
-
-RO’Lyfe Holdings confirms funds available for acquisition.
-
-Contact:
-richman@rootoflyfe.com
-`);
-}
-
-function updateValue(index,val){
-leads[index].arv=val;
+function updateValue(i,val){
+leads[i].arv=val;
+save();
 render();
 }
+
+document.getElementById("csvFile").addEventListener("change",function(e){
+let file=e.target.files[0];
+let reader=new FileReader();
+
+reader.onload=function(e){
+let rows=e.target.result.split("\n");
+
+leads=rows.map(r=>{
+let cols=r.split(",");
+return {address:cols[0],arv:cols[1]||200000,repairs:50000,owner:"",status:"New"};
+});
+
+save();
+render();
+};
+
+reader.readAsText(file);
+});
 
 function render(){
 
@@ -174,6 +181,7 @@ div.className="card";
 
 div.innerHTML=`
 <b>${d.address}</b>
+<br>Status: ${d.status}
 
 <br>ARV:
 <input value="${d.arv}" onchange="updateValue(${i},this.value)">
@@ -185,38 +193,52 @@ div.innerHTML=`
 Cash: $${Math.round(c.cash)}<br>
 Carry: $${Math.round(c.carry)}<br>
 Creative: $${Math.round(c.creative)}<br>
-Down: $${Math.round(c.down)}<br>
-
-<br>
 
 <div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Send Offer</div>
 <div class="btn" onclick='sendSMS(${JSON.stringify(d)})'>📱 SMS</div>
+<div class="btn" onclick='sellerContract(${JSON.stringify(d)},${i})'>✍️ E-Sign</div>
+<div class="btn" onclick='matchBuyer(${JSON.stringify(d)})'>🤝 Match Buyer</div>
 
-<div class="btn" onclick='sellerContract(${JSON.stringify(d)})'>📄 Seller Contract</div>
-<div class="btn" onclick='assignmentContract(${JSON.stringify(d)})'>📄 Assignment</div>
-<div class="btn" onclick='pof()'>💼 POF</div>
-
-<br>
+<br><b>Links</b><br>
 
 <a href="https://www.zillow.com/homes/${d.address.replaceAll(" ","-")}" target="_blank">Zillow</a><br>
 <a href="https://www.redfin.com/search?q=${d.address.replaceAll(" ","%20")}" target="_blank">Redfin</a><br>
 
-<a href="https://property.phila.gov" target="_blank">Property Lookup</a><br>
+<br><b>Funding & Broker</b><br>
 
-<br>
+<a href="https://rootoflyfe.blnsoftware.com/" target="_blank">BLN Portal</a><br>
+<a href="https://rcncapital.com/application/?intk=GFletcher@rcncapital.com" target="_blank">RCN Apply</a><br>
+<a href="https://form.jotform.com/2530967310210469" target="_blank">Funding App</a><br>
+<a href="https://form.jotform.com/252063354378055" target="_blank">RO Intake</a><br>
+<a href="https://form.jotform.com/253154859148062" target="_blank">Quick Docs</a><br>
 
-<b>Funding & Tools</b><br>
+<br><b>Affiliate / Credit</b><br>
 
-<a href="https://rootoflyfe.blnsoftware.com/" target="_blank">Apply Funding</a><br>
-<a href="https://form.jotform.com/2530967310210469" target="_blank">Funding Intake</a><br>
-<a href="https://www.jotform.com/agent/019a5b67fad97a4db24b28e44f970158c0f1" target="_blank">AI Agent</a><br>
+<a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures</a><br>
+<a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR" target="_blank">Corporate</a><br>
+<a href="https://my.americasfundingexperts.com/?id=1820217000190862001" target="_blank">Funding Experts</a><br>
 
-<br>
+<br><b>Loan Automation</b><br>
 
-<b>Credit & Affiliate</b><br>
+<a href="https://getyourbizloan.io/lp1?pu=recqKxJNkvD70xMqi" target="_blank">LP1</a><br>
+<a href="https://getyourbizloan.io/lp2?pu=recqKxJNkvD70xMqi" target="_blank">LP2</a><br>
 
-<a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures Credit</a><br>
-<a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR" target="_blank">Corporate Credit</a><br>
+<br><b>Credit Stack</b><br>
+
+<a href="https://www.creditscoreiq.com/lander/bus?offercode=435404PA" target="_blank">ScoreIQ</a><br>
+<a href="https://www.myscoreiq.com/get-fico-preferred.aspx?offercode=432142NZ" target="_blank">FICO</a><br>
+<a href="https://www.identityiq.com/sc-securepreferred.aspx?offercode=431297MR" target="_blank">IdentityIQ</a><br>
+<a href="https://www.creditbuilderiq.com/lander/bus?offercode=437502WT" target="_blank">BuilderIQ</a><br>
+
+<br><b>Starter Cards</b><br>
+
+<a href="https://www.openskycc.com/" target="_blank">OpenSky</a><br>
+<a href="https://www.tomocredit.com/" target="_blank">Tomo</a><br>
+<a href="https://www.zolve.com/" target="_blank">Zolve</a><br>
+<a href="https://www.growcredit.com/" target="_blank">Grow</a><br>
+<a href="https://www.discover.com/credit-cards/secured/" target="_blank">Discover</a><br>
+<a href="https://www.capitalone.com/credit-cards/quicksilver-secured/" target="_blank">Capital One</a><br>
+<a href="https://www.self.inc/" target="_blank">Self</a><br>
 
 </div>
 `;
@@ -232,4 +254,4 @@ render();
 </script>
 
 </body>
-</html>
+  </html>
