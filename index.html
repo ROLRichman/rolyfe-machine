@@ -1,229 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<style>
+body{background:#0b0f1a;color:#fff;font-family:Arial;padding:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:10px}
+.card{background:#141a2a;padding:12px;border-radius:10px}
+.btn{background:#1f2a44;padding:8px;margin:5px;display:inline-block;cursor:pointer;border-radius:6px}
+.btn:hover{background:#2e3c66}
+.hidden{display:none}
+input,select{width:100%;padding:6px;margin-top:5px;background:#0b0f1a;color:#fff;border:1px solid #333}
+</style>
+</head>
+
+<body>
+
+<h2>🔥 RO’Lyfe Deal OS — ONE CLICK CLOSER</h2>
+
+<select id="strategy">
+<option>Wholesale</option>
+<option>Fix & Flip</option>
+<option>Rental</option>
+<option>Bridge</option>
+</select>
+
+<div class="grid" id="grid"></div>
+
 <script>
 
 const EMAIL="richman@rootoflyfe.com";
 const PHONE="2674326734";
 
 /* =========================
-   125 LEADS AUTO LOAD
+   125 LEADS
 ========================= */
 
-let leads = JSON.parse(localStorage.getItem("leads")) || [
-
-{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,owner:"",status:"New"},
-{address:"1929 Elston St Philadelphia PA",arv:230000,repairs:60000,owner:"",status:"New"},
-{address:"843 E Price St Philadelphia PA",arv:210000,repairs:50000,owner:"",status:"New"},
-{address:"2109 W Nedro Ave Philadelphia PA",arv:280000,repairs:65000,owner:"",status:"New"},
-{address:"6221 N 17th St Philadelphia PA",arv:250000,repairs:60000,owner:"",status:"New"},
-{address:"5800 N 13th St Philadelphia PA",arv:240000,repairs:55000,owner:"",status:"New"},
-{address:"1509 W Pike St Philadelphia PA",arv:220000,repairs:50000,owner:"",status:"New"},
-{address:"2331 N 20th St Philadelphia PA",arv:260000,repairs:70000,owner:"",status:"New"},
-{address:"1922 W Venango St Philadelphia PA",arv:210000,repairs:50000,owner:"",status:"New"},
-{address:"3015 N 27th St Philadelphia PA",arv:230000,repairs:60000,owner:"",status:"New"}
-
+let leads = [
+{address:"857 E Stafford St Philadelphia PA",arv:300000},
+{address:"1929 Elston St Philadelphia PA",arv:230000},
+{address:"843 E Price St Philadelphia PA",arv:210000},
+{address:"2109 W Nedro Ave Philadelphia PA",arv:280000},
+{address:"6221 N 17th St Philadelphia PA",arv:250000},
+{address:"5800 N 13th St Philadelphia PA",arv:240000},
+{address:"1509 W Pike St Philadelphia PA",arv:220000},
+{address:"2331 N 20th St Philadelphia PA",arv:260000},
+{address:"1922 W Venango St Philadelphia PA",arv:210000},
+{address:"3015 N 27th St Philadelphia PA",arv:230000}
 ];
 
-while(leads.length < 125){
-let base = leads[leads.length % 10];
+while(leads.length<125){
+let base = leads[leads.length%10];
 leads.push({
-address: base.address + " #" + leads.length,
-arv: Math.round(base.arv + (Math.random()*20000-10000)),
-repairs: base.repairs,
-owner:"",
-status:"New"
+address: base.address+" #"+leads.length,
+arv: Math.round(base.arv+(Math.random()*20000-10000))
 });
 }
 
+leads = leads.map(l=>({...l,status:"New"}));
+
 /* =========================
-   STORAGE
+   BUYERS
 ========================= */
 
-function save(){
-localStorage.setItem("leads",JSON.stringify(leads));
-}
+let buyers = [
+{name:"RJ Construction",type:"Fix & Flip",email:""},
+{name:"Cash Investor",type:"Wholesale",email:""},
+{name:"Rental Buyer",type:"Rental",email:""}
+];
 
 /* =========================
-   CALCULATOR
+   CALC + SCORE
 ========================= */
 
 function calc(d){
-let arv=parseFloat(d.arv)||0;
 return {
-cash:arv*0.5,
-carry:arv*0.65,
-creative:arv*0.75,
-down:(arv*0.65)*0.05
+cash:d.arv*0.5,
+carry:d.arv*0.65,
+creative:d.arv*0.75
 };
 }
 
-/* =========================
-   AI DEAL SCORING
-========================= */
-
 function scoreDeal(d){
 let c=calc(d);
-let ratio = c.cash / d.arv;
-
-if(ratio < 0.55) return "🔥 HOT";
-if(ratio < 0.7) return "⚠️ WARM";
+let ratio=c.cash/d.arv;
+if(ratio<0.55) return "🔥 HOT";
+if(ratio<0.7) return "⚠️ WARM";
 return "❌ DEAD";
 }
 
 /* =========================
-   EMAIL
+   ONE CLICK CLOSE
 ========================= */
 
-function sendEmail(d,i){
+function oneClickClose(i){
+
+let d=leads[i];
 let c=calc(d);
 
-let body = `
-Hi,
+/* EMAIL SELLER */
+let sellerMsg=`
+Property: ${d.address}
 
-Regarding your property:
-${d.address}
+Cash Offer: $${Math.round(c.cash)}
 
-We can offer:
+We buy as-is, close fast.
 
-💰 Cash: $${Math.round(c.cash)}
-🤝 Seller Carry: $${Math.round(c.carry)}
-🏦 Seller Finance: $${Math.round(c.creative)}
-
-✔ No repairs
-✔ Close fast
-✔ AS-IS
-
-If this works, I can send agreement today.
-
-Richardson L
-RO’Lyfe Holdings
-${EMAIL}
+- Richardson
 `;
 
-window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(body)}`;
+window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(sellerMsg)}`;
 
-updateStatus(i,"Sent");
+/* SMS */
+setTimeout(()=>{
+window.location.href=`sms:${PHONE}?body=${encodeURIComponent(sellerMsg)}`;
+},500);
+
+/* MATCH BUYER */
+let strategy=document.getElementById("strategy").value;
+
+let buyer = buyers.find(b=>b.type===strategy);
+
+if(buyer){
+setTimeout(()=>{
+window.location.href=`mailto:${buyer.email}?subject=Deal ${d.address}&body=Deal Available: ${d.address}`;
+},1000);
 }
 
-/* =========================
-   SMS
-========================= */
-
-function sendSMS(d){
-let c=calc(d);
-
-let msg = `
-Hi, this is Richardson from RO’Lyfe.
-
-Property:
-${d.address}
-
-💰 Cash Offer: $${Math.round(c.cash)}
-
-We buy as-is, close fast, no fees.
-
-If you're open, reply YES.
-`;
-
-window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
-}
-
-/* =========================
-   STATUS
-========================= */
-
-function updateStatus(i,status){
-leads[i].status=status;
-save();
+/* STATUS */
+leads[i].status="Sent";
 render();
+
 }
 
 /* =========================
    E-SIGN
 ========================= */
 
-function openESign(d,i){
+function openESign(i){
 
-let win = window.open("", "_blank");
+let d=leads[i];
+
+let win=window.open("","_blank");
 
 win.document.write(`
 <h2>Sign Agreement</h2>
-
 <p>${d.address}</p>
 
 <input placeholder="Full Name" id="name"><br><br>
 
-<canvas id="sig" width="300" height="150" style="border:1px solid #000"></canvas>
+<canvas id="sig" width="300" height="150" style="border:1px solid black"></canvas>
 
 <br><br>
-
-<button onclick="saveSig()">Sign</button>
+<button onclick="save()">Sign</button>
 
 <script>
 let canvas=document.getElementById("sig");
 let ctx=canvas.getContext("2d");
-let drawing=false;
+let draw=false;
 
-canvas.onmousedown=()=>drawing=true;
-canvas.onmouseup=()=>drawing=false;
-
-canvas.onmousemove=(e)=>{
-if(!drawing) return;
+canvas.onmousedown=()=>draw=true;
+canvas.onmouseup=()=>draw=false;
+canvas.onmousemove=e=>{
+if(!draw)return;
 ctx.lineTo(e.offsetX,e.offsetY);
 ctx.stroke();
 };
 
-function saveSig(){
-let name=document.getElementById("name").value;
-
-localStorage.setItem("signed_"+Date.now(), JSON.stringify({
-name:name,
-address:"${d.address}"
-}));
-
+function save(){
 alert("Signed!");
-
-window.opener.postMessage("signed_${i}","*");
 }
 <\/script>
 `);
 
-win.document.close();
 }
-
-window.addEventListener("message",(e)=>{
-if(e.data.startsWith("signed_")){
-let i = e.data.split("_")[1];
-updateStatus(i,"Signed");
-}
-});
-
-/* =========================
-   CSV IMPORT
-========================= */
-
-document.getElementById("csvFile").addEventListener("change",function(e){
-let file=e.target.files[0];
-let reader=new FileReader();
-
-reader.onload=function(e){
-let rows=e.target.result.split("\n");
-
-leads=rows.map(r=>{
-let cols=r.split(",");
-return {
-address:cols[0],
-arv:cols[1]||200000,
-repairs:50000,
-owner:"",
-status:"New"
-};
-});
-
-save();
-render();
-};
-
-reader.readAsText(file);
-});
 
 /* =========================
    RENDER
@@ -248,28 +198,32 @@ div.innerHTML=`
 <br>${score}
 
 <br>ARV:
-<input value="${d.arv}" onchange="updateValue(${i},this.value)">
+<input value="${d.arv}" onchange="leads[${i}].arv=this.value;render()">
 
-<div class="btn" onclick="this.nextElementSibling.classList.toggle('hidden')">▶ Open</div>
+<div class="btn" onclick="oneClickClose(${i})">🚀 ONE CLICK CLOSE</div>
 
-<div class="hidden">
+<div class="btn" onclick="openESign(${i})">✍🏽 E-Sign</div>
+
+<br>
 
 Cash: $${Math.round(c.cash)}<br>
 Carry: $${Math.round(c.carry)}<br>
 Creative: $${Math.round(c.creative)}<br>
-
-<div class="btn" onclick='sendEmail(${JSON.stringify(d)},${i})'>📧 Send Offer</div>
-<div class="btn" onclick='sendSMS(${JSON.stringify(d)})'>📱 SMS</div>
-<div class="btn" onclick='openESign(${JSON.stringify(d)},${i})'>✍🏽 E-Sign</div>
-
-<div class="btn" onclick="updateStatus(${i},'Closed')">✅ Close Deal</div>
 
 <br><b>Links</b><br>
 
 <a href="https://www.zillow.com/homes/${d.address.replaceAll(" ","-")}" target="_blank">Zillow</a><br>
 <a href="https://www.redfin.com/search?q=${d.address.replaceAll(" ","%20")}" target="_blank">Redfin</a><br>
 
-</div>
+<br><b>Funding</b><br>
+
+<a href="https://rootoflyfe.blnsoftware.com/" target="_blank">BLN</a><br>
+<a href="https://form.jotform.com/2530967310210469" target="_blank">Funding App</a><br>
+
+<br><b>Credit</b><br>
+
+<a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures</a><br>
+
 `;
 
 grid.appendChild(div);
@@ -278,12 +232,9 @@ grid.appendChild(div);
 
 }
 
-function updateValue(i,val){
-leads[i].arv=val;
-save();
-render();
-}
-
 render();
 
 </script>
+
+</body>
+</html>
