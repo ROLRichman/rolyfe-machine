@@ -11,7 +11,7 @@ body{background:#0b0f1a;color:#fff;font-family:Arial;margin:0;padding:10px;}
 .card{background:#141a2a;padding:12px;border-radius:10px;}
 .card-header{display:flex;justify-content:space-between;cursor:pointer}
 .hidden{display:none;}
-input{width:100%;padding:8px;background:#1a1f2a;border:1px solid #333;color:#fff;}
+input,select{width:100%;padding:8px;background:#1a1f2a;border:1px solid #333;color:#fff;}
 .btn{background:#2e3c66;padding:10px;margin:4px 0;border-radius:6px;text-align:center;font-weight:bold;}
 a{color:#7fd1ff;display:block;margin:2px 0;text-decoration:none;}
 </style>
@@ -26,15 +26,13 @@ a{color:#7fd1ff;display:block;margin:2px 0;text-decoration:none;}
 const EMAIL="richman@rootoflyfe.com";
 const PHONE="2674326734";
 
-// ------------------- Leads -------------------
+// ------------------- LEADS -------------------
 let leads = JSON.parse(localStorage.getItem("leads")) || [
-{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,status:"new"}
+{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,status:"lead",price:150000}
 ];
 
 // ------------------- SAVE -------------------
-function save(){
-localStorage.setItem("leads",JSON.stringify(leads));
-}
+function save(){ localStorage.setItem("leads",JSON.stringify(leads)); }
 
 // ------------------- CALC -------------------
 function calc(d){
@@ -43,38 +41,45 @@ return{
 cash:arv*0.5,
 carry:arv*0.65,
 creative:arv*0.75,
-sellerFinance:arv*0.8
+sellerFinance:arv*0.8,
+profit:(arv*0.7)-(d.price||0)-(d.repairs||0)
 };
 }
 
 // ------------------- AUTO STRATEGY -------------------
 function strategy(d){
 let c=calc(d);
-
 if(c.cash <= d.arv*0.5) return "🔥 Wholesale";
 if(c.cash <= d.arv*0.6) return "🏗 Fix & Flip";
 if(c.cash <= d.arv*0.7) return "🏠 Rental";
 return "💰 Seller Finance";
 }
 
+// ------------------- STATUS COLOR -------------------
+function statusColor(s){
+if(s==="lead") return "#888";
+if(s==="offer sent") return "#3498db";
+if(s==="negotiating") return "#f1c40f";
+if(s==="signed") return "#2ecc71";
+if(s==="sold") return "#27ae60";
+return "#fff";
+}
+
 // ------------------- ACTIONS -------------------
 function sendSMS(d){
 let c=calc(d);
+let msg=`Hi, this is Richardson.
 
-let msg=`Hi, this is Richardson from RO’Lyfe Holdings.
+Property: ${d.address}
 
-About your property:
-${d.address}
+Cash Offer: $${Math.round(c.cash)}
 
-💰 Cash Offer: $${Math.round(c.cash)}
+We buy AS-IS, close fast.
 
-We buy AS-IS, close fast (14–30 days), no fees.
-
-Reply YES or call me.
-
-- Richardson`;
+Reply YES to move forward.`;
 
 window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
+d.status="offer sent"; save();
 }
 
 function sendEmail(d){
@@ -87,10 +92,7 @@ Property: ${d.address}
 Cash Offer: $${Math.round(c.cash)}
 Seller Finance: $${Math.round(c.sellerFinance)}
 
-Terms:
-✔ AS-IS
-✔ Fast Close
-✔ Assignable
+AS-IS | Fast Close | Assignable
 
 Richardson L
 RO’Lyfe Holdings
@@ -102,7 +104,6 @@ window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeUR
 // ------------------- PDF ENGINE -------------------
 function downloadPDF(title, content){
 let win = window.open("", "_blank");
-
 win.document.write(`
 <html>
 <head>
@@ -139,27 +140,45 @@ Closing: 30 days or sooner
 Condition: AS-IS
 Assignment: Allowed
 
-BUYER SIGNATURE: ______________________
-DATE: _______________
+--- DISCLOSURE ---
+Buyer may assign or profit from this deal.
+Buyer is not acting as agent.
+Seller advised to seek legal counsel.
 
-SELLER SIGNATURE: ______________________
+BUYER SIGNATURE: __________________
+SELLER SIGNATURE: __________________
 `);
+d.status="signed"; save();
 }
 
 function assignmentContract(d){
 downloadPDF("ASSIGNMENT AGREEMENT",`
 Property: ${d.address}
 
-Assignor: Richardson L and/or Assigns
-Assignee: ______________________
+Assignor: Richardson L
+Assignee: __________________
 
 Assignment Fee: $__________
 
-All rights, title, and interest in the contract are transferred.
+All rights transferred.
 
-Assignor Signature: ______________________
-Assignee Signature: ______________________
+Assignor: __________
+Assignee: __________
 `);
+}
+
+// ------------------- 1 CLICK CLOSE -------------------
+function quickClose(d){
+sendSMS(d);
+setTimeout(()=>{sellerContract(d);},1500);
+}
+
+// ------------------- AUTO ARV COMP (NO API) -------------------
+function autoComp(d){
+let avg = leads.reduce((sum,l)=>sum+(parseFloat(l.arv)||0),0)/leads.length;
+d.arv = Math.round(avg);
+save();
+render();
 }
 
 // ------------------- RENDER -------------------
@@ -176,13 +195,24 @@ div.className="card";
 div.innerHTML=`
 <div class="card-header" onclick="this.nextElementSibling.classList.toggle('hidden')">
 <b>${d.address}</b>
-<span>${strategy(d)}</span>
+<span style="color:${statusColor(d.status)}">${d.status}</span>
 </div>
 
 <div class="hidden">
 
+Status:
+<select onchange="leads[${i}].status=this.value;save();render();">
+<option ${d.status==="lead"?"selected":""}>lead</option>
+<option ${d.status==="offer sent"?"selected":""}>offer sent</option>
+<option ${d.status==="negotiating"?"selected":""}>negotiating</option>
+<option ${d.status==="signed"?"selected":""}>signed</option>
+<option ${d.status==="sold"?"selected":""}>sold</option>
+</select>
+
 ARV:
 <input value="${d.arv}" onchange="leads[${i}].arv=this.value;save();render();">
+
+<div class="btn" onclick='autoComp(leads[${i}])'>📊 Auto Comp ARV</div>
 
 <br><b>Offers</b><br>
 Cash: $${Math.round(c.cash)}<br>
@@ -190,12 +220,15 @@ Seller Carry: $${Math.round(c.carry)}<br>
 Creative: $${Math.round(c.creative)}<br>
 Seller Finance: $${Math.round(c.sellerFinance)}<br>
 
+<br><b>Profit Est:</b> $${Math.round(c.profit)}
+
 <div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Offer</div>
 <div class="btn" onclick='sendSMS(${JSON.stringify(d)})'>📱 SMS</div>
-<div class="btn" onclick='sellerContract(${JSON.stringify(d)})'>📄 Seller Contract</div>
+<div class="btn" onclick='sellerContract(${JSON.stringify(d)})'>📄 Contract</div>
 <div class="btn" onclick='assignmentContract(${JSON.stringify(d)})'>📑 Assignment</div>
+<div class="btn" onclick='quickClose(${JSON.stringify(d)})'>⚡ 1-Click Close</div>
 
-<!-- KEEP ALL YOUR LINKS BELOW EXACTLY -->
+<!-- ALL YOUR LINKS KEPT -->
 <br><b>PROPERTY INTEL</b>
 <a href="https://property.phila.gov" target="_blank">Phila Property</a>
 <a href="https://opainquiry.phila.gov" target="_blank">OPA</a>
@@ -215,7 +248,7 @@ Seller Finance: $${Math.round(c.sellerFinance)}<br>
 <a href="https://form.jotform.com/253154859148062" target="_blank">Quick Docs</a>
 
 <br><b>AFFILIATE / CREDIT</b>
-<a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures</a>
+<a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures Credit</a>
 <a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR" target="_blank">ROK Corporate</a>
 <a href="https://my.americasfundingexperts.com/?id=1820217000190862001" target="_blank">Funding Experts</a>
 
@@ -225,18 +258,18 @@ Seller Finance: $${Math.round(c.sellerFinance)}<br>
 
 <br><b>CREDIT STACK</b>
 <a href="https://www.creditscoreiq.com/lander/bus?offercode=435404PA" target="_blank">ScoreIQ</a>
-<a href="https://www.myscoreiq.com/get-fico-preferred.aspx?offercode=432142NZ" target="_blank">FICO</a>
+<a href="https://www.myscoreiq.com/get-fico-preferred.aspx?offercode=432142NZ" target="_blank">FICO View</a>
 <a href="https://www.identityiq.com/sc-securepreferred.aspx?offercode=431297MR" target="_blank">IdentityIQ</a>
-<a href="https://www.creditbuilderiq.com/lander/bus?offercode=437502WT" target="_blank">BuilderIQ</a>
+<a href="https://www.creditbuilderiq.com/lander/bus?offercode=437502WT" target="_blank">Builder IQ</a>
 
 <br><b>STARTER CARDS</b>
 <a href="https://www.openskycc.com/" target="_blank">OpenSky</a>
 <a href="https://www.tomocredit.com/" target="_blank">Tomo</a>
 <a href="https://www.zolve.com/" target="_blank">Zolve</a>
-<a href="https://www.growcredit.com/" target="_blank">Grow</a>
-<a href="https://www.discover.com/credit-cards/secured/" target="_blank">Discover</a>
+<a href="https://www.growcredit.com/" target="_blank">Grow Credit</a>
+<a href="https://www.discover.com/credit-cards/secured/" target="_blank">Discover Secured</a>
 <a href="https://www.capitalone.com/credit-cards/quicksilver-secured/" target="_blank">Capital One</a>
-<a href="https://www.self.inc/" target="_blank">Self</a>
+<a href="https://www.self.inc/" target="_blank">Self Loan</a>
 
 </div>
 `;
