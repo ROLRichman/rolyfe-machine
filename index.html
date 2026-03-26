@@ -2,20 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RO’Lyfe Deal OS — CLOSER MODE</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{background:#0b0f1a;color:#fff;font-family:Arial;margin:0;padding:10px;}
 .grid{display:grid;grid-template-columns:1fr;gap:10px;}
-.card{background:#141a2a;padding:12px;border-radius:10px;transition:.2s;}
+.card{background:#141a2a;padding:12px;border-radius:10px;touch-action:pan-y;}
 .card-header{display:flex;justify-content:space-between;cursor:pointer}
-.hidden{display:none}
-.btn{background:#2e3c66;padding:10px;margin:5px 0;border-radius:6px;text-align:center;font-weight:bold;}
-.btn:hover{background:#3f4b7a}
-a{color:#7fd1ff;display:block;margin:3px 0;text-decoration:none;}
-a:hover{color:#aee6ff}
+.hidden{display:none;}
 input{width:100%;padding:8px;background:#1a1f2a;border:1px solid #333;color:#fff;}
+.btn{background:#2e3c66;padding:10px;margin:4px 0;border-radius:6px;text-align:center;font-weight:bold;}
+a{color:#7fd1ff;display:block;margin:2px 0;text-decoration:none;}
 </style>
 </head>
 
@@ -23,13 +20,23 @@ input{width:100%;padding:8px;background:#1a1f2a;border:1px solid #333;color:#fff
 
 <h2>🔥 RO’Lyfe Deal OS — CLOSER MODE</h2>
 
+<select id="strategy">
+<option>Wholesale</option>
+<option>Fix & Flip</option>
+<option>Rental</option>
+<option>Bridge</option>
+</select>
+
+<input type="file" id="csvFile" class="btn">
+<div class="btn" onclick="bulkSMS()">📲 Bulk SMS</div>
+
 <div class="grid" id="grid"></div>
 
 <script>
 const EMAIL="richman@rootoflyfe.com";
 const PHONE="2674326734";
 
-// Leads
+// ------------------- Leads -------------------
 let leads = JSON.parse(localStorage.getItem("leads")) || [
 {address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,status:"new"}
 ];
@@ -44,17 +51,18 @@ status:"new"
 });
 }
 
-// Calc
+// ------------------- Calc -------------------
 function calc(d){
 let arv=parseFloat(d.arv)||0;
 return{
 cash:arv*0.5,
-flip:arv*0.7,
-rent:arv*0.65
+carry:arv*0.65,
+creative:arv*0.75,
+sellerFinance:arv*0.8
 };
 }
 
-// EMAIL (UPGRADED)
+// ------------------- Actions -------------------
 function sendEmail(d){
 let c=calc(d);
 
@@ -72,78 +80,55 @@ Terms:
 - Property sold AS-IS
 - Buyer may assign contract
 
-We are prepared to move quickly once terms are agreed.
+We are prepared to move quickly.
 
-Please respond if you are open to discussing this offer.
-
-Best Regards,
-Richardson L.
+Richardson L
 RO’Lyfe Holdings
 ${EMAIL}`;
 
 window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(body)}`;
 }
 
-// SMS
 function sendSMS(d){
 let c=calc(d);
-let msg=`Hi, this is Richardson from RO’Lyfe.
-
-About your property: ${d.address}
-
-Cash Offer: $${Math.round(c.cash)}
-
-We can close fast, buy as-is, no fees.
-
-Reply YES if interested.`;
-window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
-}
-
-// CONTRACTOR BLAST
-function contractorMsg(d){
-let c=calc(d);
-
-let msg=`Contractor Needed:
+let msg=`Hi, this is Richardson.
 
 Property: ${d.address}
 
-Estimated ARV: $${d.arv}
-Rough Budget: $${d.repairs}
+Cash Offer: $${Math.round(c.cash)}
 
-Looking for rehab estimate ASAP.
-
-- Richardson`;
+We buy as-is and close fast.`;
 
 window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
 }
 
-// CONTRACT
-function contract(d){
+function bulkSMS(){ leads.slice(0,10).forEach(l=>sendSMS(l)); }
+
+function sellerContract(d){
 let c=calc(d);
-let w=window.open("","_blank");
+let win=window.open("","_blank");
 
-w.document.write(`
+win.document.write(`
 <h2>PURCHASE & SALE AGREEMENT</h2>
-
 Property: ${d.address}<br>
 Seller: ____________________<br>
 Buyer: Richardson L. and/or Assigns<br><br>
 
 Purchase Price: $${Math.round(c.cash)}<br>
-Earnest Deposit: $500<br>
-Inspection: 14 Days<br>
-Closing: 30 Days<br>
-Condition: AS-IS<br>
-Assignment: Allowed<br><br>
+EMD: $500<br>
+Inspection: 14 days<br>
+Closing: 30 days<br>
+AS-IS Condition<br>
+Assignment Allowed<br>
 
-------------------------<br>
+<hr>
 
 BUYER SIGN: _____________<br>
 SELLER SIGN: _____________
 `);
 }
 
-// RENDER
+// ------------------- Render -------------------
 function render(){
 let grid=document.getElementById("grid");
 grid.innerHTML="";
@@ -163,14 +148,17 @@ div.innerHTML=`
 
 ARV: <input value="${d.arv}" onchange="leads[${i}].arv=this.value">
 
+<br><b>Offer Breakdown</b><br>
 Cash: $${Math.round(c.cash)}<br>
+Seller Carry: $${Math.round(c.carry)}<br>
+Creative: $${Math.round(c.creative)}<br>
+Seller Finance: $${Math.round(c.sellerFinance)}<br>
 
-<div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Offer</div>
+<div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Send Offer</div>
 <div class="btn" onclick='sendSMS(${JSON.stringify(d)})'>📱 SMS</div>
-<div class="btn" onclick='contract(${JSON.stringify(d)})'>✍️ Contract</div>
-<div class="btn" onclick='contractorMsg(${JSON.stringify(d)})'>🛠 Contractor</div>
+<div class="btn" onclick='sellerContract(${JSON.stringify(d)})'>✍️ Contract</div>
 
-<br><b>Property Tools</b>
+<br><b>Property Intel</b>
 <a href="https://property.phila.gov" target="_blank">Phila Property Search</a>
 <a href="https://opainquiry.phila.gov" target="_blank">OPA</a>
 <a href="https://www.phila.gov/services/property-lots-housing/find-property-information" target="_blank">CityAtlas</a>
