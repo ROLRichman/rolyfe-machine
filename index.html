@@ -1,185 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>RO’Lyfe Deal OS — CLOSER MODE</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- INSIDE YOUR EXISTING CARD (RENDER SECTION) REPLACE ONLY THE LINK AREA WITH THIS -->
 
-<style>
-body{background:#0b0f1a;color:#fff;font-family:Arial;margin:0;padding:10px;}
-.grid{display:grid;grid-template-columns:1fr;gap:10px;}
-.card{background:#141a2a;padding:12px;border-radius:10px;}
-.card-header{display:flex;justify-content:space-between;cursor:pointer}
-.hidden{display:none;}
-input{width:100%;padding:8px;background:#1a1f2a;border:1px solid #333;color:#fff;}
-.btn{background:#2e3c66;padding:10px;margin:4px 0;border-radius:6px;text-align:center;font-weight:bold;}
-a{color:#7fd1ff;display:block;margin:2px 0;text-decoration:none;}
-</style>
-</head>
+<br><b>Funding & Broker</b><br>
 
-<body>
+<a href="https://rootoflyfe.blnsoftware.com/" target="_blank">BLN Portal</a><br>
+<a href="https://rcncapital.com/application/?intk=GFletcher@rcncapital.com" target="_blank">RCN Apply</a><br>
+<a href="https://form.jotform.com/2530967310210469" target="_blank">Funding App</a><br>
+<a href="https://form.jotform.com/252063354378055" target="_blank">RO Intake</a><br>
+<a href="https://form.jotform.com/253154859148062" target="_blank">Quick Docs</a><br>
 
-<h2>🔥 RO’Lyfe Deal OS — CLOSER MODE</h2>
+<br><b>Affiliate / Credit</b><br>
 
-<div class="grid" id="grid"></div>
+<a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures Credit</a><br>
+<a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR" target="_blank">ROK Corporate</a><br>
+<a href="https://my.americasfundingexperts.com/?id=1820217000190862001" target="_blank">Funding Experts</a><br>
 
-<script>
-const EMAIL="richman@rootoflyfe.com";
-const PHONE="2674326734";
+<br><b>Loan Automation</b><br>
 
-// ------------------- Leads -------------------
-let leads = JSON.parse(localStorage.getItem("leads")) || [
-{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,status:"new"}
-];
+<a href="https://getyourbizloan.io/lp1?pu=recqKxJNkvD70xMqi" target="_blank">LP1</a><br>
+<a href="https://getyourbizloan.io/lp2?pu=recqKxJNkvD70xMqi" target="_blank">LP2</a><br>
 
-// ------------------- CALC -------------------
-function calc(d){
-let arv=parseFloat(d.arv)||0;
-return{
-cash:arv*0.5,
-carry:arv*0.65,
-creative:arv*0.75,
-sellerFinance:arv*0.8
-};
-}
+<br><b>Credit Builder Stack</b><br>
 
-// ------------------- AUTO STRATEGY -------------------
-function strategy(d){
-let c=calc(d);
+<a href="https://www.creditscoreiq.com/lander/bus?offercode=435404PA" target="_blank">ScoreIQ</a><br>
+<a href="https://www.myscoreiq.com/get-fico-preferred.aspx?offercode=432142NZ" target="_blank">FICO View</a><br>
+<a href="https://www.identityiq.com/sc-securepreferred.aspx?offercode=431297MR" target="_blank">IdentityIQ</a><br>
+<a href="https://www.creditbuilderiq.com/lander/bus?offercode=437502WT" target="_blank">Builder IQ</a><br>
 
-if(c.cash < d.arv*0.55) return "🔥 Wholesale";
-if(c.cash < d.arv*0.65) return "🏗 Fix & Flip";
-if(c.cash < d.arv*0.75) return "🏠 Rental";
-return "💰 Seller Finance";
-}
+<br><b>Starter Credit Cards</b><br>
 
-// ------------------- ACTIONS -------------------
-function sendSMS(d){
-let c=calc(d);
-window.location.href=`sms:${PHONE}?body=${encodeURIComponent(
-`Property: ${d.address}
-Offer: $${Math.round(c.cash)}
-Close fast, AS-IS.`
-)}`;
-}
-
-function sendEmail(d){
-let c=calc(d);
-
-window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(
-`PURCHASE OFFER
-
-Property: ${d.address}
-Offer: $${Math.round(c.cash)}
-
-AS-IS | Fast Close | Assignable
-
-Richardson L
-RO’Lyfe Holdings`
-)}`;
-}
-
-// ------------------- CONTRACT -------------------
-function contract(d){
-let c=calc(d);
-let w=window.open("","_blank");
-
-w.document.write(`
-<h2>PURCHASE & SALE AGREEMENT</h2>
-Property: ${d.address}<br>
-Buyer: Richardson L. and/or Assigns<br><br>
-Price: $${Math.round(c.cash)}<br>
-EMD: $500<br>
-Inspection: 14 Days<br>
-Close: 30 Days<br>
-AS-IS | Assignable<br><br>
-BUYER: ___________<br>
-SELLER: ___________
-`);
-}
-
-// ------------------- RENDER -------------------
-function render(){
-let grid=document.getElementById("grid");
-grid.innerHTML="";
-
-leads.forEach((d,i)=>{
-let c=calc(d);
-
-let div=document.createElement("div");
-div.className="card";
-
-div.innerHTML=`
-<div class="card-header" onclick="this.nextElementSibling.classList.toggle('hidden')">
-<b>${d.address}</b>
-<span>${strategy(d)}</span>
-</div>
-
-<div class="hidden">
-
-ARV: <input value="${d.arv}" onchange="leads[${i}].arv=this.value">
-
-<br><b>Offers</b><br>
-Cash: $${Math.round(c.cash)}<br>
-Seller Carry: $${Math.round(c.carry)}<br>
-Creative: $${Math.round(c.creative)}<br>
-Seller Finance: $${Math.round(c.sellerFinance)}<br>
-
-<div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Offer</div>
-<div class="btn" onclick='sendSMS(${JSON.stringify(d)})'>📱 SMS</div>
-<div class="btn" onclick='contract(${JSON.stringify(d)})'>✍️ Contract</div>
-
-<br><b>PROPERTY INTEL</b>
-<a href="https://property.phila.gov" target="_blank">Phila Property</a>
-<a href="https://opainquiry.phila.gov" target="_blank">OPA</a>
-<a href="https://www.phila.gov/services/property-lots-housing/find-property-information" target="_blank">CityAtlas</a>
-<a href="https://pennsylvania.propertychecker.com" target="_blank">PropertyChecker</a>
-<a href="https://www.propertyreach.com" target="_blank">PropertyReach</a>
-
-<br><b>RURAL</b>
-<a href="https://www.consumerfinance.gov/rural-or-underserved-tool/#rural-or-underserved" target="_blank">CFPB Tool</a>
-<a href="https://eligibility.sc.egov.usda.gov/eligibility/welcomeAction.do?pageAction=sfp" target="_blank">USDA</a>
-
-<br><b>FUNDING & BROKER</b>
-<a href="https://rootoflyfe.blnsoftware.com/" target="_blank">BLN Portal</a>
-<a href="https://rcncapital.com/application/?intk=GFletcher@rcncapital.com" target="_blank">RCN Apply</a>
-<a href="https://form.jotform.com/2530967310210469" target="_blank">Funding App</a>
-<a href="https://form.jotform.com/252063354378055" target="_blank">RO Intake</a>
-<a href="https://form.jotform.com/253154859148062" target="_blank">Quick Docs</a>
-
-<br><b>AFFILIATE / CREDIT</b>
-<a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures</a>
-<a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR" target="_blank">ROK Corporate</a>
-<a href="https://my.americasfundingexperts.com/?id=1820217000190862001" target="_blank">Funding Experts</a>
-
-<br><b>LOAN AUTOMATION</b>
-<a href="https://getyourbizloan.io/lp1?pu=recqKxJNkvD70xMqi" target="_blank">LP1</a>
-<a href="https://getyourbizloan.io/lp2?pu=recqKxJNkvD70xMqi" target="_blank">LP2</a>
-
-<br><b>CREDIT STACK</b>
-<a href="https://www.creditscoreiq.com/lander/bus?offercode=435404PA" target="_blank">ScoreIQ</a>
-<a href="https://www.myscoreiq.com/get-fico-preferred.aspx?offercode=432142NZ" target="_blank">FICO</a>
-<a href="https://www.identityiq.com/sc-securepreferred.aspx?offercode=431297MR" target="_blank">IdentityIQ</a>
-<a href="https://www.creditbuilderiq.com/lander/bus?offercode=437502WT" target="_blank">BuilderIQ</a>
-
-<br><b>STARTER CARDS</b>
-<a href="https://www.openskycc.com/" target="_blank">OpenSky</a>
-<a href="https://www.tomocredit.com/" target="_blank">Tomo</a>
-<a href="https://www.zolve.com/" target="_blank">Zolve</a>
-<a href="https://www.growcredit.com/" target="_blank">Grow</a>
-<a href="https://www.discover.com/credit-cards/secured/" target="_blank">Discover</a>
-<a href="https://www.capitalone.com/credit-cards/quicksilver-secured/" target="_blank">Capital One</a>
-<a href="https://www.self.inc/" target="_blank">Self</a>
-
-</div>
-`;
-
-grid.appendChild(div);
-});
-}
-
-render();
-</script>
-
-</body>
-</html>
+<a href="https://www.openskycc.com/" target="_blank">OpenSky</a><br>
+<a href="https://www.tomocredit.com/" target="_blank">Tomo</a><br>
+<a href="https://www.zolve.com/" target="_blank">Zolve</a><br>
+<a href="https://www.growcredit.com/" target="_blank">Grow Credit</a><br>
+<a href="https://www.discover.com/credit-cards/secured/" target="_blank">Discover Secured</a><br>
+<a href="https://www.capitalone.com/credit-cards/quicksilver-secured/" target="_blank">Capital One</a><br>
+<a href="https://www.self.inc/" target="_blank">Self Loan</a><br>
