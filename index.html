@@ -5,15 +5,17 @@
 <title>RO’Lyfe Deal OS — CLOSER MODE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{background:#0b0f1a;color:#fff;font-family:Arial,sans-serif;margin:0;padding:10px}
-.grid{display:grid;grid-template-columns:1fr;gap:10px}
-.card{background:#141a2a;padding:12px;border-radius:10px;touch-action: pan-y;}
-.btn{background:#1f2a44;padding:10px;margin:4px 0;display:block;cursor:pointer;border-radius:6px;text-align:center;font-weight:bold;font-size:0.95rem}
-.btn:hover{background:#2e3c66}
-.hidden{display:none}
-input,select,textarea{width:100%;padding:8px;margin-top:5px;background:#0b0f1a;color:#fff;border:1px solid #333;border-radius:4px}
+body{background:#0b0f1a;color:#fff;font-family:Arial,sans-serif;margin:0;padding:10px;}
+.grid{display:grid;grid-template-columns:1fr;gap:10px;}
+.card{background:#141a2a;padding:12px;border-radius:10px;touch-action: pan-y;position:relative;overflow:hidden;}
 .card-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
 .card-header h3{margin:0;font-size:1rem}
+.hidden{display:none;}
+input,select,textarea{width:100%;padding:8px;margin-top:5px;background:#1a1f2a;color:#fff;border:1px solid #333;border-radius:4px;}
+.btn{background:#2e3c66;padding:10px;margin:4px 0;display:block;cursor:pointer;border-radius:6px;text-align:center;font-weight:bold;font-size:0.95rem;color:#fff;}
+.btn:hover{background:#3f4b7a;}
+a{color:#81c7ff;text-decoration:none;}
+a:hover{color:#a0e0ff;}
 .swipe-left{background:#d9534f;color:#fff;padding:5px 10px;border-radius:6px;position:absolute;top:10px;right:10px;display:none;}
 </style>
 </head>
@@ -37,16 +39,7 @@ const PHONE="2674326734";
 
 // ------------------- Leads -------------------
 let leads = JSON.parse(localStorage.getItem("leads")) || [
-{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,owner:"",status:"new"},
-{address:"1929 Elston St Philadelphia PA",arv:230000,repairs:60000,owner:"",status:"new"},
-{address:"843 E Price St Philadelphia PA",arv:210000,repairs:50000,owner:"",status:"new"},
-{address:"2109 W Nedro Ave Philadelphia PA",arv:280000,repairs:65000,owner:"",status:"new"},
-{address:"6221 N 17th St Philadelphia PA",arv:250000,repairs:60000,owner:"",status:"new"},
-{address:"5800 N 13th St Philadelphia PA",arv:240000,repairs:55000,owner:"",status:"new"},
-{address:"1509 W Pike St Philadelphia PA",arv:220000,repairs:50000,owner:"",status:"new"},
-{address:"2331 N 20th St Philadelphia PA",arv:260000,repairs:70000,owner:"",status:"new"},
-{address:"1922 W Venango St Philadelphia PA",arv:210000,repairs:50000,owner:"",status:"new"},
-{address:"3015 N 27th St Philadelphia PA",arv:230000,repairs:60000,owner:"",status:"new"}
+{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,owner:"",status:"new"}
 ];
 while(leads.length<125){
     let base=leads[leads.length%10];
@@ -63,16 +56,64 @@ let buyers=[
 // ------------------- Utility -------------------
 function save(){ localStorage.setItem("leads",JSON.stringify(leads)); }
 function calc(d){ let arv=parseFloat(d.arv)||0; return {cash:arv*0.5,carry:arv*0.65,creative:arv*0.75,down:(arv*0.65)*0.05}; }
+
+// ------------------- Actions -------------------
 function sendEmail(d){ let c=calc(d); window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(`Hi,\nProperty: ${d.address}\nCash Offer: $${Math.round(c.cash)}\nWe can close fast, buy as-is, no fees.\nRichardson L\n${EMAIL}`)}`; d.status="Sent"; save(); render(); }
-function sendSMS(d){ let c=calc(d); let msg=`Hi, this is Richardson from RO’Lyfe Holdings.\n\nAbout your property: ${d.address}\n💰 Cash Offer: $${Math.round(c.cash)}\nWe can: ✔ Buy as-is ✔ Close fast (14–30 days) ✔ No fees or repairs\n\nIf you're open to selling, reply YES or call me.\n\n- Richardson`; window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`; }
+
+function sendSMS(d){ 
+    let c=calc(d); 
+    let msg=`Hi, this is Richardson from RO’Lyfe Holdings.\n\nAbout your property: ${d.address}\n💰 Cash Offer: $${Math.round(c.cash)}\nWe can: ✔ Buy as-is ✔ Close fast (14–30 days) ✔ No fees or repairs\n\nIf you're open to selling, reply YES or call me.\n- Richardson`;
+    window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
+}
+
 function bulkSMS(){ leads.slice(0,10).forEach(l=>sendSMS(l)); }
-function signPad(id){ let canvas=document.getElementById(id); let ctx=canvas.getContext("2d"); let drawing=false; canvas.onmousedown=()=>drawing=true; canvas.onmouseup=()=>drawing=false; canvas.onmousemove=e=>{if(!drawing) return; ctx.fillRect(e.offsetX,e.offsetY,2,2);}; }
-function sellerContract(d,i){ let c=calc(d); let win=window.open("","_blank"); win.document.write(`<h2>Purchase Agreement</h2><p>${d.address}</p><p>Price: $${Math.round(c.cash)}</p><canvas id="sig" width="300" height="100"></canvas><button onclick="window.print()">Print / Save PDF</button><script>(${signPad.toString()})("sig")<\/script>`); d.status="Signed"; save(); }
-function matchBuyer(d){ let strategy=document.getElementById("strategy").value; let match=buyers.find(b=> (strategy==="Fix & Flip"&&b.type==="FixFlip")||(strategy==="Rental"&&b.type==="Rental")||(strategy==="Wholesale"&&b.type==="Wholesale")||(strategy==="Bridge"&&b.type==="Bridge")); alert("Best Buyer: "+(match?match.name:"No match yet")); }
-function updateValue(i,val){ leads[i].arv=val; save(); render(); }
+
+function sellerContract(d){
+    let c=calc(d);
+    let win=window.open("","_blank");
+    win.document.write(`
+        <h2>PURCHASE & SALE AGREEMENT</h2>
+        <p>Property: ${d.address}</p>
+        <p>Seller: ____________________</p>
+        <p>Buyer: Richardson L. and/or Assigns</p>
+        <p>Purchase Price: $${Math.round(c.cash)}</p>
+        <p>Earnest Money Deposit: $500 (held by title company)</p>
+        <p>Inspection Period: 14 days</p>
+        <p>Closing: 30 days or sooner</p>
+        <p>Condition: Property sold AS-IS</p>
+        <p>Assignment Clause: Buyer may assign interest without further consent of Seller</p>
+        <p>Additional Clause: Buyer may coordinate with funding partners, contractors, and affiliates as needed</p>
+        <hr>
+        <h3>SIGNATURES</h3>
+        <p>BUYER: Richardson L. and/or Assigns<br>Signature: ____________________<br>Date: _________________</p>
+        <p>SELLER: ____________________<br>Signature: ____________________</p>
+    `);
+    d.status="Signed"; save();
+}
+
+// ------------------- Match Buyer -------------------
+function matchBuyer(d){
+    let strategy=document.getElementById("strategy").value;
+    let match=buyers.find(b=> 
+        (strategy==="Fix & Flip"&&b.type==="FixFlip")||
+        (strategy==="Rental"&&b.type==="Rental")||
+        (strategy==="Wholesale"&&b.type==="Wholesale")||
+        (strategy==="Bridge"&&b.type==="Bridge")
+    );
+    alert("Best Buyer: "+(match?match.name:"No match yet"));
+}
 
 // ------------------- CSV Import -------------------
-document.getElementById("csvFile").addEventListener("change",function(e){ let file=e.target.files[0]; let reader=new FileReader(); reader.onload=function(e){ let rows=e.target.result.split("\n"); leads=rows.map(r=>{ let cols=r.split(","); return {address:cols[0],arv:cols[1]||200000,repairs:50000,owner:"",status:"New"}; }); save(); render(); }; reader.readAsText(file); });
+document.getElementById("csvFile").addEventListener("change",function(e){ 
+    let file=e.target.files[0]; 
+    let reader=new FileReader(); 
+    reader.onload=function(e){ 
+        let rows=e.target.result.split("\n"); 
+        leads=rows.map(r=>{ let cols=r.split(","); return {address:cols[0],arv:cols[1]||200000,repairs:50000,owner:"",status:"New"}; }); 
+        save(); render(); 
+    }; 
+    reader.readAsText(file); 
+});
 
 // ------------------- Render -------------------
 function render(){
@@ -92,7 +133,7 @@ function render(){
             Creative: $${Math.round(c.creative)}<br>
             <div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Send Offer</div>
             <div class="btn" onclick='sendSMS(${JSON.stringify(d)})'>📱 SMS</div>
-            <div class="btn" onclick='sellerContract(${JSON.stringify(d)},${i})'>✍️ E-Sign</div>
+            <div class="btn" onclick='sellerContract(${JSON.stringify(d)})'>✍️ E-Sign</div>
             <div class="btn" onclick='matchBuyer(${JSON.stringify(d)})'>🤝 Match Buyer</div>
             <br><b>Links</b><br>
             <a href="https://www.zillow.com/homes/${d.address.replaceAll(" ","-")}" target="_blank">Zillow</a><br>
@@ -125,10 +166,24 @@ function render(){
             <a href="https://www.self.inc/" target="_blank">Self Loan</a><br>
         </div>`;
         grid.appendChild(div);
+        // Add swipe gestures
+        let startX=0; div.addEventListener("touchstart",e=>{startX=e.touches[0].clientX;});
+        div.addEventListener("touchmove",e=>{
+            let deltaX=e.touches[0].clientX-startX;
+            div.style.transform=`translateX(${deltaX}px)`;
+        });
+        div.addEventListener("touchend",e=>{
+            let deltaX=e.changedTouches[0].clientX-startX;
+            if(deltaX<-100){ div.remove(); alert(`Deal Rejected: ${d.address}`); }
+            else{ div.style.transform="translateX(0)"; }
+        });
     });
 }
 
+function updateValue(i,val){ leads[i].arv=val; save(); render(); }
+
 render();
 </script>
+
 </body>
 </html>
