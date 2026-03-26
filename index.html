@@ -20,7 +20,6 @@ a{color:#7fd1ff;display:block;margin:2px 0;text-decoration:none;}
 <body>
 
 <h2>🔥 RO’Lyfe Deal OS — CLOSER MODE</h2>
-
 <div class="grid" id="grid"></div>
 
 <script>
@@ -31,6 +30,11 @@ const PHONE="2674326734";
 let leads = JSON.parse(localStorage.getItem("leads")) || [
 {address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,status:"new"}
 ];
+
+// ------------------- SAVE -------------------
+function save(){
+localStorage.setItem("leads",JSON.stringify(leads));
+}
 
 // ------------------- CALC -------------------
 function calc(d){
@@ -47,54 +51,114 @@ sellerFinance:arv*0.8
 function strategy(d){
 let c=calc(d);
 
-if(c.cash < d.arv*0.55) return "🔥 Wholesale";
-if(c.cash < d.arv*0.65) return "🏗 Fix & Flip";
-if(c.cash < d.arv*0.75) return "🏠 Rental";
+if(c.cash <= d.arv*0.5) return "🔥 Wholesale";
+if(c.cash <= d.arv*0.6) return "🏗 Fix & Flip";
+if(c.cash <= d.arv*0.7) return "🏠 Rental";
 return "💰 Seller Finance";
 }
 
 // ------------------- ACTIONS -------------------
 function sendSMS(d){
 let c=calc(d);
-window.location.href=`sms:${PHONE}?body=${encodeURIComponent(
-`Property: ${d.address}
-Offer: $${Math.round(c.cash)}
-Close fast, AS-IS.`
-)}`;
+
+let msg=`Hi, this is Richardson from RO’Lyfe Holdings.
+
+About your property:
+${d.address}
+
+💰 Cash Offer: $${Math.round(c.cash)}
+
+We buy AS-IS, close fast (14–30 days), no fees.
+
+Reply YES or call me.
+
+- Richardson`;
+
+window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
 }
 
 function sendEmail(d){
 let c=calc(d);
 
-window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(
-`PURCHASE OFFER
+let body=`PURCHASE OFFER
 
 Property: ${d.address}
-Offer: $${Math.round(c.cash)}
 
-AS-IS | Fast Close | Assignable
+Cash Offer: $${Math.round(c.cash)}
+Seller Finance: $${Math.round(c.sellerFinance)}
+
+Terms:
+✔ AS-IS
+✔ Fast Close
+✔ Assignable
 
 Richardson L
-RO’Lyfe Holdings`
-)}`;
+RO’Lyfe Holdings
+${EMAIL}`;
+
+window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(body)}`;
 }
 
-// ------------------- CONTRACT -------------------
-function contract(d){
-let c=calc(d);
-let w=window.open("","_blank");
+// ------------------- PDF ENGINE -------------------
+function downloadPDF(title, content){
+let win = window.open("", "_blank");
 
-w.document.write(`
-<h2>PURCHASE & SALE AGREEMENT</h2>
-Property: ${d.address}<br>
-Buyer: Richardson L. and/or Assigns<br><br>
-Price: $${Math.round(c.cash)}<br>
-EMD: $500<br>
-Inspection: 14 Days<br>
-Close: 30 Days<br>
-AS-IS | Assignable<br><br>
-BUYER: ___________<br>
-SELLER: ___________
+win.document.write(`
+<html>
+<head>
+<title>${title}</title>
+<style>
+body{font-family:Arial;padding:40px;line-height:1.6;}
+h2{text-align:center;}
+</style>
+</head>
+<body>
+<h2>${title}</h2>
+<pre>${content}</pre>
+<script>
+setTimeout(()=>{window.print();},500);
+<\/script>
+</body>
+</html>
+`);
+}
+
+// ------------------- CONTRACTS -------------------
+function sellerContract(d){
+let c=calc(d);
+
+downloadPDF("PURCHASE & SALE AGREEMENT",`
+Property: ${d.address}
+Buyer: Richardson L and/or Assigns
+
+Purchase Price: $${Math.round(c.cash)}
+Earnest Money Deposit: $500
+Inspection Period: 14 days
+Closing: 30 days or sooner
+
+Condition: AS-IS
+Assignment: Allowed
+
+BUYER SIGNATURE: ______________________
+DATE: _______________
+
+SELLER SIGNATURE: ______________________
+`);
+}
+
+function assignmentContract(d){
+downloadPDF("ASSIGNMENT AGREEMENT",`
+Property: ${d.address}
+
+Assignor: Richardson L and/or Assigns
+Assignee: ______________________
+
+Assignment Fee: $__________
+
+All rights, title, and interest in the contract are transferred.
+
+Assignor Signature: ______________________
+Assignee Signature: ______________________
 `);
 }
 
@@ -117,7 +181,8 @@ div.innerHTML=`
 
 <div class="hidden">
 
-ARV: <input value="${d.arv}" onchange="leads[${i}].arv=this.value">
+ARV:
+<input value="${d.arv}" onchange="leads[${i}].arv=this.value;save();render();">
 
 <br><b>Offers</b><br>
 Cash: $${Math.round(c.cash)}<br>
@@ -127,8 +192,10 @@ Seller Finance: $${Math.round(c.sellerFinance)}<br>
 
 <div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Offer</div>
 <div class="btn" onclick='sendSMS(${JSON.stringify(d)})'>📱 SMS</div>
-<div class="btn" onclick='contract(${JSON.stringify(d)})'>✍️ Contract</div>
+<div class="btn" onclick='sellerContract(${JSON.stringify(d)})'>📄 Seller Contract</div>
+<div class="btn" onclick='assignmentContract(${JSON.stringify(d)})'>📑 Assignment</div>
 
+<!-- KEEP ALL YOUR LINKS BELOW EXACTLY -->
 <br><b>PROPERTY INTEL</b>
 <a href="https://property.phila.gov" target="_blank">Phila Property</a>
 <a href="https://opainquiry.phila.gov" target="_blank">OPA</a>
