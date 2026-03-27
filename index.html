@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>RO’Lyfe Deal OS — SaaS</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 body{background:#0b0f1a;color:#fff;font-family:Arial;margin:0;padding:10px;}
+h2{text-align:center;}
 .grid{display:grid;gap:12px;}
 .card{background:#141a2a;padding:12px;border-radius:10px;}
 .card-header{display:flex;justify-content:space-between;cursor:pointer;font-weight:bold;}
@@ -14,66 +8,103 @@ body{background:#0b0f1a;color:#fff;font-family:Arial;margin:0;padding:10px;}
 input,select{width:100%;padding:8px;margin:5px 0;background:#1a1f2a;border:1px solid #333;color:#fff;}
 .btn{background:#2e3c66;padding:10px;margin:5px 0;border-radius:6px;text-align:center;font-weight:bold;cursor:pointer;}
 .score{background:#1f2a44;padding:10px;border-radius:8px;margin-bottom:10px;text-align:center;}
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:15px;}
+.pipe{background:#111;padding:8px;border-radius:6px;text-align:center;}
 a{color:#7fd1ff;display:block;margin:2px 0;text-decoration:none;}
 </style>
-</head>
 
-<body>
+<h2>🔥 RO’Lyfe Deal OS — GitHub SaaS</h2>
 
-<h2>🔥 RO’Lyfe Deal OS — SaaS Mode</h2>
 <div class="score" id="scoreboard"></div>
+
+<div class="pipeline" id="pipeline"></div>
+
+<div class="btn" onclick="uploadCSV()">📂 Upload 125 Leads (CSV)</div>
+
 <div class="grid" id="grid"></div>
 
 <script>
 const EMAIL="richman@rootoflyfe.com";
 const PHONE="2674326734";
 
-// ---------------- REAL 125 LEADS ----------------
-let defaultLeads = [];
-for(let i=0;i<125;i++){
-  defaultLeads.push({
-    address: `${800+i} W Sample St Philadelphia PA`,
-    arv: 200000 + (i*1500),
-    repairs: 30000 + (i*200),
-    price: 90000 + (i*1200),
-    seller: "Owner "+(i+1),
-    status: "lead"
-  });
+// ------------------- DEFAULT LEADS -------------------
+let defaultLeads=[
+{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,status:"lead",price:150000},
+{address:"2109 W Nedro Ave Philadelphia PA",arv:350000,repairs:50000,status:"offer sent",price:229169},
+{address:"742 W Somerset St Philadelphia PA",arv:220000,repairs:40000,status:"negotiating",price:120000}
+];
+
+// AUTO FILL UP TO 125 (NO DUPES)
+for(let i=0;i<122;i++){
+defaultLeads.push({
+address:`${1000+i} Market St Philadelphia PA`,
+arv:180000+(i*1000),
+repairs:30000+(i*500),
+status:"lead",
+price:100000+(i*800)
+});
 }
 
 // LOAD
-let leads = JSON.parse(localStorage.getItem("leads"));
-if(!leads || leads.length<125){
-  leads = defaultLeads;
-  localStorage.setItem("leads", JSON.stringify(leads));
+let leads=JSON.parse(localStorage.getItem("leads"));
+if(!leads || leads.length<50){
+leads=defaultLeads;
+localStorage.setItem("leads",JSON.stringify(leads));
 }
 
-function save(){localStorage.setItem("leads", JSON.stringify(leads));}
+function save(){localStorage.setItem("leads",JSON.stringify(leads));}
 
-// ---------------- CALCULATIONS ----------------
+// ------------------- CALC -------------------
 function calc(d){
-let arv=+d.arv||0;
-let price=+d.price||0;
-let repairs=+d.repairs||0;
-
 return{
-cash:arv*0.5,
-carry:arv*0.65,
-creative:arv*0.75,
-sellerFinance:arv*0.8,
-profit:(arv*0.7)-price-repairs,
-ltv:(price/arv*100).toFixed(1)
+cash:d.arv*0.5,
+creative:d.arv*0.75,
+sellerFinance:d.arv*0.8,
+profit:(d.arv*0.7)-d.price-d.repairs
 };
 }
 
-// ---------------- CONTRACT ----------------
-function buildContract(d){
+// ------------------- SCORE -------------------
+function updateScore(){
+let total=0,closed=0;
+let stages={lead:0,"offer sent":0,negotiating:0,signed:0,sold:0};
+
+leads.forEach(d=>{
+let p=calc(d).profit;
+stages[d.status]++;
+
+if(d.status==="sold"){total+=p;closed++;}
+});
+
+document.getElementById("scoreboard").innerHTML=
+`💰 Closed: ${closed} | Profit: $${Math.round(total)}`;
+
+document.getElementById("pipeline").innerHTML=`
+<div class="pipe">Lead<br>${stages.lead}</div>
+<div class="pipe">Offer<br>${stages["offer sent"]}</div>
+<div class="pipe">Negotiating<br>${stages.negotiating}</div>
+<div class="pipe">Signed<br>${stages.signed}</div>
+<div class="pipe">Sold<br>${stages.sold}</div>
+`;
+}
+
+// ------------------- SMS AUTO -------------------
+function autoSMS(d){
+let msg=`Property: ${d.address}
+Offer: $${Math.round(calc(d).cash)}
+Reply YES to proceed.`;
+
+window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
+}
+
+// ------------------- EMAIL CONTRACT -------------------
+function sendEmail(d){
 let c=calc(d);
 
-return `PURCHASE & SALE AGREEMENT
+let body=`PURCHASE & SALE AGREEMENT
 
 Property: ${d.address}
-Seller: ${d.seller || "________"}
+Seller: 
 Buyer: Richardson L. and/or Assigns
 
 Purchase Price: $${Math.round(c.cash)}
@@ -81,76 +112,96 @@ Earnest Money Deposit: $500
 Inspection Period: 14 days
 Closing: 30 days or sooner
 
-Condition: Property sold AS-IS
-
-Assignment Clause:
-Buyer may assign or transfer interest without consent.
-
-Additional Clause:
-Buyer may coordinate with funding partners.
+Condition: AS-IS
+Assignment Clause: Allowed
 
 --------------------------------------
-SIGNATURES
+BUYER: Richardson L
+SELLER: __________________`;
 
-BUYER: Richardson L.
-Signature: __________
-
-SELLER: ${d.seller || "________"}
-Signature: __________
-`;
+window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(body)}`;
 }
 
-// ---------------- ACTIONS ----------------
-function sendSMS(d){
-let msg = buildContract(d);
-window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
-d.status="offer sent"; save(); render();
+// ------------------- PDF -------------------
+function contract(d){
+let c=calc(d);
+let win=window.open("","_blank");
+win.document.write(`<pre style="padding:40px">${d.address}
+
+Purchase Price: $${Math.round(c.cash)}
+
+AS-IS | Assignable
+
+Buyer: Richardson L</pre>`);
+setTimeout(()=>win.print(),500);
+d.status="signed";save();render();
 }
 
-function sendEmail(d){
-let msg = buildContract(d);
-window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(msg)}`;
-}
-
+// ------------------- ASSIGN -------------------
 function assign(d){
-let msg=`ASSIGNMENT AGREEMENT\nProperty: ${d.address}\nAssignor: Richardson L`;
-window.location.href=`mailto:${EMAIL}?subject=Assignment ${d.address}&body=${encodeURIComponent(msg)}`;
+window.open(`mailto:${EMAIL}?subject=Assignment ${d.address}`);
 }
 
-// ---------------- ZILLOW / REDFIN ----------------
-function openZillow(d){
-let url="https://www.zillow.com/homes/"+encodeURIComponent(d.address)+"_rb/";
-window.open(url,"_blank");
+// ------------------- STATUS -------------------
+function setStatus(i,val){
+leads[i].status=val;
+if(val==="offer sent"){autoSMS(leads[i]);}
+save();render();
 }
 
-function openRedfin(d){
-let url="https://www.redfin.com/stingray/do/location-autocomplete?location="+encodeURIComponent(d.address);
-window.open("https://www.redfin.com","_blank");
+// ------------------- ZILLOW / REDFIN -------------------
+function openZillow(addr){
+window.open(`https://www.zillow.com/homes/${encodeURIComponent(addr)}`);
 }
 
-// ---------------- ANALYZER SYNC ----------------
+function openRedfin(addr){
+window.open(`https://www.redfin.com/stingray/do/location-autocomplete?location=${encodeURIComponent(addr)}`);
+}
+
+// ------------------- ANALYZER SYNC -------------------
 function fillAnalyzer(d){
+let a=document.getElementById("propAddress");
+if(a){
 document.getElementById("propAddress").value=d.address;
-document.getElementById("purchasePrice").value=d.price;
 document.getElementById("arv").value=d.arv;
+document.getElementById("purchasePrice").value=d.price;
 document.getElementById("rehabCost").value=d.repairs;
 window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
 }
-
-// ---------------- SCOREBOARD ----------------
-function updateScore(){
-let total=0, deals=0;
-leads.forEach(d=>{
-if(d.status==="sold"){
-total+=calc(d).profit;
-deals++;
 }
+
+// ------------------- CSV UPLOAD -------------------
+function uploadCSV(){
+let input=document.createElement("input");
+input.type="file";
+input.accept=".csv";
+
+input.onchange=e=>{
+let file=e.target.files[0];
+let reader=new FileReader();
+
+reader.onload=function(){
+let rows=reader.result.split("\n");
+leads=rows.slice(1).map(r=>{
+let c=r.split(",");
+return{
+address:c[0],
+arv:+c[1],
+repairs:+c[2],
+price:+c[3],
+status:"lead"
+};
 });
-document.getElementById("scoreboard").innerHTML=
-`💰 Deals Closed: ${deals} | Profit: $${Math.round(total)}`;
+save();render();
+};
+
+reader.readAsText(file);
+};
+
+input.click();
 }
 
-// ---------------- RENDER ----------------
+// ------------------- RENDER -------------------
 function render(){
 let grid=document.getElementById("grid");
 grid.innerHTML="";
@@ -163,39 +214,29 @@ div.className="card";
 
 div.innerHTML=`
 <div class="card-header" onclick="this.nextElementSibling.classList.toggle('hidden')">
-${d.address}
-<span>${d.status}</span>
+${d.address} <span>${d.status}</span>
 </div>
 
 <div class="hidden">
 
-Price:
-<input value="${d.price}" onchange="leads[${i}].price=this.value;save();render();">
+<select onchange="setStatus(${i},this.value)">
+<option ${d.status==="lead"?"selected":""}>lead</option>
+<option ${d.status==="offer sent"?"selected":""}>offer sent</option>
+<option ${d.status==="negotiating"?"selected":""}>negotiating</option>
+<option ${d.status==="signed"?"selected":""}>signed</option>
+<option ${d.status==="sold"?"selected":""}>sold</option>
+</select>
 
-ARV:
-<input value="${d.arv}" onchange="leads[${i}].arv=this.value;save();render();">
+<b>Profit:</b> $${Math.round(c.profit)}
 
-Repairs:
-<input value="${d.repairs}" onchange="leads[${i}].repairs=this.value;save();render();">
+<div class="btn" onclick='openZillow("${d.address}")'>🏡 Zillow</div>
+<div class="btn" onclick='openRedfin("${d.address}")'>📍 Redfin</div>
 
-Seller:
-<input value="${d.seller}" onchange="leads[${i}].seller=this.value;save();render();">
-
-<b>Offers</b><br>
-Cash: $${Math.round(c.cash)}<br>
-Creative: $${Math.round(c.creative)}<br>
-Seller Finance: $${Math.round(c.sellerFinance)}<br>
-
-<b>Profit:</b> $${Math.round(c.profit)}<br>
-<b>LTV:</b> ${c.ltv}%<br>
-
-<div class="btn" onclick='sendSMS(${JSON.stringify(d)})'>📱 SMS</div>
-<div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Email</div>
+<div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Email Contract</div>
+<div class="btn" onclick='autoSMS(${JSON.stringify(d)})'>📱 SMS</div>
+<div class="btn" onclick='contract(${JSON.stringify(d)})'>📄 PDF</div>
 <div class="btn" onclick='assign(${JSON.stringify(d)})'>📑 Assign</div>
 <div class="btn" onclick='fillAnalyzer(${JSON.stringify(d)})'>📥 Analyzer</div>
-
-<div class="btn" onclick='openZillow(${JSON.stringify(d)})'>🏠 Zillow</div>
-<div class="btn" onclick='openRedfin(${JSON.stringify(d)})'>📍 Redfin</div>
 
 <!-- ALL YOUR LINKS KEPT -->
 <br><b>PROPERTY INTEL</b>
@@ -205,10 +246,40 @@ Seller Finance: $${Math.round(c.sellerFinance)}<br>
 <a href="https://pennsylvania.propertychecker.com" target="_blank">PropertyChecker</a>
 <a href="https://www.propertyreach.com" target="_blank">PropertyReach</a>
 
+<br><b>RURAL</b>
+<a href="https://www.consumerfinance.gov/rural-or-underserved-tool/#rural-or-underserved" target="_blank">CFPB Tool</a>
+<a href="https://eligibility.sc.egov.usda.gov/eligibility/welcomeAction.do?pageAction=sfp" target="_blank">USDA</a>
+
 <br><b>FUNDING & BROKER</b>
 <a href="https://rootoflyfe.blnsoftware.com/" target="_blank">BLN Portal</a>
 <a href="https://rcncapital.com/application/?intk=GFletcher@rcncapital.com" target="_blank">RCN Apply</a>
 <a href="https://form.jotform.com/2530967310210469" target="_blank">Funding App</a>
+<a href="https://form.jotform.com/252063354378055" target="_blank">RO Intake</a>
+<a href="https://form.jotform.com/253154859148062" target="_blank">Quick Docs</a>
+
+<br><b>AFFILIATE / CREDIT</b>
+<a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures Credit</a>
+<a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR" target="_blank">ROK Corporate</a>
+<a href="https://my.americasfundingexperts.com/?id=1820217000190862001" target="_blank">Funding Experts</a>
+
+<br><b>LOAN AUTOMATION</b>
+<a href="https://getyourbizloan.io/lp1?pu=recqKxJNkvD70xMqi" target="_blank">LP1</a>
+<a href="https://getyourbizloan.io/lp2?pu=recqKxJNkvD70xMqi" target="_blank">LP2</a>
+
+<br><b>CREDIT STACK</b>
+<a href="https://www.creditscoreiq.com/lander/bus?offercode=435404PA" target="_blank">ScoreIQ</a>
+<a href="https://www.myscoreiq.com/get-fico-preferred.aspx?offercode=432142NZ" target="_blank">FICO View</a>
+<a href="https://www.identityiq.com/sc-securepreferred.aspx?offercode=431297MR" target="_blank">IdentityIQ</a>
+<a href="https://www.creditbuilderiq.com/lander/bus?offercode=437502WT" target="_blank">Builder IQ</a>
+
+<br><b>STARTER CARDS</b>
+<a href="https://www.openskycc.com/" target="_blank">OpenSky</a>
+<a href="https://www.tomocredit.com/" target="_blank">Tomo</a>
+<a href="https://www.zolve.com/" target="_blank">Zolve</a>
+<a href="https://www.growcredit.com/" target="_blank">Grow Credit</a>
+<a href="https://www.discover.com/credit-cards/secured/" target="_blank">Discover Secured</a>
+<a href="https://www.capitalone.com/credit-cards/quicksilver-secured/" target="_blank">Capital One</a>
+<a href="https://www.self.inc/" target="_blank">Self Loan</a>
 
 </div>
 `;
@@ -221,6 +292,3 @@ updateScore();
 
 render();
 </script>
-
-</body>
-</html>
