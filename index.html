@@ -1,25 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>RO’Lyfe Deal OS — CLOSER MODE</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 body{background:#0b0f1a;color:#fff;font-family:Arial;margin:0;padding:10px;}
-.grid{display:grid;grid-template-columns:1fr;gap:10px;}
+h2{text-align:center;}
+.grid{display:grid;gap:12px;}
 .card{background:#141a2a;padding:12px;border-radius:10px;}
-.card-header{display:flex;justify-content:space-between;cursor:pointer}
+.card-header{display:flex;justify-content:space-between;cursor:pointer;font-weight:bold;}
 .hidden{display:none;}
-input,select{width:100%;padding:8px;background:#1a1f2a;border:1px solid #333;color:#fff;}
-.btn{background:#2e3c66;padding:10px;margin:4px 0;border-radius:6px;text-align:center;font-weight:bold;}
+input,select{width:100%;padding:8px;margin:5px 0;background:#1a1f2a;border:1px solid #333;color:#fff;}
+.btn{background:#2e3c66;padding:10px;margin:5px 0;border-radius:6px;text-align:center;font-weight:bold;cursor:pointer;}
+.score{background:#1f2a44;padding:10px;border-radius:8px;margin-bottom:10px;text-align:center;}
 a{color:#7fd1ff;display:block;margin:2px 0;text-decoration:none;}
 </style>
-</head>
 
-<body>
-
-<h2>🔥 RO’Lyfe Deal OS — CLOSER MODE</h2>
+<h2>🔥 RO’Lyfe Deal OS — GitHub SaaS</h2>
+<div class="score" id="scoreboard"></div>
 <div class="grid" id="grid"></div>
 
 <script>
@@ -27,179 +20,141 @@ const EMAIL="richman@rootoflyfe.com";
 const PHONE="2674326734";
 
 // ------------------- LEADS -------------------
-let leads = JSON.parse(localStorage.getItem("leads")) || [
-{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,status:"lead",price:150000}
+// 125+ unique leads (replace placeholders with real addresses)
+let defaultLeads=[
+{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,status:"lead",price:150000},
+{address:"2109 W Nedro Ave Philadelphia PA",arv:350000,repairs:50000,status:"offer sent",price:229169},
+{address:"742 W Somerset St Philadelphia PA",arv:220000,repairs:40000,status:"negotiating",price:120000},
+// ... Add up to 125 unique leads below, replacing duplicates
+// Example placeholders
+{address:"1000 Placeholder St City PA",arv:180000,repairs:30000,status:"lead",price:100000},
+{address:"1001 Placeholder St City PA",arv:200000,repairs:40000,status:"lead",price:120000},
+{address:"1002 Placeholder St City PA",arv:250000,repairs:50000,status:"lead",price:150000},
+// Add remaining to reach 125
 ];
 
-// ------------------- SAVE -------------------
-function save(){ localStorage.setItem("leads",JSON.stringify(leads)); }
+// Load from localStorage or fallback
+let leads;
+try{leads=JSON.parse(localStorage.getItem("leads"));}catch(e){leads=null;}
+if(!leads || leads.length<125){
+  leads=defaultLeads;
+  try{localStorage.setItem("leads",JSON.stringify(leads));}catch(e){}
+}
+
+function save(){try{localStorage.setItem("leads",JSON.stringify(leads));}catch(e){}}
 
 // ------------------- CALC -------------------
 function calc(d){
 let arv=parseFloat(d.arv)||0;
+let price=parseFloat(d.price)||0;
+let repairs=parseFloat(d.repairs)||0;
 return{
 cash:arv*0.5,
 carry:arv*0.65,
 creative:arv*0.75,
 sellerFinance:arv*0.8,
-profit:(arv*0.7)-(d.price||0)-(d.repairs||0)
+profit:(arv*0.7)-price-repairs
 };
 }
 
-// ------------------- AUTO STRATEGY -------------------
-function strategy(d){
-let c=calc(d);
-if(c.cash <= d.arv*0.5) return "🔥 Wholesale";
-if(c.cash <= d.arv*0.6) return "🏗 Fix & Flip";
-if(c.cash <= d.arv*0.7) return "🏠 Rental";
-return "💰 Seller Finance";
+// ------------------- STATUS -------------------
+function statusColor(s){
+return{"lead":"#888","offer sent":"#3498db","negotiating":"#f1c40f","signed":"#2ecc71","sold":"#27ae60"}[s]||"#fff";
 }
 
-// ------------------- STATUS COLOR -------------------
-function statusColor(s){
-if(s==="lead") return "#888";
-if(s==="offer sent") return "#3498db";
-if(s==="negotiating") return "#f1c40f";
-if(s==="signed") return "#2ecc71";
-if(s==="sold") return "#27ae60";
-return "#fff";
+// ------------------- SCOREBOARD -------------------
+function updateScore(){
+let total=0;
+let deals=0;
+leads.forEach(d=>{
+let p=calc(d).profit;
+if(d.status==="sold"){total+=p;deals++;}
+});
+document.getElementById("scoreboard").innerHTML=`💰 Closed Deals: ${deals} | Profit: $${Math.round(total)}`;
 }
 
 // ------------------- ACTIONS -------------------
 function sendSMS(d){
 let c=calc(d);
-let msg=`Hi, this is Richardson.
-
-Property: ${d.address}
-
-Cash Offer: $${Math.round(c.cash)}
-
-We buy AS-IS, close fast.
-
-Reply YES to move forward.`;
-
-window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
-d.status="offer sent"; save();
+window.location.href=`sms:${PHONE}?body=${encodeURIComponent(
+`Property: ${d.address}\nOffer: $${Math.round(c.cash)}\nReply YES to proceed.`
+)}`;
+d.status="offer sent"; save(); render();
 }
 
 function sendEmail(d){
 let c=calc(d);
-
-let body=`PURCHASE OFFER
-
-Property: ${d.address}
-
-Cash Offer: $${Math.round(c.cash)}
-Seller Finance: $${Math.round(c.sellerFinance)}
-
-AS-IS | Fast Close | Assignable
-
-Richardson L
-RO’Lyfe Holdings
-${EMAIL}`;
-
-window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(body)}`;
+window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(
+`Offer: $${Math.round(c.cash)}\nProperty: ${d.address}`
+)}`;
 }
 
-// ------------------- PDF ENGINE -------------------
-function downloadPDF(title, content){
-let win = window.open("", "_blank");
-win.document.write(`
-<html>
-<head>
-<title>${title}</title>
-<style>
-body{font-family:Arial;padding:40px;line-height:1.6;}
-h2{text-align:center;}
-</style>
-</head>
-<body>
-<h2>${title}</h2>
-<pre>${content}</pre>
-<script>
-setTimeout(()=>{window.print();},500);
-<\/script>
-</body>
-</html>
-`);
+// ------------------- PDF -------------------
+function pdf(title,text){
+let w=window.open("","_blank");
+w.document.write(`<pre style="padding:40px;font-family:Arial">${title}\n\n${text}</pre>`);
+setTimeout(()=>{w.print();},500);
 }
 
-// ------------------- CONTRACTS -------------------
-function sellerContract(d){
+function contract(d){
 let c=calc(d);
+pdf("PURCHASE AGREEMENT",
+`Property: ${d.address}
+Price: $${Math.round(c.cash)}
+AS-IS | Assignable
 
-downloadPDF("PURCHASE & SALE AGREEMENT",`
-Property: ${d.address}
-Buyer: Richardson L and/or Assigns
-
-Purchase Price: $${Math.round(c.cash)}
-Earnest Money Deposit: $500
-Inspection Period: 14 days
-Closing: 30 days or sooner
-
-Condition: AS-IS
-Assignment: Allowed
-
---- DISCLOSURE ---
-Buyer may assign or profit from this deal.
-Buyer is not acting as agent.
-Seller advised to seek legal counsel.
-
-BUYER SIGNATURE: __________________
-SELLER SIGNATURE: __________________
-`);
-d.status="signed"; save();
+Buyer: Richardson L
+Seller: __________`);
+d.status="signed"; save(); render();
 }
 
-function assignmentContract(d){
-downloadPDF("ASSIGNMENT AGREEMENT",`
-Property: ${d.address}
-
+function assign(d){
+pdf("ASSIGNMENT",
+`Property: ${d.address}
 Assignor: Richardson L
-Assignee: __________________
-
-Assignment Fee: $__________
-
-All rights transferred.
-
-Assignor: __________
-Assignee: __________
-`);
+Assignee: _________`);
 }
 
-// ------------------- 1 CLICK CLOSE -------------------
-function quickClose(d){
-sendSMS(d);
-setTimeout(()=>{sellerContract(d);},1500);
-}
+// ------------------- QUICK CLOSE -------------------
+function quickClose(d){sendSMS(d); setTimeout(()=>contract(d),1200);}
 
-// ------------------- AUTO ARV COMP (NO API) -------------------
+// ------------------- AUTO COMP -------------------
 function autoComp(d){
-let avg = leads.reduce((sum,l)=>sum+(parseFloat(l.arv)||0),0)/leads.length;
-d.arv = Math.round(avg);
-save();
-render();
+let avg=leads.reduce((a,b)=>a+(+b.arv||0),0)/leads.length;
+d.arv=Math.round(avg); save(); render();
+}
+
+// ------------------- ANALYZER INTEGRATION -------------------
+function fillAnalyzer(d){
+let elAddr=document.getElementById("propAddress");
+let elArv=document.getElementById("arv");
+let elPrice=document.getElementById("purchasePrice");
+let elRehab=document.getElementById("rehabCost");
+
+if(elAddr) elAddr.value=d.address;
+if(elArv) elArv.value=d.arv;
+if(elPrice) elPrice.value=d.price||0;
+if(elRehab) elRehab.value=d.repairs||0;
+
+window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
 }
 
 // ------------------- RENDER -------------------
 function render(){
 let grid=document.getElementById("grid");
 grid.innerHTML="";
-
 leads.forEach((d,i)=>{
 let c=calc(d);
-
 let div=document.createElement("div");
 div.className="card";
 
 div.innerHTML=`
 <div class="card-header" onclick="this.nextElementSibling.classList.toggle('hidden')">
-<b>${d.address}</b>
+${d.address}
 <span style="color:${statusColor(d.status)}">${d.status}</span>
 </div>
 
 <div class="hidden">
-
 Status:
 <select onchange="leads[${i}].status=this.value;save();render();">
 <option ${d.status==="lead"?"selected":""}>lead</option>
@@ -212,21 +167,21 @@ Status:
 ARV:
 <input value="${d.arv}" onchange="leads[${i}].arv=this.value;save();render();">
 
-<div class="btn" onclick='autoComp(leads[${i}])'>📊 Auto Comp ARV</div>
+<div class="btn" onclick='autoComp(leads[${i}])'>📊 Auto Comp</div>
 
-<br><b>Offers</b><br>
+<b>Offers</b><br>
 Cash: $${Math.round(c.cash)}<br>
-Seller Carry: $${Math.round(c.carry)}<br>
 Creative: $${Math.round(c.creative)}<br>
 Seller Finance: $${Math.round(c.sellerFinance)}<br>
 
-<br><b>Profit Est:</b> $${Math.round(c.profit)}
+<b>Profit:</b> $${Math.round(c.profit)}
 
-<div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Offer</div>
 <div class="btn" onclick='sendSMS(${JSON.stringify(d)})'>📱 SMS</div>
-<div class="btn" onclick='sellerContract(${JSON.stringify(d)})'>📄 Contract</div>
-<div class="btn" onclick='assignmentContract(${JSON.stringify(d)})'>📑 Assignment</div>
-<div class="btn" onclick='quickClose(${JSON.stringify(d)})'>⚡ 1-Click Close</div>
+<div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Email</div>
+<div class="btn" onclick='contract(${JSON.stringify(d)})'>📄 Contract</div>
+<div class="btn" onclick='assign(${JSON.stringify(d)})'>📑 Assign</div>
+<div class="btn" onclick='quickClose(${JSON.stringify(d)})'>⚡ Close</div>
+<div class="btn" onclick='fillAnalyzer(${JSON.stringify(d)})'>📥 Analyzer</div>
 
 <!-- ALL YOUR LINKS KEPT -->
 <br><b>PROPERTY INTEL</b>
@@ -270,16 +225,14 @@ Seller Finance: $${Math.round(c.sellerFinance)}<br>
 <a href="https://www.discover.com/credit-cards/secured/" target="_blank">Discover Secured</a>
 <a href="https://www.capitalone.com/credit-cards/quicksilver-secured/" target="_blank">Capital One</a>
 <a href="https://www.self.inc/" target="_blank">Self Loan</a>
-
 </div>
 `;
 
 grid.appendChild(div);
 });
+
+updateScore();
 }
 
 render();
 </script>
-
-</body>
-</html>
