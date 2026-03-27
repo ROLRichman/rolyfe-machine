@@ -16,36 +16,38 @@ a{color:#7fd1ff;display:block;margin:2px 0;text-decoration:none;}
 <h2>🔥 RO’Lyfe Deal OS — GitHub SaaS</h2>
 
 <div class="score" id="scoreboard"></div>
-
 <div class="pipeline" id="pipeline"></div>
-
-<div class="btn" onclick="uploadCSV()">📂 Upload 125 Leads (CSV)</div>
-
+<div class="btn" onclick="uploadCSV()">📂 Upload CSV Leads</div>
 <div class="grid" id="grid"></div>
 
 <script>
 const EMAIL="richman@rootoflyfe.com";
 const PHONE="2674326734";
 
-// ------------------- DEFAULT LEADS -------------------
-let defaultLeads=[
+// ------------------- LEADS ENGINE (125 GUARANTEED) -------------------
+let baseLeads=[
 {address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,status:"lead",price:150000},
 {address:"2109 W Nedro Ave Philadelphia PA",arv:350000,repairs:50000,status:"offer sent",price:229169},
 {address:"742 W Somerset St Philadelphia PA",arv:220000,repairs:40000,status:"negotiating",price:120000}
 ];
 
-// AUTO FILL UP TO 125 (NO DUPES)
+// generate clean unique leads
 for(let i=0;i<122;i++){
-defaultLeads.push({
-address:`${1000+i} Market St Philadelphia PA`,
-arv:180000+(i*1000),
-repairs:30000+(i*500),
-status:"lead",
-price:100000+(i*800)
+baseLeads.push({
+address:`${1200+i} Ridge Ave Philadelphia PA`,
+arv:180000+(i*1200),
+repairs:25000+(i*400),
+price:100000+(i*900),
+status:"lead"
 });
 }
 
-// LOAD
+// remove duplicates safeguard
+let map=new Map();
+baseLeads.forEach(l=>map.set(l.address,l));
+let defaultLeads=[...map.values()].slice(0,125);
+
+// load
 let leads=JSON.parse(localStorage.getItem("leads"));
 if(!leads || leads.length<50){
 leads=defaultLeads;
@@ -64,16 +66,14 @@ profit:(d.arv*0.7)-d.price-d.repairs
 };
 }
 
-// ------------------- SCORE -------------------
-function updateScore(){
+// ------------------- SCORE + PIPELINE -------------------
+function updateUI(){
 let total=0,closed=0;
 let stages={lead:0,"offer sent":0,negotiating:0,signed:0,sold:0};
 
 leads.forEach(d=>{
-let p=calc(d).profit;
 stages[d.status]++;
-
-if(d.status==="sold"){total+=p;closed++;}
+if(d.status==="sold"){total+=calc(d).profit;closed++;}
 });
 
 document.getElementById("scoreboard").innerHTML=
@@ -84,11 +84,10 @@ document.getElementById("pipeline").innerHTML=`
 <div class="pipe">Offer<br>${stages["offer sent"]}</div>
 <div class="pipe">Negotiating<br>${stages.negotiating}</div>
 <div class="pipe">Signed<br>${stages.signed}</div>
-<div class="pipe">Sold<br>${stages.sold}</div>
-`;
+<div class="pipe">Sold<br>${stages.sold}</div>`;
 }
 
-// ------------------- SMS AUTO -------------------
+// ------------------- ACTIONS -------------------
 function autoSMS(d){
 let msg=`Property: ${d.address}
 Offer: $${Math.round(calc(d).cash)}
@@ -97,32 +96,36 @@ Reply YES to proceed.`;
 window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
 }
 
-// ------------------- EMAIL CONTRACT -------------------
 function sendEmail(d){
 let c=calc(d);
 
 let body=`PURCHASE & SALE AGREEMENT
 
 Property: ${d.address}
-Seller: 
+Seller:
 Buyer: Richardson L. and/or Assigns
-
 Purchase Price: $${Math.round(c.cash)}
-Earnest Money Deposit: $500
+Earnest Money Deposit: $500 (to be held by title company)
 Inspection Period: 14 days
 Closing: 30 days or sooner
+Condition: Property sold AS-IS
 
-Condition: AS-IS
-Assignment Clause: Allowed
+Assignment Clause: Buyer may assign or transfer interest without consent.
+Additional Clause: Buyer may coordinate with partners to complete transaction.
 
 --------------------------------------
-BUYER: Richardson L
-SELLER: __________________`;
+SIGNATURES
+
+BUYER: Richardson L. and/or Assigns
+Signature: ____
+Date: __________
+
+SELLER:
+Signature: __________`;
 
 window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(body)}`;
 }
 
-// ------------------- PDF -------------------
 function contract(d){
 let c=calc(d);
 let win=window.open("","_blank");
@@ -137,7 +140,6 @@ setTimeout(()=>win.print(),500);
 d.status="signed";save();render();
 }
 
-// ------------------- ASSIGN -------------------
 function assign(d){
 window.open(`mailto:${EMAIL}?subject=Assignment ${d.address}`);
 }
@@ -149,40 +151,37 @@ if(val==="offer sent"){autoSMS(leads[i]);}
 save();render();
 }
 
-// ------------------- ZILLOW / REDFIN -------------------
+// ------------------- PROPERTY LINKS -------------------
 function openZillow(addr){
-window.open(`https://www.zillow.com/homes/${encodeURIComponent(addr)}`);
+window.open(`https://www.zillow.com/homes/${encodeURIComponent(addr)}_rb/`);
 }
 
 function openRedfin(addr){
-window.open(`https://www.redfin.com/stingray/do/location-autocomplete?location=${encodeURIComponent(addr)}`);
+window.open(`https://www.redfin.com/stingray/do/location-autocomplete?location=${encodeURIComponent(addr)}&start=0&count=10`);
 }
 
 // ------------------- ANALYZER SYNC -------------------
 function fillAnalyzer(d){
-let a=document.getElementById("propAddress");
-if(a){
-document.getElementById("propAddress").value=d.address;
-document.getElementById("arv").value=d.arv;
-document.getElementById("purchasePrice").value=d.price;
-document.getElementById("rehabCost").value=d.repairs;
+if(document.getElementById("propAddress")){
+propAddress.value=d.address;
+arv.value=d.arv;
+purchasePrice.value=d.price;
+rehabCost.value=d.repairs;
 window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
 }
 }
 
-// ------------------- CSV UPLOAD -------------------
+// ------------------- CSV -------------------
 function uploadCSV(){
 let input=document.createElement("input");
 input.type="file";
 input.accept=".csv";
 
 input.onchange=e=>{
-let file=e.target.files[0];
 let reader=new FileReader();
-
 reader.onload=function(){
-let rows=reader.result.split("\n");
-leads=rows.slice(1).map(r=>{
+let rows=reader.result.split("\n").slice(1);
+leads=rows.map(r=>{
 let c=r.split(",");
 return{
 address:c[0],
@@ -194,10 +193,8 @@ status:"lead"
 });
 save();render();
 };
-
-reader.readAsText(file);
+reader.readAsText(e.target.files[0]);
 };
-
 input.click();
 }
 
@@ -232,11 +229,11 @@ ${d.address} <span>${d.status}</span>
 <div class="btn" onclick='openZillow("${d.address}")'>🏡 Zillow</div>
 <div class="btn" onclick='openRedfin("${d.address}")'>📍 Redfin</div>
 
-<div class="btn" onclick='sendEmail(${JSON.stringify(d)})'>📧 Email Contract</div>
-<div class="btn" onclick='autoSMS(${JSON.stringify(d)})'>📱 SMS</div>
-<div class="btn" onclick='contract(${JSON.stringify(d)})'>📄 PDF</div>
-<div class="btn" onclick='assign(${JSON.stringify(d)})'>📑 Assign</div>
-<div class="btn" onclick='fillAnalyzer(${JSON.stringify(d)})'>📥 Analyzer</div>
+<div class="btn" onclick='sendEmail(leads[${i}])'>📧 Email Contract</div>
+<div class="btn" onclick='autoSMS(leads[${i}])'>📱 SMS</div>
+<div class="btn" onclick='contract(leads[${i}])'>📄 PDF</div>
+<div class="btn" onclick='assign(leads[${i}])'>📑 Assign</div>
+<div class="btn" onclick='fillAnalyzer(leads[${i}])'>📥 Analyzer</div>
 
 <!-- ALL YOUR LINKS KEPT -->
 <br><b>PROPERTY INTEL</b>
@@ -287,7 +284,7 @@ ${d.address} <span>${d.status}</span>
 grid.appendChild(div);
 });
 
-updateScore();
+updateUI();
 }
 
 render();
