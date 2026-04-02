@@ -367,3 +367,105 @@ updateUI();
 
 render();
 </script>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>RO'Lyfe Funding Machine</title>
+<style>
+body{font-family:Arial;background:#0f172a;color:#fff;padding:20px;}
+input,select{width:100%;padding:10px;margin:5px 0;background:#1e293b;color:#fff;border:none;border-radius:6px;}
+button{padding:12px;background:#22c55e;border:none;color:#000;font-weight:bold;width:100%;border-radius:6px;margin-top:10px;}
+.box{background:#1e293b;padding:15px;border-radius:10px;margin-bottom:15px;}
+</style>
+</head>
+
+<body>
+
+<h2>RO’Lyfe Deal Intake + Calculator</h2>
+
+<div class="box">
+<h3>Client Info</h3>
+<input id="name" placeholder="Full Name">
+<input id="email" placeholder="Email">
+<input id="phone" placeholder="Phone">
+<select id="experience">
+<option>Experience Level</option>
+<option>Beginner</option>
+<option>1-3 Deals</option>
+<option>5+ Deals</option>
+</select>
+</div>
+
+<div class="box">
+<h3>Property Info</h3>
+<input id="address" placeholder="Property Address">
+<input id="purchase" placeholder="Purchase Price">
+<input id="arv" placeholder="ARV">
+<input id="repairs" placeholder="Repair Cost">
+<select id="units">
+<option>Units</option>
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4+</option>
+</select>
+</div>
+
+<div class="box">
+<h3>Deal Strategy</h3>
+<select id="strategy">
+<option>Exit Strategy</option>
+<option>Flip</option>
+<option>Refinance</option>
+<option>Rental</option>
+</select>
+</div>
+
+<div class="box">
+<h3>3-Tier Offer Calculator</h3>
+<p id="cash"></p>
+<p id="carry"></p>
+<p id="creative"></p>
+</div>
+
+<button onclick="calc()">Calculate Offers</button>
+<button onclick="sendEmail()">Submit Deal</button>
+
+<script>
+
+function calc(){
+let arv = document.getElementById("arv").value;
+let repairs = document.getElementById("repairs").value;
+
+let cash = (arv*0.65)-repairs;
+let carry = (arv*0.70)-repairs;
+let creative = (arv*0.75);
+
+document.getElementById("cash").innerHTML="Cash Offer: $" + Math.round(cash);
+document.getElementById("carry").innerHTML="Seller Carry: $" + Math.round(carry);
+document.getElementById("creative").innerHTML="Creative: $" + Math.round(creative);
+}
+
+function sendEmail(){
+let name=document.getElementById("name").value;
+let email=document.getElementById("email").value;
+let address=document.getElementById("address").value;
+let arv=document.getElementById("arv").value;
+
+window.location.href =
+"mailto:richman@rootoflyfe.com?subject=New Deal Submission&body=" +
+"Name: "+name+
+"%0D%0AEmail: "+email+
+"%0D%0AProperty: "+address+
+"%0D%0AARV: "+arv;
+}
+
+</script>
+
+</body>
+</html>
+
+
