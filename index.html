@@ -1,115 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RO'Lyfe Deal OS</title>
+
 <style>
-body{background:#0b0f1a;color:#fff;font-family:Arial;margin:0;padding:10px;}
-h2{text-align:center;}
-.grid{display:grid;gap:12px;}
-.card{background:#141a2a;padding:12px;border-radius:10px;}
-.card-header{display:flex;justify-content:space-between;cursor:pointer;font-weight:bold;}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  padding:0;
+  background:#0b0f1a;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+.wrapper{
+  max-width:1400px;
+  margin:0 auto;
+  padding:12px;
+}
+h1,h2,h3{
+  margin:0 0 10px 0;
+}
+.main-title{
+  text-align:center;
+  margin:10px 0 15px;
+  font-size:28px;
+}
+.section{
+  background:#141a2a;
+  padding:14px;
+  border-radius:12px;
+  margin-bottom:14px;
+  box-shadow:0 0 0 1px rgba(255,255,255,0.04);
+}
+.score{
+  background:#1f2a44;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:12px;
+  text-align:center;
+  font-weight:bold;
+}
+.pipeline{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin-bottom:15px;
+}
+.pipe{
+  background:#111827;
+  padding:10px;
+  border-radius:8px;
+  text-align:center;
+  font-size:14px;
+}
+.grid{
+  display:grid;
+  gap:12px;
+}
+.card{
+  background:#141a2a;
+  padding:12px;
+  border-radius:10px;
+}
+.card-header{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
 .hidden{display:none;}
-input,select{width:100%;padding:8px;margin:5px 0;background:#1a1f2a;border:1px solid #333;color:#fff;}
-.btn{background:#2e3c66;padding:10px;margin:5px 0;border-radius:6px;text-align:center;font-weight:bold;cursor:pointer;}
-.score{background:#1f2a44;padding:10px;border-radius:8px;margin-bottom:10px;text-align:center;}
-.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:15px;}
-.pipe{background:#111;padding:8px;border-radius:6px;text-align:center;}
-a{color:#7fd1ff;display:block;margin:2px 0;text-decoration:none;}
+input,select,textarea{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  background:#1a1f2a;
+  border:1px solid #333;
+  color:#fff;
+  border-radius:8px;
+}
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+.btn{
+  background:#2e3c66;
+  padding:10px;
+  margin:6px 0;
+  border-radius:8px;
+  text-align:center;
+  font-weight:bold;
+  cursor:pointer;
+  border:none;
+  color:#fff;
+  width:100%;
+}
+.btn:hover{
+  filter:brightness(1.1);
+}
+.btn-green{background:#22c55e;color:#04130a;}
+.btn-dark{background:#111827;color:#fff;}
+.btn-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+.btn-row-2{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+.links a{
+  color:#7fd1ff;
+  display:block;
+  margin:3px 0;
+  text-decoration:none;
+}
+.links a:hover{
+  text-decoration:underline;
+}
+.offer-box{
+  background:#0f172a;
+  padding:10px;
+  border-radius:8px;
+  margin-top:8px;
+  line-height:1.7;
+}
+.two-col{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.audio-meta{
+  font-size:14px;
+  color:#7fd1ff;
+  margin-top:8px;
+}
+.small{
+  font-size:13px;
+  color:#aab7d1;
+}
+hr{
+  border:none;
+  border-top:1px solid rgba(255,255,255,0.08);
+  margin:14px 0;
+}
+audio{
+  width:100%;
+  margin-top:8px;
+}
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#1e293b;
+  font-size:12px;
+}
+@media (max-width:900px){
+  .two-col{
+    grid-template-columns:1fr;
+  }
+  .pipeline{
+    grid-template-columns:repeat(2,1fr);
+  }
+  .btn-row{
+    grid-template-columns:1fr;
+  }
+  .btn-row-2{
+    grid-template-columns:1fr;
+  }
+  .main-title{
+    font-size:24px;
+  }
+}
 </style>
+</head>
+<body>
 
-<h2>🔥 RO’Lyfe Deal OS — FINAL SaaS</h2>
+<div class="wrapper">
 
-<div class="score" id="scoreboard"></div>
-<div class="pipeline" id="pipeline"></div>
+  <h1 class="main-title">🔥 RO’Lyfe Deal OS — GitHub Full Build</h1>
 
-<div class="btn" onclick="uploadCSV()">📂 Upload CSV Leads</div>
+  <div class="section">
+    <h2>🎵 Audio Test Center</h2>
+    <div class="small">Test Google Drive and Zoho here. Mobile usually needs you to tap play first because phones like being difficult.</div>
 
-<div class="grid" id="grid"></div>
+    <audio id="player" controls></audio>
+
+    <div class="btn-row" style="margin-top:10px;">
+      <button class="btn btn-green" onclick="startPlaylist()">▶ Start Playlist</button>
+      <button class="btn" onclick="nextTrack()">⏭ Next Track</button>
+      <button class="btn btn-dark" onclick="toggleMute()">🔇 Mute / Unmute</button>
+    </div>
+
+    <div id="nowPlaying" class="audio-meta">Now Playing: Ready</div>
+    <div id="audioSource" class="small">Source: none</div>
+
+    <hr>
+
+    <label>Choose Source</label>
+    <select id="audioMode" onchange="switchPlaylistMode()">
+      <option value="google">Google Drive Test</option>
+      <option value="zoho">Zoho Test</option>
+    </select>
+
+    <label>Zoho Track 1</label>
+    <input id="zoho1" placeholder="Paste Zoho direct/download link here" value="https://workdrive.zohoexternal.com/file/YOUR_ZOHO_FILE_1?directDownload=true">
+
+    <label>Zoho Track 2</label>
+    <input id="zoho2" placeholder="Paste Zoho direct/download link here" value="https://workdrive.zohoexternal.com/file/YOUR_ZOHO_FILE_2?directDownload=true">
+
+    <label>Zoho Track 3</label>
+    <input id="zoho3" placeholder="Paste Zoho direct/download link here" value="https://workdrive.zohoexternal.com/file/YOUR_ZOHO_FILE_3?directDownload=true">
+
+    <div class="btn-row-2" style="margin-top:10px;">
+      <button class="btn" onclick="testSingleTrack()">🎧 Test Current Source Track 1</button>
+      <button class="btn" onclick="reloadZohoPlaylist()">♻ Reload Zoho Playlist</button>
+    </div>
+  </div>
+
+  <div class="score" id="scoreboard"></div>
+  <div class="pipeline" id="pipeline"></div>
+
+  <div class="section">
+    <button class="btn" onclick="uploadCSV()">📂 Upload CSV Leads</button>
+  </div>
+
+  <div class="two-col">
+
+    <div>
+      <div class="section">
+        <h2>🏡 Deal Pipeline</h2>
+        <div class="grid" id="grid"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section">
+        <h2>💰 RO’Lyfe Funding & Deal Machine</h2>
+
+        <h3>Broker Info</h3>
+        <input id="broker" value="Richardson L. - RO’Lyfe Holdings">
+        <input id="fee" placeholder="Broker Fee % (1-3%)">
+
+        <h3>Client / Borrower</h3>
+        <input id="name" placeholder="Full Name">
+        <input id="entity" placeholder="Entity Name">
+        <input id="email" placeholder="Email">
+        <input id="phone" placeholder="Phone">
+
+        <h3>Deal Info</h3>
+        <input id="address" placeholder="Property Address">
+        <input id="purchase" placeholder="Purchase Price">
+        <input id="rehab" placeholder="Rehab Cost">
+        <input id="arv" placeholder="ARV">
+        <input id="units" placeholder="Units">
+
+        <h3>3-Tier Settings</h3>
+        <input id="cashPct" value="50">
+        <input id="carryPct" value="65">
+        <input id="creativePct" value="75">
+
+        <h3>Results</h3>
+        <div class="offer-box">
+          <p id="cash">Cash Offer: $0</p>
+          <p id="carry">Seller Carry: $0</p>
+          <p id="creative">Seller Finance: $0</p>
+        </div>
+
+        <div class="btn-row-2">
+          <button class="btn btn-green" onclick="calcFunding()">Calculate</button>
+          <button class="btn" onclick="downloadPDF()">Download Offer PDF</button>
+        </div>
+
+        <button class="btn" onclick="sendDealEmail()">Send Deal</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <script>
 const EMAIL="richman@rootoflyfe.com";
 const PHONE="2674326734";
 
 /* =========================
-   LEADS ENGINE (125 REAL FEEL)
+   AUDIO ENGINE
+========================= */
+
+const googleTracks = [
+  {
+    name: "Google Track 1",
+    url: "https://drive.google.com/uc?export=download&id=1nmElc9Z1qfvmoEG1oBN51KISHW33XLEx"
+  },
+  {
+    name: "Google Track 2",
+    url: "https://drive.google.com/uc?export=download&id=1agNZYmeCmIBoxhOXei1YY1kHoYKyJZBq"
+  },
+  {
+    name: "Google Track 3",
+    url: "https://drive.google.com/uc?export=download&id=1RZm1a4GoYAh81b9_gow_Tqw5ZQt2AL78"
+  },
+  {
+    name: "Google Track 4",
+    url: "https://drive.google.com/uc?export=download&id=1F61zX0W0K4ip3Er37Lb2TsvN0rDxI5OD"
+  },
+  {
+    name: "Google Track 5",
+    url: "https://drive.google.com/uc?export=download&id=1zUKfGBNfboqdcZwiirHqbARp-w8vOKkd"
+  },
+  {
+    name: "Google Track 6",
+    url: "https://drive.google.com/uc?export=download&id=1aKkD3tvEgFc6_1M7GLlL1eTCsnbHsT3D"
+  },
+  {
+    name: "Google Track 7",
+    url: "https://drive.google.com/uc?export=download&id=1CXita7qM82HM1VUArLkySdfJKdwuJS9b"
+  }
+];
+
+let zohoTracks = [
+  {
+    name: "Zoho Track 1",
+    url: "https://workdrive.zohoexternal.com/file/YOUR_ZOHO_FILE_1?directDownload=true"
+  },
+  {
+    name: "Zoho Track 2",
+    url: "https://workdrive.zohoexternal.com/file/YOUR_ZOHO_FILE_2?directDownload=true"
+  },
+  {
+    name: "Zoho Track 3",
+    url: "https://workdrive.zohoexternal.com/file/YOUR_ZOHO_FILE_3?directDownload=true"
+  }
+];
+
+let activeTracks = [...googleTracks];
+let currentTrack = 0;
+let player = null;
+
+function initPlayer(){
+  player = document.getElementById("player");
+  if(!player) return;
+
+  player.addEventListener("ended", () => {
+    currentTrack = (currentTrack + 1) % activeTracks.length;
+    loadTrack(currentTrack, true);
+  });
+
+  player.addEventListener("error", () => {
+    document.getElementById("audioSource").innerHTML = "Source Error: Track failed to load. Try another source or check share settings.";
+  });
+
+  loadTrack(currentTrack, false);
+}
+
+function getSelectedMode(){
+  return document.getElementById("audioMode").value;
+}
+
+function buildZohoTracks(){
+  zohoTracks = [
+    { name: "Zoho Track 1", url: document.getElementById("zoho1").value.trim() },
+    { name: "Zoho Track 2", url: document.getElementById("zoho2").value.trim() },
+    { name: "Zoho Track 3", url: document.getElementById("zoho3").value.trim() }
+  ].filter(t => t.url && !t.url.includes("YOUR_ZOHO_FILE"));
+}
+
+function switchPlaylistMode(){
+  buildZohoTracks();
+
+  if(getSelectedMode()==="zoho"){
+    activeTracks = zohoTracks.length ? [...zohoTracks] : [];
+  }else{
+    activeTracks = [...googleTracks];
+  }
+
+  currentTrack = 0;
+
+  if(!activeTracks.length){
+    document.getElementById("nowPlaying").innerHTML = "Now Playing: No tracks loaded";
+    document.getElementById("audioSource").innerHTML = "Source: Add valid Zoho links first";
+    if(player) player.removeAttribute("src");
+    return;
+  }
+
+  loadTrack(currentTrack, false);
+}
+
+function loadTrack(index, autoPlay=false){
+  if(!player || !activeTracks.length) return;
+
+  const track = activeTracks[index];
+  player.src = track.url;
+
+  document.getElementById("nowPlaying").innerHTML = "Now Playing: " + track.name;
+  document.getElementById("audioSource").innerHTML = "Source: " + track.url;
+
+  if(autoPlay){
+    player.play().catch(err => {
+      console.log("Playback blocked until user taps.", err);
+    });
+  }
+}
+
+function startPlaylist(){
+  if(!player || !activeTracks.length) return;
+  loadTrack(currentTrack, false);
+  player.play().catch(err => {
+    console.log("Playback blocked.", err);
+  });
+}
+
+function nextTrack(){
+  if(!activeTracks.length) return;
+  currentTrack = (currentTrack + 1) % activeTracks.length;
+  loadTrack(currentTrack, true);
+}
+
+function toggleMute(){
+  if(!player) return;
+  player.muted = !player.muted;
+}
+
+function testSingleTrack(){
+  buildZohoTracks();
+  const mode = getSelectedMode();
+
+  if(mode === "zoho"){
+    if(!zohoTracks.length){
+      alert("Add at least one real Zoho link first.");
+      return;
+    }
+    activeTracks = [...zohoTracks];
+  }else{
+    activeTracks = [...googleTracks];
+  }
+
+  currentTrack = 0;
+  loadTrack(currentTrack, true);
+}
+
+function reloadZohoPlaylist(){
+  buildZohoTracks();
+  if(getSelectedMode()==="zoho"){
+    activeTracks = [...zohoTracks];
+    currentTrack = 0;
+    if(activeTracks.length){
+      loadTrack(currentTrack, false);
+      alert("Zoho playlist reloaded.");
+    }else{
+      alert("No valid Zoho links loaded yet.");
+    }
+  }else{
+    alert("Switch source to Zoho first.");
+  }
+}
+
+/* =========================
+   LEADS ENGINE
 ========================= */
 
 let baseLeads=[
-{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,price:150000,status:"lead"},
-{address:"2109 W Nedro Ave Philadelphia PA",arv:350000,repairs:50000,price:140000,status:"offer sent"},
-{address:"742 W Somerset St Philadelphia PA",arv:220000,repairs:40000,price:120000,status:"negotiating"}
+  {address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,price:150000,status:"lead"},
+  {address:"2109 W Nedro Ave Philadelphia PA",arv:350000,repairs:50000,price:140000,status:"offer sent"},
+  {address:"742 W Somerset St Philadelphia PA",arv:220000,repairs:40000,price:120000,status:"negotiating"}
 ];
 
 for(let i=0;i<122;i++){
-baseLeads.push({
-address:`${1200+i} Ridge Ave Philadelphia PA`,
-arv:180000+(i*1200),
-repairs:25000+(i*400),
-price:100000+(i*900),
-status:"lead"
-});
+  baseLeads.push({
+    address:`${1200+i} Ridge Ave Philadelphia PA`,
+    arv:180000+(i*1200),
+    repairs:25000+(i*400),
+    price:100000+(i*900),
+    status:"lead"
+  });
 }
 
-// remove duplicates
 let leadsMap=new Map();
 baseLeads.forEach(l=>leadsMap.set(l.address,l));
 let defaultLeads=[...leadsMap.values()].slice(0,125);
 
-// load
 let leads=JSON.parse(localStorage.getItem("leads"));
 if(!leads || leads.length<100){
-leads=defaultLeads;
-localStorage.setItem("leads",JSON.stringify(leads));
+  leads=defaultLeads;
+  localStorage.setItem("leads",JSON.stringify(leads));
 }
 
-function save(){localStorage.setItem("leads",JSON.stringify(leads));}
-
-/* =========================
-   CALCULATOR (THIS WAS MISSING BEFORE)
-========================= */
-function calc(d){
-let arv=+d.arv||0;
-let price=+d.price||0;
-let repairs=+d.repairs||0;
-
-return{
-cash:arv*0.5,
-creative:arv*0.75,
-sellerFinance:arv*0.8,
-profit:(arv*0.7)-price-repairs
-};
+function save(){
+  localStorage.setItem("leads",JSON.stringify(leads));
 }
 
-/* =========================
-   UI (TOP DASHBOARD)
-========================= */
+function calcLead(d){
+  let arv=+d.arv||0;
+  let price=+d.price||0;
+  let repairs=+d.repairs||0;
+
+  return{
+    cash:arv*0.5,
+    creative:arv*0.75,
+    sellerFinance:arv*0.8,
+    profit:(arv*0.7)-price-repairs
+  };
+}
+
 function updateUI(){
-let total=0,closed=0;
-let stages={lead:0,"offer sent":0,negotiating:0,signed:0,sold:0};
+  let total=0,closed=0;
+  let stages={lead:0,"offer sent":0,negotiating:0,signed:0,sold:0};
 
-leads.forEach(d=>{
-stages[d.status]++;
-if(d.status==="sold"){
-total+=calc(d).profit;
-closed++;
+  leads.forEach(d=>{
+    stages[d.status]=(stages[d.status]||0)+1;
+    if(d.status==="sold"){
+      total+=calcLead(d).profit;
+      closed++;
+    }
+  });
+
+  document.getElementById("scoreboard").innerHTML =
+    `💰 Closed: ${closed} | Profit: $${Math.round(total)}`;
+
+  document.getElementById("pipeline").innerHTML = `
+    <div class="pipe">Lead<br>${stages.lead||0}</div>
+    <div class="pipe">Offer<br>${stages["offer sent"]||0}</div>
+    <div class="pipe">Negotiating<br>${stages.negotiating||0}</div>
+    <div class="pipe">Signed<br>${stages.signed||0}</div>
+    <div class="pipe">Sold<br>${stages.sold||0}</div>
+  `;
 }
-});
-
-document.getElementById("scoreboard").innerHTML=
-`💰 Closed: ${closed} | Profit: $${Math.round(total)}`;
-
-document.getElementById("pipeline").innerHTML=`
-<div class="pipe">Lead<br>${stages.lead}</div>
-<div class="pipe">Offer<br>${stages["offer sent"]}</div>
-<div class="pipe">Negotiating<br>${stages.negotiating}</div>
-<div class="pipe">Signed<br>${stages.signed}</div>
-<div class="pipe">Sold<br>${stages.sold}</div>`;
-}
-
-/* =========================
-   ACTIONS (FULL PREFILL)
-========================= */
 
 function autoSMS(d){
-let c=calc(d);
-
-let msg=`Hi, this is Richardson.
+  let c=calcLead(d);
+  let msg=`Hi, this is Richardson.
 
 Property: ${d.address}
 
@@ -119,13 +541,12 @@ We buy AS-IS and close fast.
 
 Reply YES to move forward.`;
 
-window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
+  window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`;
 }
 
-function sendEmail(d){
-let c=calc(d);
-
-let body=`PURCHASE & SALE AGREEMENT
+function sendEmailLead(d){
+  let c=calcLead(d);
+  let body=`PURCHASE & SALE AGREEMENT
 
 Property: ${d.address}
 Seller:
@@ -150,15 +571,14 @@ Date: __________
 SELLER:
 Signature: __________`;
 
-window.location.href=`mailto:${EMAIL}?subject=Offer ${d.address}&body=${encodeURIComponent(body)}`;
+  window.location.href=`mailto:${EMAIL}?subject=${encodeURIComponent("Offer " + d.address)}&body=${encodeURIComponent(body)}`;
 }
 
 function contract(d){
-let c=calc(d);
-let win=window.open("","_blank");
-
-win.document.write(`
-<pre style="padding:40px;font-family:Arial">
+  let c=calcLead(d);
+  let win=window.open("","_blank");
+  win.document.write(`
+    <pre style="padding:40px;font-family:Arial">
 PURCHASE AGREEMENT
 
 Property: ${d.address}
@@ -168,299 +588,242 @@ Purchase Price: $${Math.round(c.cash)}
 AS-IS | Assignable
 
 Buyer: Richardson L
-</pre>`);
-
-setTimeout(()=>win.print(),500);
-d.status="signed";
-save();
-render();
+    </pre>
+  `);
+  setTimeout(()=>win.print(),500);
+  d.status="signed";
+  save();
+  render();
 }
 
 function assign(d){
-window.location.href=`mailto:${EMAIL}?subject=Assignment ${d.address}`;
+  window.location.href=`mailto:${EMAIL}?subject=${encodeURIComponent("Assignment " + d.address)}`;
 }
 
-/* =========================
-   STATUS (AUTO SMS TRIGGER)
-========================= */
 function setStatus(i,val){
-leads[i].status=val;
-
-if(val==="offer sent"){
-autoSMS(leads[i]);
+  leads[i].status=val;
+  if(val==="offer sent"){
+    autoSMS(leads[i]);
+  }
+  save();
+  render();
 }
-
-save();
-render();
-}
-
-/* =========================
-   LINKS
-========================= */
 
 function openZillow(addr){
-window.open(`https://www.zillow.com/homes/${encodeURIComponent(addr)}_rb/`);
+  window.open(`https://www.zillow.com/homes/${encodeURIComponent(addr)}_rb/`,"_blank");
 }
 
 function openRedfin(addr){
-window.open(`https://www.redfin.com/stingray/do/location-autocomplete?location=${encodeURIComponent(addr)}`);
+  window.open(`https://www.redfin.com/stingray/do/location-autocomplete?location=${encodeURIComponent(addr)}`,"_blank");
 }
 
-/* =========================
-   AUTO COMP
-========================= */
 function autoComp(d){
-let avg=leads.reduce((a,b)=>a+(+b.arv||0),0)/leads.length;
-d.arv=Math.round(avg);
-save();
-render();
+  let avg=leads.reduce((a,b)=>a+(+b.arv||0),0)/leads.length;
+  d.arv=Math.round(avg);
+  save();
+  render();
 }
 
-/* =========================
-   CSV UPLOAD
-========================= */
 function uploadCSV(){
-let input=document.createElement("input");
-input.type="file";
-input.accept=".csv";
+  let input=document.createElement("input");
+  input.type="file";
+  input.accept=".csv";
 
-input.onchange=e=>{
-let reader=new FileReader();
-reader.onload=function(){
-let rows=reader.result.split("\n").slice(1);
-leads=rows.map(r=>{
-let c=r.split(",");
-return{
-address:c[0],
-arv:+c[1],
-repairs:+c[2],
-price:+c[3],
-status:"lead"
-};
-});
-save();render();
-};
-reader.readAsText(e.target.files[0]);
-};
-input.click();
+  input.onchange=e=>{
+    let reader=new FileReader();
+    reader.onload=function(){
+      let rows=reader.result.split("\n").slice(1).filter(Boolean);
+      leads=rows.map(r=>{
+        let c=r.split(",");
+        return{
+          address:(c[0]||"").trim(),
+          arv:+c[1]||0,
+          repairs:+c[2]||0,
+          price:+c[3]||0,
+          status:"lead"
+        };
+      }).filter(x=>x.address);
+      save();
+      render();
+    };
+    reader.readAsText(e.target.files[0]);
+  };
+  input.click();
 }
 
-/* =========================
-   ANALYZER SYNC
-========================= */
 function fillAnalyzer(d){
-if(document.getElementById("propAddress")){
-propAddress.value=d.address;
-arv.value=d.arv;
-purchasePrice.value=d.price;
-rehabCost.value=d.repairs;
+  document.getElementById("address").value=d.address||"";
+  document.getElementById("arv").value=d.arv||"";
+  document.getElementById("purchase").value=d.price||"";
+  document.getElementById("rehab").value=d.repairs||"";
+  calcFunding();
 }
+
+function render(){
+  let grid=document.getElementById("grid");
+  grid.innerHTML="";
+
+  leads.forEach((d,i)=>{
+    let c=calcLead(d);
+    let div=document.createElement("div");
+    div.className="card";
+
+    div.innerHTML=`
+      <div class="card-header" onclick="this.nextElementSibling.classList.toggle('hidden')">
+        <span>${d.address}</span>
+        <span class="badge">${d.status}</span>
+      </div>
+
+      <div class="hidden">
+        <label>Status</label>
+        <select onchange="setStatus(${i},this.value)">
+          <option ${d.status==="lead"?"selected":""}>lead</option>
+          <option ${d.status==="offer sent"?"selected":""}>offer sent</option>
+          <option ${d.status==="negotiating"?"selected":""}>negotiating</option>
+          <option ${d.status==="signed"?"selected":""}>signed</option>
+          <option ${d.status==="sold"?"selected":""}>sold</option>
+        </select>
+
+        <label>ARV</label>
+        <input value="${d.arv}" onchange="leads[${i}].arv=this.value;save();render();">
+
+        <label>Purchase Price</label>
+        <input value="${d.price}" onchange="leads[${i}].price=this.value;save();render();">
+
+        <label>Repairs</label>
+        <input value="${d.repairs}" onchange="leads[${i}].repairs=this.value;save();render();">
+
+        <button class="btn" onclick='autoComp(leads[${i}])'>📊 Auto Comp</button>
+
+        <div class="offer-box">
+          <b>Offers</b><br>
+          Cash: $${Math.round(c.cash)}<br>
+          Creative: $${Math.round(c.creative)}<br>
+          Seller Finance: $${Math.round(c.sellerFinance)}<br><br>
+          <b>Profit:</b> $${Math.round(c.profit)}
+        </div>
+
+        <div class="btn-row-2">
+          <button class="btn" onclick='openZillow("${d.address}")'>🏡 Zillow</button>
+          <button class="btn" onclick='openRedfin("${d.address}")'>📍 Redfin</button>
+        </div>
+
+        <div class="btn-row-2">
+          <button class="btn" onclick='sendEmailLead(leads[${i}])'>📧 Email</button>
+          <button class="btn" onclick='autoSMS(leads[${i}])'>📱 SMS</button>
+        </div>
+
+        <div class="btn-row-2">
+          <button class="btn" onclick='contract(leads[${i}])'>📄 Contract</button>
+          <button class="btn" onclick='assign(leads[${i}])'>📑 Assign</button>
+        </div>
+
+        <button class="btn" onclick='fillAnalyzer(leads[${i}])'>📥 Analyzer</button>
+
+        <hr>
+
+        <div class="links">
+          <b>PROPERTY INTEL</b>
+          <a href="https://property.phila.gov" target="_blank">Phila Property</a>
+          <a href="https://opainquiry.phila.gov" target="_blank">OPA</a>
+          <a href="https://www.phila.gov/services/property-lots-housing/find-property-information" target="_blank">CityAtlas</a>
+          <a href="https://pennsylvania.propertychecker.com" target="_blank">PropertyChecker</a>
+          <a href="https://www.propertyreach.com" target="_blank">PropertyReach</a>
+
+          <br><b>RURAL</b>
+          <a href="https://www.consumerfinance.gov/rural-or-underserved-tool/#rural-or-underserved" target="_blank">CFPB Tool</a>
+          <a href="https://eligibility.sc.egov.usda.gov/eligibility/welcomeAction.do?pageAction=sfp" target="_blank">USDA</a>
+
+          <br><b>FUNDING & BROKER</b>
+          <a href="https://rootoflyfe.blnsoftware.com/" target="_blank">BLN Portal</a>
+          <a href="https://rcncapital.com/application/?intk=GFletcher@rcncapital.com" target="_blank">RCN Apply</a>
+          <a href="https://form.jotform.com/2530967310210469" target="_blank">Funding App</a>
+          <a href="https://form.jotform.com/252063354378055" target="_blank">RO Intake</a>
+          <a href="https://form.jotform.com/253154859148062" target="_blank">Quick Docs</a>
+
+          <br><b>AFFILIATE / CREDIT</b>
+          <a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures Credit</a>
+          <a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR" target="_blank">ROK Corporate</a>
+          <a href="https://my.americasfundingexperts.com/?id=1820217000190862001" target="_blank">Funding Experts</a>
+
+          <br><b>LOAN AUTOMATION</b>
+          <a href="https://getyourbizloan.io/lp1?pu=recqKxJNkvD70xMqi" target="_blank">LP1</a>
+          <a href="https://getyourbizloan.io/lp2?pu=recqKxJNkvD70xMqi" target="_blank">LP2</a>
+
+          <br><b>CREDIT STACK</b>
+          <a href="https://www.creditscoreiq.com/lander/bus?offercode=435404PA" target="_blank">ScoreIQ</a>
+          <a href="https://www.myscoreiq.com/get-fico-preferred.aspx?offercode=432142NZ" target="_blank">FICO View</a>
+          <a href="https://www.identityiq.com/sc-securepreferred.aspx?offercode=431297MR" target="_blank">IdentityIQ</a>
+          <a href="https://www.creditbuilderiq.com/lander/bus?offercode=437502WT" target="_blank">Builder IQ</a>
+
+          <br><b>STARTER CARDS</b>
+          <a href="https://www.openskycc.com/" target="_blank">OpenSky</a>
+          <a href="https://www.tomocredit.com/" target="_blank">Tomo</a>
+          <a href="https://www.zolve.com/" target="_blank">Zolve</a>
+          <a href="https://www.growcredit.com/" target="_blank">Grow Credit</a>
+          <a href="https://www.discover.com/credit-cards/secured/" target="_blank">Discover Secured</a>
+          <a href="https://www.capitalone.com/credit-cards/quicksilver-secured/" target="_blank">Capital One</a>
+          <a href="https://www.self.inc/" target="_blank">Self Loan</a>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(div);
+  });
+
+  updateUI();
 }
 
 /* =========================
-   RENDER (THIS IS WHERE EVERYTHING SHOWS)
+   FUNDING MACHINE
 ========================= */
-function render(){
-let grid=document.getElementById("grid");
-grid.innerHTML="";
 
-leads.forEach((d,i)=>{
-let c=calc(d);
+function calcFunding(){
+  let arv = parseFloat(document.getElementById("arv").value) || 0;
+  let cashPct = parseFloat(document.getElementById("cashPct").value) || 0;
+  let carryPct = parseFloat(document.getElementById("carryPct").value) || 0;
+  let creativePct = parseFloat(document.getElementById("creativePct").value) || 0;
 
-let div=document.createElement("div");
-div.className="card";
+  let cash = arv * (cashPct / 100);
+  let carry = arv * (carryPct / 100);
+  let creative = arv * (creativePct / 100);
 
-div.innerHTML=`
-<div class="card-header" onclick="this.nextElementSibling.classList.toggle('hidden')">
-${d.address} <span>${d.status}</span>
-</div>
-
-<div class="hidden">
-
-Status:
-<select onchange="setStatus(${i},this.value)">
-<option ${d.status==="lead"?"selected":""}>lead</option>
-<option ${d.status==="offer sent"?"selected":""}>offer sent</option>
-<option ${d.status==="negotiating"?"selected":""}>negotiating</option>
-<option ${d.status==="signed"?"selected":""}>signed</option>
-<option ${d.status==="sold"?"selected":""}>sold</option>
-</select>
-
-ARV:
-<input value="${d.arv}" onchange="leads[${i}].arv=this.value;save();render();">
-
-Purchase Price:
-<input value="${d.price}" onchange="leads[${i}].price=this.value;save();render();">
-
-Repairs:
-<input value="${d.repairs}" onchange="leads[${i}].repairs=this.value;save();render();">
-
-<div class="btn" onclick='autoComp(leads[${i}])'>📊 Auto Comp</div>
-
-<br><b>Offers</b><br>
-Cash: $${Math.round(c.cash)}<br>
-Creative: $${Math.round(c.creative)}<br>
-Seller Finance: $${Math.round(c.sellerFinance)}<br>
-
-<br><b>Profit:</b> $${Math.round(c.profit)}
-
-<div class="btn" onclick='openZillow("${d.address}")'>🏡 Zillow</div>
-<div class="btn" onclick='openRedfin("${d.address}")'>📍 Redfin</div>
-
-<div class="btn" onclick='sendEmail(leads[${i}])'>📧 Email</div>
-<div class="btn" onclick='autoSMS(leads[${i}])'>📱 SMS</div>
-<div class="btn" onclick='contract(leads[${i}])'>📄 Contract</div>
-<div class="btn" onclick='assign(leads[${i}])'>📑 Assign</div>
-<div class="btn" onclick='fillAnalyzer(leads[${i}])'>📥 Analyzer</div>
-
-<!-- ALL YOUR LINKS KEPT -->
-<br><b>PROPERTY INTEL</b>
-<a href="https://property.phila.gov" target="_blank">Phila Property</a>
-<a href="https://opainquiry.phila.gov" target="_blank">OPA</a>
-<a href="https://www.phila.gov/services/property-lots-housing/find-property-information" target="_blank">CityAtlas</a>
-<a href="https://pennsylvania.propertychecker.com" target="_blank">PropertyChecker</a>
-<a href="https://www.propertyreach.com" target="_blank">PropertyReach</a>
-
-<br><b>RURAL</b>
-<a href="https://www.consumerfinance.gov/rural-or-underserved-tool/#rural-or-underserved" target="_blank">CFPB Tool</a>
-<a href="https://eligibility.sc.egov.usda.gov/eligibility/welcomeAction.do?pageAction=sfp" target="_blank">USDA</a>
-
-<br><b>FUNDING & BROKER</b>
-<a href="https://rootoflyfe.blnsoftware.com/" target="_blank">BLN Portal</a>
-<a href="https://rcncapital.com/application/?intk=GFletcher@rcncapital.com" target="_blank">RCN Apply</a>
-<a href="https://form.jotform.com/2530967310210469" target="_blank">Funding App</a>
-<a href="https://form.jotform.com/252063354378055" target="_blank">RO Intake</a>
-<a href="https://form.jotform.com/253154859148062" target="_blank">Quick Docs</a>
-
-<br><b>AFFILIATE / CREDIT</b>
-<a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures Credit</a>
-<a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR" target="_blank">ROK Corporate</a>
-<a href="https://my.americasfundingexperts.com/?id=1820217000190862001" target="_blank">Funding Experts</a>
-
-<br><b>LOAN AUTOMATION</b>
-<a href="https://getyourbizloan.io/lp1?pu=recqKxJNkvD70xMqi" target="_blank">LP1</a>
-<a href="https://getyourbizloan.io/lp2?pu=recqKxJNkvD70xMqi" target="_blank">LP2</a>
-
-<br><b>CREDIT STACK</b>
-<a href="https://www.creditscoreiq.com/lander/bus?offercode=435404PA" target="_blank">ScoreIQ</a>
-<a href="https://www.myscoreiq.com/get-fico-preferred.aspx?offercode=432142NZ" target="_blank">FICO View</a>
-<a href="https://www.identityiq.com/sc-securepreferred.aspx?offercode=431297MR" target="_blank">IdentityIQ</a>
-<a href="https://www.creditbuilderiq.com/lander/bus?offercode=437502WT" target="_blank">Builder IQ</a>
-
-<br><b>STARTER CARDS</b>
-<a href="https://www.openskycc.com/" target="_blank">OpenSky</a>
-<a href="https://www.tomocredit.com/" target="_blank">Tomo</a>
-<a href="https://www.zolve.com/" target="_blank">Zolve</a>
-<a href="https://www.growcredit.com/" target="_blank">Grow Credit</a>
-<a href="https://www.discover.com/credit-cards/secured/" target="_blank">Discover Secured</a>
-<a href="https://www.capitalone.com/credit-cards/quicksilver-secured/" target="_blank">Capital One</a>
-<a href="https://www.self.inc/" target="_blank">Self Loan</a>
-
-</div>
-`;
-
-grid.appendChild(div);
-});
-
-updateUI();
-}
-
-render();
-</script>
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>RO'Lyfe Deal Machine</title>
-<style>
-body{font-family:Arial;background:#0f172a;color:#fff;padding:20px;}
-input,select{width:100%;padding:10px;margin:5px 0;background:#1e293b;color:#fff;border:none;border-radius:6px;}
-button{padding:12px;background:#22c55e;border:none;color:#000;font-weight:bold;width:100%;border-radius:6px;margin-top:10px;}
-.box{background:#1e293b;padding:15px;border-radius:10px;margin-bottom:15px;}
-</style>
-</head>
-
-<body>
-
-<h2>RO’Lyfe Funding & Deal Machine</h2>
-
-<div class="box">
-<h3>Broker Info</h3>
-<input id="broker" value="Richardson L. - RO’Lyfe Holdings">
-<input id="fee" placeholder="Broker Fee % (1-3%)">
-</div>
-
-<div class="box">
-<h3>Client / Borrower</h3>
-<input id="name" placeholder="Full Name">
-<input id="entity" placeholder="Entity Name">
-<input id="email" placeholder="Email">
-<input id="phone" placeholder="Phone">
-</div>
-
-<div class="box">
-<h3>Deal Info</h3>
-<input id="address" placeholder="Property Address">
-<input id="purchase" placeholder="Purchase Price">
-<input id="rehab" placeholder="Rehab Cost">
-<input id="arv" placeholder="ARV">
-<input id="units" placeholder="Units">
-</div>
-
-<div class="box">
-<h3>3-Tier Settings</h3>
-<input id="cashPct" value="50">
-<input id="carryPct" value="65">
-<input id="creativePct" value="75">
-</div>
-
-<div class="box">
-<h3>Results</h3>
-<p id="cash"></p>
-<p id="carry"></p>
-<p id="creative"></p>
-</div>
-
-<button onclick="calc()">Calculate</button>
-<button onclick="downloadPDF()">Download Offer PDF</button>
-<button onclick="sendEmail()">Send Deal</button>
-
-<script>
-
-function calc(){
-let arv=document.getElementById("arv").value;
-
-let cash=arv*(document.getElementById("cashPct").value/100);
-let carry=arv*(document.getElementById("carryPct").value/100);
-let creative=arv*(document.getElementById("creativePct").value/100);
-
-document.getElementById("cash").innerHTML="Cash Offer: $"+Math.round(cash);
-document.getElementById("carry").innerHTML="Seller Carry: $"+Math.round(carry);
-document.getElementById("creative").innerHTML="Seller Finance: $"+Math.round(creative);
+  document.getElementById("cash").innerHTML = "Cash Offer: $" + Math.round(cash);
+  document.getElementById("carry").innerHTML = "Seller Carry: $" + Math.round(carry);
+  document.getElementById("creative").innerHTML = "Seller Finance: $" + Math.round(creative);
 }
 
 function downloadPDF(){
-alert("Connect jsPDF or Zoho Writer API for full PDF generation");
+  alert("PDF button placeholder is live. Add jsPDF later if you want real export.");
 }
 
-function sendEmail(){
-let name=document.getElementById("name").value;
-let address=document.getElementById("address").value;
+function sendDealEmail(){
+  let name=document.getElementById("name").value;
+  let address=document.getElementById("address").value;
+  let body=`Deal Submission
 
-window.location.href="mailto:richman@rootoflyfe.com?subject=Deal Submission&body=Name:"+name+" Property:"+address;
+Name: ${name}
+Property: ${address}
+Entity: ${document.getElementById("entity").value}
+Email: ${document.getElementById("email").value}
+Phone: ${document.getElementById("phone").value}
+Purchase: ${document.getElementById("purchase").value}
+Rehab: ${document.getElementById("rehab").value}
+ARV: ${document.getElementById("arv").value}`;
+
+  window.location.href=`mailto:${EMAIL}?subject=${encodeURIComponent("Deal Submission")}&body=${encodeURIComponent(body)}`;
 }
 
+/* =========================
+   INIT
+========================= */
+
+document.addEventListener("DOMContentLoaded",()=>{
+  initPlayer();
+  switchPlaylistMode();
+  render();
+});
 </script>
 
 </body>
-</html>
-
-
-
+           </html>
