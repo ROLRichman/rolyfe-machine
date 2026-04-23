@@ -1,0 +1,71 @@
+<audio controls>
+  <source src="YOUR_ZOHO_LINK?directDownload=true" type="audio/mpeg">
+</audio>
+
+
+
+<audio id="player"></audio>
+
+<button onclick="startMusic()">▶ Start Deal Room</button>
+
+<script>
+const tracks = [
+  "https://workdrive.zohoexternal.com/file/xxxxx?directDownload=true",
+  "https://workdrive.zohoexternal.com/file/yyyyy?directDownload=true",
+  "https://workdrive.zohoexternal.com/file/zzzzz?directDownload=true"
+];
+
+let current = 0;
+const player = document.getElementById("player");
+
+function playTrack(index){
+  player.src = tracks[index];
+  player.play();
+}
+
+player.addEventListener("ended", () => {
+  current = (current + 1) % tracks.length;
+  playTrack(current);
+});
+
+function startMusic(){
+  playTrack(current);
+}
+</script>
+
+
+
+
+
+
+
+
+
+<audio id="player" controls></audio>
+
+<script>
+const tracks = [
+  "https://drive.google.com/uc?export=download&id=1nmElc9Z1qfvmoEG1oBN51KISHW33XLEx",
+  "https://drive.google.com/uc?export=download&id=1agNZYmeCmIBoxhOXei1YY1kHoYKyJZBq",
+  "https://drive.google.com/uc?export=download&id=1RZm1a4GoYAh81b9_gow_Tqw5ZQt2AL78",
+  "https://drive.google.com/uc?export=download&id=1F61zX0W0K4ip3Er37Lb2TsvN0rDxI5OD",
+  "https://drive.google.com/uc?export=download&id=1zUKfGBNfboqdcZwiirHqbARp-w8vOKkd",
+  "https://drive.google.com/uc?export=download&id=1aKkD3tvEgFc6_1M7GLlL1eTCsnbHsT3D",
+  "https://drive.google.com/uc?export=download&id=1CXita7qM82HM1VUArLkySdfJKdwuJS9b"
+];
+
+let currentTrack = 0;
+const player = document.getElementById("player");
+
+function playTrack(index) {
+  player.src = tracks[index];
+  player.play();
+}
+
+player.addEventListener("ended", () => {
+  currentTrack = (currentTrack + 1) % tracks.length;
+  playTrack(currentTrack);
+});
+
+playTrack(currentTrack);
+</script>
