@@ -1,1201 +1,595 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>RO'Lyfe Deal OS Ultimate</title>
 <style>
-*{box-sizing:border-box;}
-html,body{
-  margin:0;
-  padding:0;
-  background:#0b0f1a;
-  color:#fff;
-  font-family:Arial,sans-serif;
-}
-body{
-  min-height:100vh;
-}
-.wrapper{
-  max-width:1450px;
-  margin:0 auto;
-  padding:12px;
-}
-h1,h2,h3,h4,p{margin:0 0 10px;}
-.main-title{
-  text-align:center;
-  font-size:28px;
-  margin:10px 0 16px;
-}
-.section{
-  background:#141a2a;
-  border-radius:16px;
-  padding:14px;
-  margin-bottom:14px;
-  box-shadow:0 0 0 1px rgba(255,255,255,0.04);
-}
-.hero-video-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-.video-card{
-  background:#0f172a;
-  border-radius:14px;
-  overflow:hidden;
-  padding:8px;
-}
-.video-card iframe{
-  width:100%;
-  height:290px;
-  border:none;
-  border-radius:12px;
-  background:#000;
-}
-.top-links{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-}
-.two-col{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-.three-col{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-.grid{
-  display:grid;
-  gap:12px;
-}
-.card{
-  background:#182133;
-  border-radius:14px;
-  padding:12px;
-}
-.card-header{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  cursor:pointer;
-  font-weight:bold;
-}
-.hidden{display:none;}
-input,select,textarea{
-  width:100%;
-  border:none;
-  outline:none;
-  background:#eef3ff;
-  color:#111827;
-  padding:12px 14px;
-  margin:7px 0;
-  border-radius:16px;
-  font-size:15px;
-}
-textarea{
-  min-height:100px;
-  resize:vertical;
-}
-button,.btn,a.btn{
-  border:none;
-  outline:none;
-  cursor:pointer;
-  border-radius:16px;
-  padding:12px 14px;
-  font-weight:bold;
-  text-align:center;
-  display:block;
-  width:100%;
-  text-decoration:none;
-}
-.btn{
-  background:#2d4373;
-  color:#fff;
-}
-.btn:hover{filter:brightness(1.08);}
-.btn-green{
-  background:#22c55e;
-  color:#04130a;
-}
-.btn-gold{
-  background:#eab308;
-  color:#1f1300;
-}
-.btn-dark{
-  background:#0f172a;
-  color:#fff;
-}
-.btn-red{
-  background:#dc2626;
-  color:#fff;
-}
-.btn-row{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-}
-.btn-row-2{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px;
-}
-.btn-row-4{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
-}
-.score{
-  background:#1f2a44;
-  padding:12px;
-  border-radius:16px;
-  text-align:center;
-  font-weight:bold;
-  margin-bottom:12px;
-}
-.pipeline{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:8px;
-  margin-bottom:14px;
-}
-.pipe{
-  background:#101827;
-  border-radius:14px;
-  padding:10px;
-  text-align:center;
-}
-.offer-box{
-  background:#0f172a;
-  padding:12px;
-  border-radius:14px;
-  line-height:1.7;
-}
-.links a{
-  color:#7fd1ff;
-  text-decoration:none;
-  display:block;
-  margin:4px 0;
-}
-.links a:hover{text-decoration:underline;}
-.badge{
-  display:inline-block;
-  padding:5px 10px;
-  border-radius:999px;
-  background:#0f172a;
-  font-size:12px;
-}
-.small{
-  font-size:13px;
-  color:#a9b7d7;
-}
-audio{
-  width:100%;
-  margin-top:8px;
-}
-iframe.form-embed{
-  width:100%;
-  height:580px;
-  border:none;
-  border-radius:16px;
-  background:#fff;
-}
-.sig-wrap{
-  background:#0f172a;
-  border-radius:16px;
-  padding:10px;
-}
-.sig-canvas{
-  width:100%;
-  height:160px;
-  background:#fff;
-  border-radius:14px;
-  display:block;
-  touch-action:none;
-}
-.form-title{
-  font-size:18px;
-  margin-bottom:8px;
-}
-hr{
-  border:none;
-  border-top:1px solid rgba(255,255,255,0.08);
-  margin:14px 0;
-}
-.search-row{
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr 1fr;
-  gap:8px;
-}
-.table-like{
-  display:grid;
-  gap:8px;
-}
-.lead-board{
-  display:grid;
-  gap:12px;
-}
-.lead-mini{
-  background:#0f172a;
-  padding:10px;
-  border-radius:14px;
-}
-.sticky-top{
-  position:sticky;
-  top:0;
-  z-index:5;
-}
-@media (max-width:1100px){
-  .hero-video-grid,.three-col,.top-links,.search-row{
-    grid-template-columns:1fr;
-  }
-}
-@media (max-width:900px){
-  .two-col,.btn-row,.btn-row-2,.btn-row-4,.pipeline{
-    grid-template-columns:1fr;
-  }
-  .main-title{
-    font-size:24px;
-  }
-}
+*{box-sizing:border-box}
+body{margin:0;background:#0b0f1a;color:#fff;font-family:Arial,sans-serif}
+.wrapper{max-width:1450px;margin:auto;padding:12px}
+h1,h2,h3,h4,p{margin:0 0 10px}
+.main-title{text-align:center;font-size:28px;margin:12px 0 16px}
+.section{background:#141a2a;border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:0 0 0 1px rgba(255,255,255,.05)}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;align-items:start}
+.hero img{width:100%;border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.hero-box{background:#0f172a;border-radius:18px;padding:16px;line-height:1.6}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.btn-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.btn-row-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.btn-row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+input,select,textarea{width:100%;border:none;outline:none;background:#eef3ff;color:#111827;padding:12px 14px;margin:7px 0;border-radius:16px;font-size:15px}
+textarea{min-height:95px;resize:vertical}
+button,.btn,a.btn{border:none;outline:none;cursor:pointer;border-radius:16px;padding:12px 14px;font-weight:bold;text-align:center;display:block;width:100%;text-decoration:none}
+.btn{background:#2d4373;color:#fff}.btn:hover{filter:brightness(1.08)}
+.btn-green{background:#22c55e;color:#04130a}.btn-gold{background:#eab308;color:#1f1300}.btn-dark{background:#0f172a;color:#fff}.btn-red{background:#dc2626;color:#fff}
+.score{background:#1f2a44;padding:12px;border-radius:16px;text-align:center;font-weight:bold;margin-bottom:12px}
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
+.pipe{background:#101827;border-radius:14px;padding:10px;text-align:center}
+.card,.pipeline-item{background:#182133;border-radius:14px;padding:12px}
+.card-header{display:flex;justify-content:space-between;gap:10px;cursor:pointer;font-weight:bold}
+.badge{display:inline-block;padding:5px 10px;border-radius:999px;background:#0f172a;font-size:12px}
+.hidden{display:none}
+.grid,.pipeline-list{display:grid;gap:10px}
+.offer-box{background:#0f172a;padding:12px;border-radius:14px;line-height:1.7}
+.links a{color:#7fd1ff;text-decoration:none;display:block;margin:4px 0}
+.links a:hover{text-decoration:underline}
+.small{font-size:13px;color:#a9b7d7}
+audio{width:100%;margin-top:8px}
+#audioSource{display:none}
+iframe.form-embed{width:100%;height:560px;border:none;border-radius:16px;background:#fff}
+.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.video-card{background:#0f172a;border-radius:14px;padding:8px}
+.video-card iframe{width:100%;height:280px;border:none;border-radius:12px;background:#000}
+.sig-wrap{background:#0f172a;border-radius:16px;padding:10px;margin-top:12px}
+.sig-canvas{width:100%;height:170px;background:#fff;border:2px solid #111;border-radius:14px;display:block;touch-action:none;cursor:crosshair}
+.verdict-good{color:#22c55e;font-weight:bold}.verdict-mid{color:#eab308;font-weight:bold}.verdict-bad{color:#ef4444;font-weight:bold}
+hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:14px 0}
+@media(max-width:1100px){.hero,.three-col,.video-grid{grid-template-columns:1fr}}
+@media(max-width:900px){.two-col,.btn-row,.btn-row-2,.btn-row-4,.pipeline{grid-template-columns:1fr}.main-title{font-size:24px}}
 </style>
 </head>
 <body>
 <div class="wrapper">
 
-  <h1 class="main-title">🔥 RO’Lyfe Deal OS — Ultimate GitHub Build</h1>
+<h1 class="main-title">🔥 RO’Lyfe Deal OS — Ultimate GitHub Build</h1>
 
-  <div class="section">
-    <h2>🎬 Media Top Section</h2>
-    <div class="small">Video at top, like you asked. Audio player sits under it so the page feels alive instead of dead drywall.</div>
-    <div class="hero-video-grid">
-      <div class="video-card">
-        <h4>Top Feature Video</h4>
-        <iframe src="https://www.youtube.com/embed/iAlUx755K2s" allowfullscreen></iframe>
-      </div>
-      <div class="video-card">
-        <h4>Short 1</h4>
-        <iframe src="https://www.youtube.com/embed/IvhD3ewyzD4" allowfullscreen></iframe>
-      </div>
-      <div class="video-card">
-        <h4>Short 2</h4>
-        <iframe src="https://www.youtube.com/embed/932IrrdJ88c" allowfullscreen></iframe>
-      </div>
-    </div>
-    <div class="btn-row-2" style="margin-top:10px;">
-      <a class="btn" href="https://youtu.be/0NYJ_9FIHZA?si=HNsVOSP7ihplMmhH" target="_blank">▶ Open Video 4</a>
-      <a class="btn" href="https://youtu.be/NujY1GikOz0?si=LBm8UWG-k58Kn0ZN" target="_blank">▶ Open Video 5</a>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>🎵 Audio Test Center</h2>
-    <audio id="player" controls></audio>
-    <div class="btn-row">
-      <button class="btn btn-green" onclick="startPlaylist()">▶ Start Playlist</button>
-      <button class="btn" onclick="nextTrack()">⏭ Next Track</button>
-      <button class="btn btn-dark" onclick="toggleMute()">🔇 Mute / Unmute</button>
-    </div>
-    <div id="nowPlaying" class="small" style="margin-top:10px;">Now Playing: Ready</div>
-    <div id="audioSource" class="small">Source: none</div>
-
-    <hr>
-
-    <select id="audioMode" onchange="switchPlaylistMode()">
-      <option value="google">Google Drive Tracks</option>
-      <option value="zoho">Zoho Tracks</option>
-    </select>
-
-    <input id="zoho1" value="https://workdrive.zohoexternal.com/file/YOUR_ZOHO_TRACK_1?directDownload=true" placeholder="Zoho Track 1">
-    <input id="zoho2" value="https://workdrive.zohoexternal.com/file/YOUR_ZOHO_TRACK_2?directDownload=true" placeholder="Zoho Track 2">
-    <input id="zoho3" value="https://workdrive.zohoexternal.com/file/YOUR_ZOHO_TRACK_3?directDownload=true" placeholder="Zoho Track 3">
-
+<div class="section hero">
+  <img src="rolyfe-cover.png" alt="RO'Lyfe Deal Forge Machine">
+  <div class="hero-box">
+    <h2>Fill. Sign. Download. Close.</h2>
+    <p>Lead intake, deal analysis, Zillow/Redfin search, e-signature agreements, email blast, text blast, PDF-ready print, and RO’Lyfe resource buttons in one GitHub-ready HTML file.</p>
     <div class="btn-row-2">
-      <button class="btn" onclick="testSingleTrack()">🎧 Test Track 1</button>
-      <button class="btn" onclick="reloadZohoPlaylist()">♻ Reload Zoho Playlist</button>
+      <a class="btn btn-green" href="https://form.jotform.com/253154859148062" target="_blank">📝 Quick Docs</a>
+      <a class="btn btn-gold" href="https://form.jotform.com/252063354378055" target="_blank">📥 RO Intake</a>
+    </div>
+    <div class="btn-row-2" style="margin-top:8px">
+      <a class="btn" href="https://workdrive.zohoexternal.com/file/g6vcbdaba9ad8d815404a873a060254fe1bfc" target="_blank">📄 Zoho Pre-App</a>
+      <a class="btn btn-dark" href="https://property.phila.gov" target="_blank">🏠 Phila Property</a>
     </div>
   </div>
+</div>
 
-  <div class="score" id="scoreboard"></div>
-  <div class="pipeline" id="pipeline"></div>
+<div class="section">
+  <h2>🎬 Media Top Section</h2>
+  <div class="video-grid">
+    <div class="video-card"><h4>Top Feature Video</h4><iframe src="https://www.youtube.com/embed/iAlUx755K2s" allowfullscreen></iframe></div>
+    <div class="video-card"><h4>Short 1</h4><iframe src="https://www.youtube.com/embed/IvhD3ewyzD4" allowfullscreen></iframe></div>
+    <div class="video-card"><h4>Short 2</h4><iframe src="https://www.youtube.com/embed/932IrrdJ88c" allowfullscreen></iframe></div>
+  </div>
+  <div class="btn-row-2" style="margin-top:10px">
+    <a class="btn" href="https://youtu.be/0NYJ_9FIHZA?si=HNsVOSP7ihplMmhH" target="_blank">▶ Open Video 4</a>
+    <a class="btn" href="https://youtu.be/NujY1GikOz0?si=LBm8UWG-k58Kn0ZN" target="_blank">▶ Open Video 5</a>
+  </div>
+</div>
 
-  <div class="two-col">
-    <div class="section">
-      <h2>📥 Contractor Lead Intake</h2>
-      <div class="small">For your contractor or anyone you send leads to. Address, ARV, seller ask, repairs, notes, save it fast.</div>
-      <input id="leadAddress" placeholder="Property Address">
+<div class="section">
+  <h2>🎵 Audio Player</h2>
+  <audio id="player" controls controlsList="nodownload noplaybackrate" preload="none"></audio>
+  <div class="btn-row">
+    <button class="btn btn-green" onclick="startPlaylist()">▶ Start Playlist</button>
+    <button class="btn" onclick="nextTrack()">⏭ Next Track</button>
+    <button class="btn btn-dark" onclick="toggleMute()">🔇 Mute / Unmute</button>
+  </div>
+  <div id="nowPlaying" class="small" style="margin-top:10px">Now Playing: Ready</div>
+  <div id="audioSource"></div>
+</div>
+
+<div class="score" id="scoreboard"></div>
+<div class="pipeline" id="pipeline"></div>
+
+<div class="two-col">
+  <div class="section">
+    <h2>📥 Contractor Lead Intake</h2>
+    <input id="leadAddress" placeholder="Property Address">
+    <div class="btn-row-2">
       <input id="leadArv" placeholder="ARV">
       <input id="leadAsk" placeholder="Seller Cash Ask">
+    </div>
+    <div class="btn-row-2">
       <input id="leadRepairs" placeholder="Repairs Estimate">
-      <input id="leadSource" placeholder="Lead Source / Agent Name">
-      <textarea id="leadNotes" placeholder="Notes"></textarea>
-      <div class="btn-row-2">
-        <button class="btn btn-green" onclick="saveContractorLead()">➕ Save Lead</button>
-        <button class="btn" onclick="clearLeadForm()">♻ Clear Form</button>
-      </div>
-      <div id="leadSavedMsg" class="small"></div>
+      <input id="leadFee" placeholder="Wholesale / Fee">
     </div>
-
-    <div class="section">
-      <h2>🔎 Zillow + Redfin + Estimator</h2>
-      <input id="searchAddress" placeholder="Enter Property Address">
-      <div class="search-row">
-        <input id="searchArv" placeholder="ARV">
-        <input id="searchAsk" placeholder="Seller Ask">
-        <input id="searchRepairs" placeholder="Repairs">
-        <input id="searchFee" placeholder="Wholesale / Fee">
-      </div>
-      <div class="btn-row">
-        <button class="btn" onclick="searchZillow()">🏡 Open Zillow</button>
-        <button class="btn" onclick="searchRedfin()">📍 Open Redfin</button>
-        <button class="btn btn-green" onclick="runEstimator()">📊 Run Estimator</button>
-      </div>
-      <div class="offer-box" id="estimatorResults">Enter numbers and run estimator.</div>
+    <input id="leadSource" placeholder="Lead Source / Agent Name">
+    <textarea id="leadNotes" placeholder="Notes"></textarea>
+    <div class="btn-row-2">
+      <button class="btn btn-green" onclick="saveContractorLead()">➕ Save Lead</button>
+      <button class="btn" onclick="clearLeadForm()">♻ Clear Form</button>
     </div>
+    <div id="leadSavedMsg" class="small"></div>
   </div>
 
-  <div class="top-links section">
-    <a class="btn btn-gold" href="https://form.jotform.com/253154859148062" target="_blank">📝 Quick Docs</a>
-    <a class="btn btn-green" href="https://form.jotform.com/252063354378055" target="_blank">📥 RO Intake</a>
-    <a class="btn" href="https://workdrive.zohoexternal.com/file/g6vcbdaba9ad8d815404a873a060254fe1bfc" target="_blank">📄 Zoho Pre-App PDF</a>
-    <a class="btn btn-dark" href="https://property.phila.gov" target="_blank">🏠 Phila Property</a>
+  <div class="section">
+    <h2>🔎 Zillow + Redfin + Estimator</h2>
+    <input id="searchAddress" placeholder="Enter Property Address">
+    <div class="btn-row-4">
+      <input id="searchArv" placeholder="ARV">
+      <input id="searchAsk" placeholder="Seller Ask">
+      <input id="searchRepairs" placeholder="Repairs">
+      <input id="searchFee" placeholder="Fee">
+    </div>
+    <div class="btn-row">
+      <button class="btn" onclick="searchZillow()">🏡 Zillow</button>
+      <button class="btn" onclick="searchRedfin()">📍 Redfin</button>
+      <button class="btn btn-green" onclick="runEstimator()">📊 Run Estimator</button>
+    </div>
+    <div class="offer-box" id="estimatorResults">Enter numbers and run estimator.</div>
+  </div>
+</div>
+
+<div class="three-col">
+  <div class="section">
+    <h2>🏡 Deal Pipeline</h2>
+    <div class="small">Shows latest 12 leads. New lead pops to the top.</div>
+    <button class="btn" onclick="uploadCSV()">📂 Upload CSV Leads</button>
+    <div class="pipeline-list" id="grid" style="margin-top:12px"></div>
   </div>
 
-  <div class="three-col">
-    <div class="section">
-      <h2>🧾 Jotform Embed — Quick Docs</h2>
-      <iframe class="form-embed" src="https://form.jotform.com/253154859148062"></iframe>
-    </div>
+  <div class="section">
+    <h2>💰 RO’Lyfe Funding & Deal Machine</h2>
+    <h3>Broker Info</h3>
+    <input id="broker" value="Richardson L. - RO’Lyfe Holdings LLC">
+    <input id="fee" value="3" placeholder="Broker Fee %">
 
-    <div class="section">
-      <h2>📥 Jotform Embed — RO Intake</h2>
-      <iframe class="form-embed" src="https://form.jotform.com/252063354378055"></iframe>
-    </div>
+    <h3>Client / Borrower</h3>
+    <input id="name" placeholder="Full Name">
+    <input id="entity" placeholder="Entity Name">
+    <input id="email" placeholder="Email">
+    <input id="phone" placeholder="Phone">
 
-    <div class="section">
-      <h2>📚 Zoho PDF / Agreements Hub</h2>
-      <div class="links">
-        <b>PDF LINKS ZOHO</b>
-        <a href="https://workdrive.zohopublic.com/writer/open/fyrri3c23f1670f1d414097c5b25b69dda0df" target="_blank">Assignment Agreement 1</a>
-        <a href="https://workdrive.zohopublic.com/writer/open/fyrribde87c7f276547e2a24006e30176378b" target="_blank">Assignment Agreement 2</a>
-        <a href="https://workdrive.zohopublic.com/writer/open/fyrrifc51028eab4e486d960b7d6a0a1d0f2f" target="_blank">Purchase and Sale Agreement</a>
-        <a href="https://workdrive.zohopublic.com/writer/open/fyrri128659b62a8b48fd8df8f6446694a2bb" target="_blank">Pre-Loan Application</a>
-        <a href="https://workdrive.zohopublic.com/writer/open/fyrri9e256390ea704770ba02f1add8d58885" target="_blank">Realtor</a>
-        <a href="https://workdrive.zohopublic.com/writer/open/fyrriec767d07079245a89aa82700dc3a7716" target="_blank">Client Broker Agreement</a>
-        <a href="https://workdrive.zohopublic.com/writer/open/fyrrie51b06a70b43457db8a652da3fed3e58" target="_blank">Disclosure & Authorization Agreement</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="two-col">
-    <div class="section">
-      <h2>💰 RO’Lyfe Funding & Deal Machine</h2>
-
-      <h3>Broker Info</h3>
-      <input id="broker" value="Richardson L. - RO’Lyfe Holdings LLC">
-      <input id="fee" value="3" placeholder="Broker Fee %">
-
-      <h3>Client / Borrower</h3>
-      <input id="name" placeholder="Full Name">
-      <input id="entity" placeholder="Entity Name">
-      <input id="email" placeholder="Email">
-      <input id="phone" placeholder="Phone">
-
-      <h3>Deal Info</h3>
-      <input id="address" placeholder="Property Address">
+    <h3>Deal Info</h3>
+    <input id="address" placeholder="Property Address">
+    <div class="btn-row-2">
       <input id="purchase" placeholder="Purchase Price">
       <input id="rehab" placeholder="Rehab Cost">
+    </div>
+    <div class="btn-row-2">
       <input id="arv" placeholder="ARV">
       <input id="units" placeholder="Units">
+    </div>
 
-      <h3>3-Tier Settings</h3>
+    <h3>3-Tier Settings</h3>
+    <div class="btn-row-2">
       <input id="cashPct" value="50">
       <input id="carryPct" value="65">
-      <input id="creativePct" value="75">
+    </div>
+    <input id="creativePct" value="75">
 
-      <div class="offer-box">
-        <p id="cash">Cash Offer: $0</p>
-        <p id="carry">Seller Carry: $0</p>
-        <p id="creative">Seller Finance: $0</p>
-      </div>
-
-      <div class="btn-row-2">
-        <button class="btn btn-green" onclick="calcFunding()">Calculate</button>
-        <button class="btn" onclick="blastDeal()">📢 Offer Blast</button>
-      </div>
-
-      <div class="btn-row-2">
-        <button class="btn" onclick="sendDealEmail()">📧 Email Deal</button>
-        <button class="btn" onclick="textDeal()">📱 Text Deal</button>
-      </div>
+    <div class="offer-box" id="fundingResults">
+      Cash Offer: $0<br>
+      Seller Carry: $0<br>
+      Seller Finance: $0<br>
+      Overage: $0<br>
+      ROI: 0%<br>
+      Verdict: -
     </div>
 
-    <div class="section">
-      <h2>✍ Signature Pads + Agreement Generator</h2>
-
-      <select id="docType">
-        <option value="psa">Purchase and Sale Agreement</option>
-        <option value="assign">Assignment Agreement</option>
-        <option value="broker">Client Broker Fee Agreement</option>
-      </select>
-
-      <input id="docSeller" placeholder="Seller / Assignor / Client Name">
-      <input id="docBuyer" value="Root Of Lyfe Holdings LLC" placeholder="Buyer / Assignee / Broker">
-      <input id="docAssignee" placeholder="Assignee Name (for assignment)">
-      <input id="docProperty" placeholder="Property Address">
-      <input id="docPrice" placeholder="Purchase Price">
-      <input id="docEMD" placeholder="Earnest Money / Deposit">
-      <input id="docAssignFee" placeholder="Assignment Fee">
-      <input id="docLoanAmount" placeholder="Loan Amount">
-      <input id="docClosingDate" placeholder="Closing Date">
-      <input id="docState" placeholder="State">
-      <input id="docClientName" placeholder="Client Name">
-      <input id="docEffectiveDate" placeholder="Effective Date">
-      <textarea id="customClauses" placeholder="Extra clauses / notes"></textarea>
-
-      <div class="sig-wrap">
-        <div class="form-title">Seller / Client Signature</div>
-        <canvas id="sigOne" class="sig-canvas"></canvas>
-        <div class="btn-row-2">
-          <button class="btn" onclick="clearSignature('sigOne')">Clear Signature 1</button>
-          <button class="btn" onclick="loadTypedSignature('sigOne')">Type Name as Sig</button>
-        </div>
-      </div>
-
-      <div class="sig-wrap" style="margin-top:12px;">
-        <div class="form-title">Buyer / Broker / Assignor Signature</div>
-        <canvas id="sigTwo" class="sig-canvas"></canvas>
-        <div class="btn-row-2">
-          <button class="btn" onclick="clearSignature('sigTwo')">Clear Signature 2</button>
-          <button class="btn" onclick="loadCompanySignature('sigTwo')">Use RO’Lyfe Signature</button>
-        </div>
-      </div>
-
-      <div class="btn-row-2" style="margin-top:12px;">
-        <button class="btn btn-green" onclick="generateAgreement()">🧾 Generate Agreement</button>
-        <button class="btn btn-gold" onclick="printAgreement()">🖨 Save as PDF</button>
-      </div>
+    <div class="btn-row-2">
+      <button class="btn btn-green" onclick="calcFunding()">Calculate</button>
+      <button class="btn" onclick="downloadOfferPDF()">🖨 Offer PDF</button>
     </div>
+    <div class="btn-row-2">
+      <button class="btn" onclick="sendDealEmail()">📧 Email Deal</button>
+      <button class="btn btn-gold" onclick="textDeal()">📱 Text Deal</button>
+    </div>
+    <button class="btn btn-dark" onclick="blastDeal()">📢 Offer Blast</button>
   </div>
 
-  <div class="two-col">
-    <div class="section">
-      <h2>🏡 Deal Pipeline</h2>
-      <button class="btn" onclick="uploadCSV()">📂 Upload CSV Leads</button>
-      <div class="grid" id="grid" style="margin-top:12px;"></div>
-    </div>
+  <div class="section">
+    <h2>✍ E-Sign Agreement Generator</h2>
+    <select id="docType">
+      <option value="psa">Purchase and Sale Agreement</option>
+      <option value="assign">Assignment Agreement</option>
+      <option value="broker">Client Broker Fee Agreement</option>
+    </select>
 
-    <div class="section">
-      <h2>🔗 Resource Links</h2>
-      <div class="links">
-        <b>PROPERTY INTEL</b>
-        <a href="https://property.phila.gov" target="_blank">Phila Property</a>
-        <a href="https://opainquiry.phila.gov" target="_blank">OPA</a>
-        <a href="https://www.phila.gov/services/property-lots-housing/find-property-information" target="_blank">CityAtlas</a>
-        <a href="https://pennsylvania.propertychecker.com" target="_blank">PropertyChecker</a>
-        <a href="https://www.propertyreach.com" target="_blank">PropertyReach</a>
+    <input id="docSeller" placeholder="Seller / Assignor / Client Name">
+    <input id="docBuyer" value="Root Of Lyfe Holdings LLC" placeholder="Buyer / Broker">
+    <input id="docAssignee" placeholder="Assignee Name">
+    <input id="docProperty" placeholder="Property Address">
+    <input id="docPrice" placeholder="Purchase Price">
+    <input id="docEMD" placeholder="Earnest Money / Deposit">
+    <input id="docAssignFee" placeholder="Assignment Fee">
+    <input id="docLoanAmount" placeholder="Loan Amount">
+    <input id="docClosingDate" type="date" placeholder="Closing Date">
+    <input id="docState" placeholder="State">
+    <input id="docClientName" placeholder="Client Name">
+    <input id="docEffectiveDate" type="date" placeholder="Effective Date">
+    <textarea id="customClauses" placeholder="Extra clauses / notes"></textarea>
 
-        <br><b>RURAL</b>
-        <a href="https://www.consumerfinance.gov/rural-or-underserved-tool/#rural-or-underserved" target="_blank">CFPB Tool</a>
-        <a href="https://eligibility.sc.egov.usda.gov/eligibility/welcomeAction.do?pageAction=sfp" target="_blank">USDA</a>
-
-        <br><b>FUNDING & BROKER</b>
-        <a href="https://rootoflyfe.blnsoftware.com/" target="_blank">BLN Portal</a>
-        <a href="https://rcncapital.com/application/?intk=GFletcher@rcncapital.com" target="_blank">RCN Apply</a>
-        <a href="https://form.jotform.com/2530967310210469" target="_blank">Funding App</a>
-        <a href="https://form.jotform.com/252063354378055" target="_blank">RO Intake</a>
-        <a href="https://form.jotform.com/253154859148062" target="_blank">Quick Docs</a>
-
-        <br><b>AFFILIATE / CREDIT</b>
-        <a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures Credit</a>
-        <a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR" target="_blank">ROK Corporate</a>
-        <a href="https://my.americasfundingexperts.com/?id=1820217000190862001" target="_blank">Funding Experts</a>
-
-        <br><b>LOAN AUTOMATION</b>
-        <a href="https://getyourbizloan.io/lp1?pu=recqKxJNkvD70xMqi" target="_blank">LP1</a>
-        <a href="https://getyourbizloan.io/lp2?pu=recqKxJNkvD70xMqi" target="_blank">LP2</a>
-
-        <br><b>CREDIT STACK</b>
-        <a href="https://www.creditscoreiq.com/lander/bus?offercode=435404PA" target="_blank">ScoreIQ</a>
-        <a href="https://www.myscoreiq.com/get-fico-preferred.aspx?offercode=432142NZ" target="_blank">FICO View</a>
-        <a href="https://www.identityiq.com/sc-securepreferred.aspx?offercode=431297MR" target="_blank">IdentityIQ</a>
-        <a href="https://www.creditbuilderiq.com/lander/bus?offercode=437502WT" target="_blank">Builder IQ</a>
-
-        <br><b>STARTER CARDS</b>
-        <a href="https://www.openskycc.com/" target="_blank">OpenSky</a>
-        <a href="https://www.tomocredit.com/" target="_blank">Tomo</a>
-        <a href="https://www.zolve.com/" target="_blank">Zolve</a>
-        <a href="https://www.growcredit.com/" target="_blank">Grow Credit</a>
-        <a href="https://www.discover.com/credit-cards/secured/" target="_blank">Discover Secured</a>
-        <a href="https://www.capitalone.com/credit-cards/quicksilver-secured/" target="_blank">Capital One</a>
-        <a href="https://www.self.inc/" target="_blank">Self Loan</a>
+    <div class="sig-wrap">
+      <h4>Seller / Client Signature</h4>
+      <canvas id="sigOne" class="sig-canvas"></canvas>
+      <div class="btn-row-2">
+        <button class="btn" onclick="clearSignature('sigOne')">Clear</button>
+        <button class="btn" onclick="loadTypedSignature('sigOne')">Type Name</button>
       </div>
     </div>
+
+    <div class="sig-wrap">
+      <h4>Buyer / Broker Signature</h4>
+      <canvas id="sigTwo" class="sig-canvas"></canvas>
+      <div class="btn-row-2">
+        <button class="btn" onclick="clearSignature('sigTwo')">Clear</button>
+        <button class="btn" onclick="loadCompanySignature('sigTwo')">Use RO’Lyfe Sig</button>
+      </div>
+    </div>
+
+    <div class="btn-row-2" style="margin-top:12px">
+      <button class="btn btn-green" onclick="generateAgreement()">🧾 Generate Agreement</button>
+      <button class="btn btn-gold" onclick="printAgreement()">🖨 Save as PDF</button>
+    </div>
+    <div class="btn-row-2" style="margin-top:8px">
+      <button class="btn" onclick="downloadAgreementFile()">⬇ Download Signed File</button>
+      <button class="btn btn-dark" onclick="emailAgreementNotice()">📧 Email Agreement</button>
+    </div>
   </div>
+</div>
+
+<div class="three-col">
+  <div class="section">
+    <h2>🧾 Jotform — Quick Docs</h2>
+    <iframe class="form-embed" src="https://form.jotform.com/253154859148062"></iframe>
+  </div>
+  <div class="section">
+    <h2>📥 Jotform — RO Intake</h2>
+    <iframe class="form-embed" src="https://form.jotform.com/252063354378055"></iframe>
+  </div>
+  <div class="section">
+    <h2>📚 Zoho PDF / Agreements Hub</h2>
+    <div class="links">
+      <a href="https://workdrive.zohoexternal.com/file/g6vcbdaba9ad8d815404a873a060254fe1bfc" target="_blank">Zoho Pre-Application PDF</a>
+      <a href="https://workdrive.zohopublic.com/writer/open/fyrri3c23f1670f1d414097c5b25b69dda0df" target="_blank">Assignment Agreement 1</a>
+      <a href="https://workdrive.zohopublic.com/writer/open/fyrribde87c7f276547e2a24006e30176378b" target="_blank">Assignment Agreement 2</a>
+      <a href="https://workdrive.zohopublic.com/writer/open/fyrrifc51028eab4e486d960b7d6a0a1d0f2f" target="_blank">Purchase and Sale Agreement</a>
+      <a href="https://workdrive.zohopublic.com/writer/open/fyrri128659b62a8b48fd8df8f6446694a2bb" target="_blank">Pre-Loan Application</a>
+      <a href="https://workdrive.zohopublic.com/writer/open/fyrri9e256390ea704770ba02f1add8d58885" target="_blank">Realtor</a>
+      <a href="https://workdrive.zohopublic.com/writer/open/fyrriec767d07079245a89aa82700dc3a7716" target="_blank">Client Broker Agreement</a>
+      <a href="https://workdrive.zohopublic.com/writer/open/fyrrie51b06a70b43457db8a652da3fed3e58" target="_blank">Disclosure & Authorization Agreement</a>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>🔗 Resource Links</h2>
+  <div class="links">
+    <b>PROPERTY INTEL</b>
+    <a href="https://property.phila.gov" target="_blank">Phila Property</a>
+    <a href="https://opainquiry.phila.gov" target="_blank">OPA</a>
+    <a href="https://www.phila.gov/services/property-lots-housing/find-property-information" target="_blank">CityAtlas</a>
+    <a href="https://pennsylvania.propertychecker.com" target="_blank">PropertyChecker</a>
+    <a href="https://www.propertyreach.com" target="_blank">PropertyReach</a>
+
+    <br><b>RURAL</b>
+    <a href="https://www.consumerfinance.gov/rural-or-underserved-tool/#rural-or-underserved" target="_blank">CFPB Tool</a>
+    <a href="https://eligibility.sc.egov.usda.gov/eligibility/welcomeAction.do?pageAction=sfp" target="_blank">USDA</a>
+
+    <br><b>FUNDING & BROKER</b>
+    <a href="https://rootoflyfe.blnsoftware.com/" target="_blank">BLN Portal</a>
+    <a href="https://rcncapital.com/application/?intk=GFletcher@rcncapital.com" target="_blank">RCN Apply</a>
+    <a href="https://form.jotform.com/2530967310210469" target="_blank">Funding App</a>
+    <a href="https://form.jotform.com/252063354378055" target="_blank">RO Intake</a>
+    <a href="https://form.jotform.com/253154859148062" target="_blank">Quick Docs</a>
+
+    <br><b>AFFILIATE / CREDIT</b>
+    <a href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank">7 Figures Credit</a>
+    <a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR" target="_blank">ROK Corporate</a>
+    <a href="https://my.americasfundingexperts.com/?id=1820217000190862001" target="_blank">Funding Experts</a>
+
+    <br><b>LOAN AUTOMATION</b>
+    <a href="https://getyourbizloan.io/lp1?pu=recqKxJNkvD70xMqi" target="_blank">LP1</a>
+    <a href="https://getyourbizloan.io/lp2?pu=recqKxJNkvD70xMqi" target="_blank">LP2</a>
+
+    <br><b>CREDIT STACK</b>
+    <a href="https://www.creditscoreiq.com/lander/bus?offercode=435404PA" target="_blank">ScoreIQ</a>
+    <a href="https://www.myscoreiq.com/get-fico-preferred.aspx?offercode=432142NZ" target="_blank">FICO View</a>
+    <a href="https://www.identityiq.com/sc-securepreferred.aspx?offercode=431297MR" target="_blank">IdentityIQ</a>
+    <a href="https://www.creditbuilderiq.com/lander/bus?offercode=437502WT" target="_blank">Builder IQ</a>
+
+    <br><b>STARTER CARDS</b>
+    <a href="https://www.openskycc.com/" target="_blank">OpenSky</a>
+    <a href="https://www.tomocredit.com/" target="_blank">Tomo</a>
+    <a href="https://www.zolve.com/" target="_blank">Zolve</a>
+    <a href="https://www.growcredit.com/" target="_blank">Grow Credit</a>
+    <a href="https://www.discover.com/credit-cards/secured/" target="_blank">Discover Secured</a>
+    <a href="https://www.capitalone.com/credit-cards/quicksilver-secured/" target="_blank">Capital One</a>
+    <a href="https://www.self.inc/" target="_blank">Self Loan</a>
+  </div>
+</div>
 
 </div>
 
 <script>
-const EMAIL = "richman@rootoflyfe.com";
-const PHONE = "2674326734";
+const EMAIL="richman@rootoflyfe.com";
+const PHONE="2674326734";
 
 /* AUDIO */
-const googleTracks = [
-  {name:"Deal Connector",url:"https://drive.google.com/uc?export=download&id=1UBfuV7XyEKmroJW4rgCJMSfYyhKrjiXy"},
-  {name:"Contracts",url:"https://drive.google.com/uc?export=download&id=1Ieib2X0NIemlH8j4DNR7tnCJUXyfILDc"},
-  {name:"Closing Point",url:"https://drive.google.com/uc?export=download&id=16OCcO4vOfAr3rftm4Pf_nLDfPoolKqdN"},
-  {name:"Property Sequel",url:"https://drive.google.com/uc?export=download&id=1Rk_05-2uSbU-A6ojNnhD2oPEsesfpn3r"},
-  {name:"Investor Deal",url:"https://drive.google.com/uc?export=download&id=1DTGdsZdfSM-HEn-ag-aat60hNkp7yi8S"},
-  {name:"Root Lyfe Intro",url:"https://drive.google.com/uc?export=download&id=1oUCAH3_nmNxfX7uIBnlUc31zFFFBvoZP"}
+const googleTracks=[
+{name:"Deal Connector",url:"https://drive.google.com/uc?export=download&id=1UBfuV7XyEKmroJW4rgCJMSfYyhKrjiXy"},
+{name:"Contracts",url:"https://drive.google.com/uc?export=download&id=1Ieib2X0NIemlH8j4DNR7tnCJUXyfILDc"},
+{name:"Closing Point",url:"https://drive.google.com/uc?export=download&id=16OCcO4vOfAr3rftm4Pf_nLDfPoolKqdN"},
+{name:"Property Sequel",url:"https://drive.google.com/uc?export=download&id=1Rk_05-2uSbU-A6ojNnhD2oPEsesfpn3r"},
+{name:"Investor Deal",url:"https://drive.google.com/uc?export=download&id=1DTGdsZdfSM-HEn-ag-aat60hNkp7yi8S"},
+{name:"Root Lyfe Intro",url:"https://drive.google.com/uc?export=download&id=1oUCAH3_nmNxfX7uIBnlUc31zFFFBvoZP"}
 ];
-
-let zohoTracks = [];
-let activeTracks = [...googleTracks];
-let currentTrack = 0;
-let player = null;
-
-function initPlayer(){
-  player = document.getElementById("player");
-  player.addEventListener("ended", ()=>{
-    currentTrack = (currentTrack + 1) % activeTracks.length;
-    loadTrack(currentTrack,true);
-  });
-  player.addEventListener("error", ()=>{
-    document.getElementById("audioSource").innerHTML = "Source Error: file did not load. Check public sharing or link format.";
-  });
-  switchPlaylistMode();
-}
-function buildZohoTracks(){
-  zohoTracks = [
-    {name:"Zoho 1",url:document.getElementById("zoho1").value.trim()},
-    {name:"Zoho 2",url:document.getElementById("zoho2").value.trim()},
-    {name:"Zoho 3",url:document.getElementById("zoho3").value.trim()}
-  ].filter(t=>t.url && !t.url.includes("YOUR_ZOHO"));
-}
-function switchPlaylistMode(){
-  buildZohoTracks();
-  const mode = document.getElementById("audioMode").value;
-  activeTracks = mode === "zoho" ? [...zohoTracks] : [...googleTracks];
-  currentTrack = 0;
-  if(activeTracks.length){ loadTrack(0,false); }
-}
-function loadTrack(index,autoPlay=false){
-  if(!activeTracks.length || !player) return;
-  const t = activeTracks[index];
-  player.src = t.url;
-  document.getElementById("nowPlaying").innerHTML = "Now Playing: " + t.name;
-  document.getElementById("audioSource").innerHTML = "Source: " + t.url;
-  if(autoPlay){
-    player.play().catch(()=>{});
-  }
-}
-function startPlaylist(){
-  if(!activeTracks.length) return;
-  loadTrack(currentTrack,false);
-  player.play().catch(()=>{});
-}
-function nextTrack(){
-  if(!activeTracks.length) return;
-  currentTrack = (currentTrack+1)%activeTracks.length;
-  loadTrack(currentTrack,true);
-}
-function toggleMute(){
-  if(player) player.muted = !player.muted;
-}
-function testSingleTrack(){
-  switchPlaylistMode();
-  if(activeTracks.length){ loadTrack(0,true); }
-}
-function reloadZohoPlaylist(){
-  buildZohoTracks();
-  alert("Zoho playlist reloaded.");
-}
+let currentTrack=0,player;
+function initPlayer(){player=document.getElementById("player");player.addEventListener("ended",()=>nextTrack());player.addEventListener("error",()=>document.getElementById("nowPlaying").innerHTML="Audio blocked. Swap links later.");}
+function loadTrack(i,play=false){let t=googleTracks[i];player.src=t.url;document.getElementById("nowPlaying").innerHTML="Now Playing: "+t.name;if(play)player.play().catch(()=>{});}
+function startPlaylist(){loadTrack(currentTrack,true)}
+function nextTrack(){currentTrack=(currentTrack+1)%googleTracks.length;loadTrack(currentTrack,true)}
+function toggleMute(){player.muted=!player.muted}
 
 /* LEADS */
-let baseLeads = [
-  {address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,price:150000,status:"lead",source:"",notes:""},
-  {address:"2109 W Nedro Ave Philadelphia PA",arv:350000,repairs:50000,price:140000,status:"offer sent",source:"",notes:""},
-  {address:"742 W Somerset St Philadelphia PA",arv:220000,repairs:40000,price:120000,status:"negotiating",source:"",notes:""}
+let baseLeads=[
+{address:"857 E Stafford St Philadelphia PA",arv:300000,repairs:70000,price:150000,fee:10000,status:"lead",source:"",notes:""},
+{address:"2109 W Nedro Ave Philadelphia PA",arv:350000,repairs:50000,price:140000,fee:10000,status:"offer sent",source:"",notes:""},
+{address:"742 W Somerset St Philadelphia PA",arv:220000,repairs:40000,price:120000,fee:10000,status:"negotiating",source:"",notes:""}
 ];
-for(let i=0;i<50;i++){
-  baseLeads.push({
-    address:`${1200+i} Ridge Ave Philadelphia PA`,
-    arv:180000+(i*1500),
-    repairs:25000+(i*400),
-    price:100000+(i*700),
-    status:"lead",
-    source:"",
-    notes:""
-  });
-}
-let leads = JSON.parse(localStorage.getItem("rolyfe_leads")) || baseLeads;
-
-function save(){
-  localStorage.setItem("rolyfe_leads", JSON.stringify(leads));
-}
+let leads=JSON.parse(localStorage.getItem("rolyfe_deal_os_leads"))||baseLeads;
+function save(){localStorage.setItem("rolyfe_deal_os_leads",JSON.stringify(leads))}
+function money(n){return "$"+Math.round(Number(n)||0).toLocaleString()}
 function calcLead(d){
-  const arv = +d.arv || 0;
-  const price = +d.price || 0;
-  const repairs = +d.repairs || 0;
-  return {
-    cash: arv * 0.5,
-    creative: arv * 0.75,
-    sellerFinance: arv * 0.8,
-    mao70: (arv * 0.7) - repairs,
-    spread: arv - price,
-    profit: (arv * 0.7) - price - repairs
-  };
+let arv=+d.arv||0,price=+d.price||0,repairs=+d.repairs||0,fee=+d.fee||0,total=price+repairs+fee;
+let profit=(arv*.7)-price-repairs-fee,roi=total?profit/total*100:0;
+let verdict='<span class="verdict-bad">🚫 Numbers weak. Re-check.</span>';
+if(profit>=40000)verdict='<span class="verdict-good">👍🏾 GREAT DEAL — LOCK IT IN</span>';
+else if(profit>=15000)verdict='<span class="verdict-mid">💯 Numbers look solid. Check repairs.</span>';
+return{cash:arv*.5,creative:arv*.75,sellerFinance:arv*.8,mao70:(arv*.7)-repairs-fee,spread:arv-price,overage:arv-price,profit,roi,total,verdict}
 }
 function updateUI(){
-  let total=0, closed=0;
-  let stages={lead:0,"offer sent":0,negotiating:0,signed:0,sold:0};
-  leads.forEach(d=>{
-    stages[d.status] = (stages[d.status]||0)+1;
-    if(d.status==="sold"){
-      total += calcLead(d).profit;
-      closed++;
-    }
-  });
-  document.getElementById("scoreboard").innerHTML = `💰 Closed: ${closed} | Profit: $${Math.round(total)}`;
-  document.getElementById("pipeline").innerHTML = `
-    <div class="pipe">Lead<br>${stages.lead||0}</div>
-    <div class="pipe">Offer<br>${stages["offer sent"]||0}</div>
-    <div class="pipe">Negotiating<br>${stages.negotiating||0}</div>
-    <div class="pipe">Signed<br>${stages.signed||0}</div>
-    <div class="pipe">Sold<br>${stages.sold||0}</div>
-  `;
+let stages={lead:0,"offer sent":0,negotiating:0,signed:0,sold:0},closed=0,total=0;
+leads.forEach(d=>{stages[d.status]=(stages[d.status]||0)+1;if(d.status==="sold"){closed++;total+=calcLead(d).profit}});
+document.getElementById("scoreboard").innerHTML=`💰 Closed: ${closed} | Profit: ${money(total)}`;
+document.getElementById("pipeline").innerHTML=`
+<div class="pipe">Lead<br>${stages.lead||0}</div><div class="pipe">Offer<br>${stages["offer sent"]||0}</div>
+<div class="pipe">Negotiating<br>${stages.negotiating||0}</div><div class="pipe">Signed<br>${stages.signed||0}</div><div class="pipe">Sold<br>${stages.sold||0}</div>`;
 }
 function render(){
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-  leads.forEach((d,i)=>{
-    const c = calcLead(d);
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = `
-      <div class="card-header" onclick="this.nextElementSibling.classList.toggle('hidden')">
-        <span>${d.address}</span>
-        <span class="badge">${d.status}</span>
-      </div>
-      <div class="hidden">
-        <select onchange="setStatus(${i},this.value)">
-          <option ${d.status==="lead"?"selected":""}>lead</option>
-          <option ${d.status==="offer sent"?"selected":""}>offer sent</option>
-          <option ${d.status==="negotiating"?"selected":""}>negotiating</option>
-          <option ${d.status==="signed"?"selected":""}>signed</option>
-          <option ${d.status==="sold"?"selected":""}>sold</option>
-        </select>
-
-        <input value="${d.arv}" onchange="leads[${i}].arv=this.value;save();render();" placeholder="ARV">
-        <input value="${d.price}" onchange="leads[${i}].price=this.value;save();render();" placeholder="Seller Ask">
-        <input value="${d.repairs}" onchange="leads[${i}].repairs=this.value;save();render();" placeholder="Repairs">
-        <input value="${d.source||""}" onchange="leads[${i}].source=this.value;save();" placeholder="Lead Source">
-        <textarea onchange="leads[${i}].notes=this.value;save();" placeholder="Notes">${d.notes||""}</textarea>
-
-        <div class="offer-box">
-          <b>Offer Stack</b><br>
-          Cash: $${Math.round(c.cash)}<br>
-          Creative: $${Math.round(c.creative)}<br>
-          Seller Finance: $${Math.round(c.sellerFinance)}<br>
-          70% MAO: $${Math.round(c.mao70)}<br>
-          Spread: $${Math.round(c.spread)}<br>
-          Profit: $${Math.round(c.profit)}
-          ${d.source ? `<br><b>Source:</b> ${d.source}` : ""}
-        </div>
-
-        <div class="btn-row-2">
-          <button class="btn" onclick="openZillow('${escapeQuotes(d.address)}')">🏡 Zillow</button>
-          <button class="btn" onclick="openRedfin('${escapeQuotes(d.address)}')">📍 Redfin</button>
-        </div>
-        <div class="btn-row-2">
-          <button class="btn" onclick="fillAnalyzer(leads[${i}])">📥 Analyzer</button>
-          <button class="btn" onclick="autoSMS(leads[${i}])">📱 SMS</button>
-        </div>
-        <div class="btn-row-2">
-          <button class="btn" onclick="sendEmailLead(leads[${i}])">📧 Email</button>
-          <button class="btn" onclick="setDocFromLead(leads[${i}])">🧾 Load to Doc</button>
-        </div>
-      </div>
-    `;
-    grid.appendChild(div);
-  });
-  updateUI();
+let grid=document.getElementById("grid");grid.innerHTML="";
+leads.slice(0,12).forEach((d,i)=>{
+let c=calcLead(d),div=document.createElement("div");div.className="pipeline-item";
+div.innerHTML=`
+<div class="card-header" onclick="this.nextElementSibling.classList.toggle('hidden')">
+<span>${d.address}</span><span class="badge">${d.status}</span></div>
+<div class="hidden">
+<select onchange="setStatus(${i},this.value)">
+<option ${d.status==="lead"?"selected":""}>lead</option><option ${d.status==="offer sent"?"selected":""}>offer sent</option>
+<option ${d.status==="negotiating"?"selected":""}>negotiating</option><option ${d.status==="signed"?"selected":""}>signed</option><option ${d.status==="sold"?"selected":""}>sold</option>
+</select>
+<input value="${d.arv}" onchange="leads[${i}].arv=this.value;save();render();" placeholder="ARV">
+<input value="${d.price}" onchange="leads[${i}].price=this.value;save();render();" placeholder="Seller Ask">
+<input value="${d.repairs}" onchange="leads[${i}].repairs=this.value;save();render();" placeholder="Repairs">
+<input value="${d.fee||0}" onchange="leads[${i}].fee=this.value;save();render();" placeholder="Fee">
+<input value="${d.source||""}" onchange="leads[${i}].source=this.value;save();" placeholder="Lead Source">
+<textarea onchange="leads[${i}].notes=this.value;save();" placeholder="Notes">${d.notes||""}</textarea>
+<div class="offer-box">
+Cash: ${money(c.cash)}<br>Creative: ${money(c.creative)}<br>Seller Finance: ${money(c.sellerFinance)}<br>
+70% MAO: ${money(c.mao70)}<br>Overage: ${money(c.overage)}<br>Profit: ${money(c.profit)}<br>ROI: ${c.roi.toFixed(1)}%<br>${c.verdict}
+</div>
+<div class="btn-row-2">
+<button class="btn" onclick="openZillow('${escapeQuotes(d.address)}')">🏡 Zillow</button>
+<button class="btn" onclick="openRedfin('${escapeQuotes(d.address)}')">📍 Redfin</button>
+</div>
+<div class="btn-row-2">
+<button class="btn" onclick="fillAnalyzer(leads[${i}])">📥 Analyzer</button>
+<button class="btn" onclick="setDocFromLead(leads[${i}])">🧾 Load to Doc</button>
+</div>
+<div class="btn-row-2">
+<button class="btn" onclick="sendEmailLead(leads[${i}])">📧 Email</button>
+<button class="btn" onclick="autoSMS(leads[${i}])">📱 SMS</button>
+</div>
+</div>`;
+grid.appendChild(div);
+});
+updateUI();
 }
-function escapeQuotes(s){
-  return String(s).replace(/'/g,"\\'");
-}
-function setStatus(i,val){
-  leads[i].status = val;
-  if(val==="offer sent"){ autoSMS(leads[i]); }
-  save();
-  render();
-}
+function escapeQuotes(s){return String(s).replace(/'/g,"\\'")}
+function setStatus(i,val){leads[i].status=val;save();render()}
 function saveContractorLead(){
-  const address = document.getElementById("leadAddress").value.trim();
-  const arv = parseFloat(document.getElementById("leadArv").value) || 0;
-  const ask = parseFloat(document.getElementById("leadAsk").value) || 0;
-  const repairs = parseFloat(document.getElementById("leadRepairs").value) || 0;
-  const source = document.getElementById("leadSource").value.trim();
-  const notes = document.getElementById("leadNotes").value.trim();
-  if(!address){ alert("Enter a property address first."); return; }
-  leads.unshift({address,arv,price:ask,repairs,source,notes,status:"lead"});
-  save();
-  render();
-  document.getElementById("leadSavedMsg").innerHTML = "Lead saved: " + address;
-  clearLeadForm();
+let d={address:leadAddress.value.trim(),arv:+leadArv.value||0,price:+leadAsk.value||0,repairs:+leadRepairs.value||0,fee:+leadFee.value||0,source:leadSource.value.trim(),notes:leadNotes.value.trim(),status:"lead"};
+if(!d.address)return alert("Enter property address first.");
+leads.unshift(d);save();render();leadSavedMsg.innerHTML="Lead saved: "+d.address;clearLeadForm();
 }
-function clearLeadForm(){
-  ["leadAddress","leadArv","leadAsk","leadRepairs","leadSource","leadNotes"].forEach(id=>{
-    document.getElementById(id).value = "";
-  });
-}
+function clearLeadForm(){["leadAddress","leadArv","leadAsk","leadRepairs","leadFee","leadSource","leadNotes"].forEach(id=>document.getElementById(id).value="")}
 function uploadCSV(){
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = ".csv";
-  input.onchange = e=>{
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = ()=>{
-      const rows = reader.result.split("\n").slice(1).filter(Boolean);
-      leads = rows.map(r=>{
-        const c = r.split(",");
-        return {
-          address:(c[0]||"").trim(),
-          arv:+c[1]||0,
-          repairs:+c[2]||0,
-          price:+c[3]||0,
-          source:(c[4]||"").trim(),
-          notes:(c[5]||"").trim(),
-          status:"lead"
-        };
-      }).filter(x=>x.address);
-      save();
-      render();
-    };
-    reader.readAsText(file);
-  };
-  input.click();
+let input=document.createElement("input");input.type="file";input.accept=".csv";
+input.onchange=e=>{let r=new FileReader();r.onload=()=>{leads=r.result.split("\n").slice(1).filter(Boolean).map(row=>{let c=row.split(",");return{address:(c[0]||"").trim(),arv:+c[1]||0,repairs:+c[2]||0,price:+c[3]||0,fee:+c[4]||0,source:c[5]||"",notes:c[6]||"",status:"lead"}}).filter(x=>x.address);save();render()};r.readAsText(e.target.files[0])};input.click();
 }
 
-/* SEARCH + ESTIMATOR */
-function searchZillow(){
-  const addr = document.getElementById("searchAddress").value.trim();
-  if(!addr){ alert("Enter an address first."); return; }
-  openZillow(addr);
-}
-function searchRedfin(){
-  const addr = document.getElementById("searchAddress").value.trim();
-  if(!addr){ alert("Enter an address first."); return; }
-  openRedfin(addr);
-}
-function openZillow(addr){
-  window.open(`https://www.zillow.com/homes/${encodeURIComponent(addr)}_rb/`, "_blank");
-}
-function openRedfin(addr){
-  window.open(`https://www.redfin.com/stingray/do/location-autocomplete?location=${encodeURIComponent(addr)}`, "_blank");
-}
+/* SEARCH + CALCULATOR */
+function openZillow(addr){window.open(`https://www.zillow.com/homes/${encodeURIComponent(addr)}_rb/`,"_blank")}
+function openRedfin(addr){window.open(`https://www.redfin.com/stingray/do/location-autocomplete?location=${encodeURIComponent(addr)}`,"_blank")}
+function searchZillow(){let a=searchAddress.value.trim();if(!a)return alert("Enter address.");openZillow(a)}
+function searchRedfin(){let a=searchAddress.value.trim();if(!a)return alert("Enter address.");openRedfin(a)}
 function runEstimator(){
-  const arv = parseFloat(document.getElementById("searchArv").value) || 0;
-  const ask = parseFloat(document.getElementById("searchAsk").value) || 0;
-  const repairs = parseFloat(document.getElementById("searchRepairs").value) || 0;
-  const fee = parseFloat(document.getElementById("searchFee").value) || 0;
-
-  const mao70 = (arv*0.7)-repairs;
-  const spread = arv - ask;
-  const estProfit = (arv*0.7)-ask-repairs-fee;
-  const cashOffer = arv*0.5;
-  const creativeOffer = arv*0.75;
-  const sellerFinanceOffer = arv*0.8;
-
-  document.getElementById("estimatorResults").innerHTML = `
-    <b>Estimator Results</b><br>
-    70% MAO: $${Math.round(mao70)}<br>
-    Spread: $${Math.round(spread)}<br>
-    Estimated Profit: $${Math.round(estProfit)}<br><br>
-    <b>Offer Stack</b><br>
-    Cash Offer: $${Math.round(cashOffer)}<br>
-    Creative Offer: $${Math.round(creativeOffer)}<br>
-    Seller Finance Offer: $${Math.round(sellerFinanceOffer)}
-  `;
+let d={arv:+searchArv.value||0,price:+searchAsk.value||0,repairs:+searchRepairs.value||0,fee:+searchFee.value||0},c=calcLead(d);
+estimatorResults.innerHTML=`ARV: ${money(d.arv)}<br>Ask: ${money(d.price)}<br>Repairs: ${money(d.repairs)}<br>Fee: ${money(d.fee)}<br>Total Cost: ${money(c.total)}<br>Overage: ${money(c.overage)}<br>70% MAO: ${money(c.mao70)}<br>Estimated Profit: ${money(c.profit)}<br>ROI: ${c.roi.toFixed(1)}%<br>Verdict: ${c.verdict}`;
 }
-
-/* FUNDING */
 function calcFunding(){
-  const arv = parseFloat(document.getElementById("arv").value) || 0;
-  const cashPct = parseFloat(document.getElementById("cashPct").value) || 0;
-  const carryPct = parseFloat(document.getElementById("carryPct").value) || 0;
-  const creativePct = parseFloat(document.getElementById("creativePct").value) || 0;
-  document.getElementById("cash").innerHTML = "Cash Offer: $" + Math.round(arv*(cashPct/100));
-  document.getElementById("carry").innerHTML = "Seller Carry: $" + Math.round(arv*(carryPct/100));
-  document.getElementById("creative").innerHTML = "Seller Finance: $" + Math.round(arv*(creativePct/100));
+let d={arv:+arv.value||0,price:+purchase.value||0,repairs:+rehab.value||0,fee:+fee.value||0},c=calcLead(d);
+fundingResults.innerHTML=`Cash Offer: ${money(d.arv*(+cashPct.value/100||0))}<br>Seller Carry: ${money(d.arv*(+carryPct.value/100||0))}<br>Seller Finance: ${money(d.arv*(+creativePct.value/100||0))}<br>Overage: ${money(c.overage)}<br>Profit: ${money(c.profit)}<br>ROI: ${c.roi.toFixed(1)}%<br>Verdict: ${c.verdict}`;
 }
 function fillAnalyzer(d){
-  document.getElementById("address").value = d.address || "";
-  document.getElementById("arv").value = d.arv || "";
-  document.getElementById("purchase").value = d.price || "";
-  document.getElementById("rehab").value = d.repairs || "";
-  document.getElementById("searchAddress").value = d.address || "";
-  document.getElementById("searchArv").value = d.arv || "";
-  document.getElementById("searchAsk").value = d.price || "";
-  document.getElementById("searchRepairs").value = d.repairs || "";
-  document.getElementById("docProperty").value = d.address || "";
-  document.getElementById("docPrice").value = d.price || "";
-  calcFunding();
-  runEstimator();
+address.value=d.address||"";purchase.value=d.price||"";rehab.value=d.repairs||"";arv.value=d.arv||"";
+searchAddress.value=d.address||"";searchArv.value=d.arv||"";searchAsk.value=d.price||"";searchRepairs.value=d.repairs||"";searchFee.value=d.fee||"";
+docProperty.value=d.address||"";docPrice.value=d.price||"";calcFunding();runEstimator();
 }
-function sendDealEmail(){
-  const body = `
-Deal Submission
 
-Name: ${document.getElementById("name").value}
-Entity: ${document.getElementById("entity").value}
-Email: ${document.getElementById("email").value}
-Phone: ${document.getElementById("phone").value}
-Property: ${document.getElementById("address").value}
-Purchase: ${document.getElementById("purchase").value}
-Rehab: ${document.getElementById("rehab").value}
-ARV: ${document.getElementById("arv").value}
-`;
-  window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent("Deal Submission")}&body=${encodeURIComponent(body)}`;
-}
-function blastDeal(){
-  const property = document.getElementById("address").value || document.getElementById("searchAddress").value;
-  const arv = document.getElementById("arv").value || document.getElementById("searchArv").value;
-  const ask = document.getElementById("purchase").value || document.getElementById("searchAsk").value;
-  const repairs = document.getElementById("rehab").value || document.getElementById("searchRepairs").value;
-  const msg = `🔥 RO’Lyfe Deal Blast
+/* EMAIL + TEXT — SAME DATA */
+function dealSummary(){
+let property=address.value||searchAddress.value,arvV=arv.value||searchArv.value,ask=purchase.value||searchAsk.value,repairs=rehab.value||searchRepairs.value;
+let d={arv:+arvV||0,price:+ask||0,repairs:+repairs||0,fee:+fee.value||0},c=calcLead(d);
+return `RO’Lyfe Deal Summary
 
 Property: ${property}
-ARV: $${arv}
-Ask: $${ask}
+ARV: $${arvV}
+Ask / Purchase: $${ask}
 Repairs: $${repairs}
+Broker Fee: ${fee.value||"3"}%
 
-Reply if interested.`;
-  window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent("RO’Lyfe Deal Blast - " + property)}&body=${encodeURIComponent(msg)}`;
-}
-function textDeal(){
-  const property = document.getElementById("address").value || document.getElementById("searchAddress").value;
-  const arv = document.getElementById("arv").value || document.getElementById("searchArv").value;
-  const ask = document.getElementById("purchase").value || document.getElementById("searchAsk").value;
-  const msg = `RO’Lyfe Deal
+Cash Offer: ${money(d.arv*(+cashPct.value/100||0))}
+Seller Carry: ${money(d.arv*(+carryPct.value/100||0))}
+Seller Finance: ${money(d.arv*(+creativePct.value/100||0))}
+Overage: ${money(c.overage)}
+Estimated Profit: ${money(c.profit)}
+ROI: ${c.roi.toFixed(1)}%
 
-${property}
-ARV: $${arv}
-Ask: $${ask}`;
-  window.location.href = `sms:${PHONE}?body=${encodeURIComponent(msg)}`;
+Client/Borrower: ${name.value}
+Entity: ${entity.value}
+Email: ${email.value}
+Phone: ${phone.value}
+
+Agreement Type: ${docType.value}
+Seller/Client: ${docSeller.value}
+Effective Date: ${docEffectiveDate.value}
+Closing Date: ${docClosingDate.value}`;
 }
-function autoSMS(d){
-  const c = calcLead(d);
-  const msg = `Hi, this is Richardson.
+function sendDealEmail(){window.location.href=`mailto:${EMAIL}?subject=${encodeURIComponent("RO’Lyfe Deal - "+(address.value||searchAddress.value))}&body=${encodeURIComponent(dealSummary())}`}
+function textDeal(){window.location.href=`sms:${PHONE}?body=${encodeURIComponent(dealSummary())}`}
+function blastDeal(){window.location.href=`mailto:${EMAIL}?subject=${encodeURIComponent("RO’Lyfe Offer Blast - "+(address.value||searchAddress.value))}&body=${encodeURIComponent(dealSummary())}`}
+function sendEmailLead(d){let c=calcLead(d);let body=`RO’Lyfe Lead Offer
 
 Property: ${d.address}
+ARV: ${money(d.arv)}
+Seller Ask: ${money(d.price)}
+Repairs: ${money(d.repairs)}
+Fee: ${money(d.fee)}
+Cash Offer: ${money(c.cash)}
+Overage: ${money(c.overage)}
+Profit: ${money(c.profit)}
+ROI: ${c.roi.toFixed(1)}%
 
-Cash Offer: $${Math.round(c.cash)}
+Notes: ${d.notes||""}`;window.location.href=`mailto:${EMAIL}?subject=${encodeURIComponent("Offer - "+d.address)}&body=${encodeURIComponent(body)}`}
+function autoSMS(d){let c=calcLead(d);let msg=`RO’Lyfe Lead
 
-We buy AS-IS and close fast.
-
-Reply YES to move forward.`;
-  window.location.href = `sms:${PHONE}?body=${encodeURIComponent(msg)}`;
+${d.address}
+ARV: ${money(d.arv)}
+Ask: ${money(d.price)}
+Cash Offer: ${money(c.cash)}
+Profit: ${money(c.profit)}`;window.location.href=`sms:${PHONE}?body=${encodeURIComponent(msg)}`}
+function downloadOfferPDF(){
+let html=`<html><head><title>RO’Lyfe Offer</title><style>body{font-family:Arial;padding:30px;color:#111}.box{border:1px solid #ddd;padding:20px;border-radius:14px}</style></head><body><h1>RO’Lyfe Offer Summary</h1><div class="box"><pre>${dealSummary()}</pre></div></body></html>`;
+let w=window.open("","_blank");w.document.write(html);w.document.close();setTimeout(()=>w.print(),500);
 }
-function sendEmailLead(d){
-  const c = calcLead(d);
-  const body = `Offer
 
-Property: ${d.address}
-Cash Offer: $${Math.round(c.cash)}
-ARV: $${d.arv}
-Repairs: $${d.repairs}
-Seller Ask: $${d.price}`;
-  window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent("Offer - " + d.address)}&body=${encodeURIComponent(body)}`;
-}
-
-/* SIGNATURES */
-const signaturePads = {};
+/* SIGNATURE */
+const signaturePads={};
 function setupSignatureCanvas(id){
-  const canvas = document.getElementById(id);
-  const ctx = canvas.getContext("2d");
-  function resizeCanvas(){
-    const ratio = Math.max(window.devicePixelRatio || 1,1);
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * ratio;
-    canvas.height = rect.height * ratio;
-    ctx.scale(ratio,ratio);
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
-    ctx.strokeStyle = "#111";
-    ctx.fillStyle = "#111";
-  }
-  resizeCanvas();
-
-  let drawing = false;
-  function getPos(e){
-    const rect = canvas.getBoundingClientRect();
-    const touch = e.touches ? e.touches[0] : e;
-    return {x:touch.clientX - rect.left, y:touch.clientY - rect.top};
-  }
-  function start(e){
-    drawing = true;
-    const p = getPos(e);
-    ctx.beginPath();
-    ctx.moveTo(p.x,p.y);
-    e.preventDefault();
-  }
-  function move(e){
-    if(!drawing) return;
-    const p = getPos(e);
-    ctx.lineTo(p.x,p.y);
-    ctx.stroke();
-    e.preventDefault();
-  }
-  function end(){ drawing=false; }
-
-  canvas.addEventListener("mousedown",start);
-  canvas.addEventListener("mousemove",move);
-  canvas.addEventListener("mouseup",end);
-  canvas.addEventListener("mouseleave",end);
-
-  canvas.addEventListener("touchstart",start,{passive:false});
-  canvas.addEventListener("touchmove",move,{passive:false});
-  canvas.addEventListener("touchend",end);
-
-  signaturePads[id] = {canvas,ctx};
+let canvas=document.getElementById(id),ctx=canvas.getContext("2d");
+function resize(){let ratio=Math.max(window.devicePixelRatio||1,1),rect=canvas.getBoundingClientRect();canvas.width=rect.width*ratio;canvas.height=rect.height*ratio;ctx.scale(ratio,ratio);ctx.lineWidth=2.5;ctx.lineCap="round";ctx.strokeStyle="#000";ctx.fillStyle="#000"}resize();
+let drawing=false;
+function pos(e){let r=canvas.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return{x:p.clientX-r.left,y:p.clientY-r.top}}
+function start(e){drawing=true;let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);e.preventDefault()}
+function move(e){if(!drawing)return;let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();e.preventDefault()}
+function end(){drawing=false}
+["mousedown","touchstart"].forEach(ev=>canvas.addEventListener(ev,start,{passive:false}));
+["mousemove","touchmove"].forEach(ev=>canvas.addEventListener(ev,move,{passive:false}));
+["mouseup","mouseleave","touchend"].forEach(ev=>canvas.addEventListener(ev,end));
+signaturePads[id]={canvas,ctx};
 }
-function clearSignature(id){
-  const pad = signaturePads[id];
-  if(!pad) return;
-  pad.ctx.clearRect(0,0,pad.canvas.width,pad.canvas.height);
-}
-function loadTypedSignature(id){
-  const name = prompt("Type the name for this signature:");
-  if(!name) return;
-  const pad = signaturePads[id];
-  const ctx = pad.ctx;
-  ctx.clearRect(0,0,pad.canvas.width,pad.canvas.height);
-  ctx.font = "32px cursive";
-  ctx.fillText(name,20,90);
-}
-function loadCompanySignature(id){
-  const pad = signaturePads[id];
-  const ctx = pad.ctx;
-  ctx.clearRect(0,0,pad.canvas.width,pad.canvas.height);
-  ctx.font = "30px cursive";
-  ctx.fillText("Richardson L.",20,90);
-}
-function setDocFromLead(d){
-  document.getElementById("docProperty").value = d.address || "";
-  document.getElementById("docPrice").value = d.price || "";
-  document.getElementById("docSeller").value = d.source || "";
-  document.getElementById("docEffectiveDate").value = new Date().toLocaleDateString();
-}
+function clearSignature(id){let p=signaturePads[id];p.ctx.clearRect(0,0,p.canvas.width,p.canvas.height)}
+function loadTypedSignature(id){let n=prompt("Type name for signature:");if(!n)return;let p=signaturePads[id];p.ctx.clearRect(0,0,p.canvas.width,p.canvas.height);p.ctx.font="32px cursive";p.ctx.fillText(n,20,90)}
+function loadCompanySignature(id){let p=signaturePads[id];p.ctx.clearRect(0,0,p.canvas.width,p.canvas.height);p.ctx.font="32px cursive";p.ctx.fillText("Richardson L.",20,90)}
+function setDocFromLead(d){docProperty.value=d.address||"";docPrice.value=d.price||"";docSeller.value=d.source||"";docEffectiveDate.value=new Date().toISOString().slice(0,10)}
 
 /* AGREEMENTS */
-let generatedHTML = "";
+let generatedHTML="";
+function val(id,blank){return document.getElementById(id).value||blank}
+function agreementShell(title,body){
+let sig1=sigOne.toDataURL("image/png"),sig2=sigTwo.toDataURL("image/png"),extra=customClauses.value.trim();
+return `<html><head><title>${title}</title><style>
+body{font-family:Arial,sans-serif;background:#fff;color:#111;padding:32px;line-height:1.5}.doc{max-width:900px;margin:auto}
+h1{text-align:center;font-size:26px}h2{font-size:18px;margin-top:18px}p{margin:8px 0}
+.sig{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}.sig img{max-width:260px;max-height:100px;display:block;margin-bottom:8px}
+.line{border-top:1px solid #111;padding-top:5px}.extra{margin-top:18px;padding:12px;border:1px solid #ddd;border-radius:10px;background:#f8f8f8}
+@media print{body{padding:12px}}
+</style></head><body><div class="doc"><h1>${title}</h1>${body}
+<div class="sig"><div><img src="${sig1}"><div class="line">Signature 1</div></div><div><img src="${sig2}"><div class="line">Signature 2</div></div></div>
+${extra?`<div class="extra"><b>Additional Clauses / Notes</b><br>${extra.replace(/\n/g,"<br>")}</div>`:""}
+</div></body></html>`;
+}
 function generateAgreement(){
-  const type = document.getElementById("docType").value;
-  const seller = document.getElementById("docSeller").value || "__________________________";
-  const buyer = document.getElementById("docBuyer").value || "Root Of Lyfe Holdings LLC";
-  const assignee = document.getElementById("docAssignee").value || "__________________________";
-  const property = document.getElementById("docProperty").value || "______________________________________";
-  const price = document.getElementById("docPrice").value || "________________";
-  const emd = document.getElementById("docEMD").value || "________";
-  const assignFee = document.getElementById("docAssignFee").value || "__________________________";
-  const loanAmount = document.getElementById("docLoanAmount").value || "__________________________";
-  const closingDate = document.getElementById("docClosingDate").value || "______________________";
-  const state = document.getElementById("docState").value || "____________________";
-  const clientName = document.getElementById("docClientName").value || seller;
-  const effectiveDate = document.getElementById("docEffectiveDate").value || "_____________";
-  const extra = document.getElementById("customClauses").value.trim();
-
-  const sig1 = document.getElementById("sigOne").toDataURL("image/png");
-  const sig2 = document.getElementById("sigTwo").toDataURL("image/png");
-
-  const shellTop = `
-  <html><head><title>Agreement</title>
-  <style>
-    body{font-family:Arial,sans-serif;background:#fff;color:#111;padding:32px;line-height:1.5;}
-    .doc{max-width:900px;margin:0 auto;}
-    h1{font-size:26px;text-align:center;margin-bottom:20px;}
-    h2{font-size:18px;margin-top:18px;}
-    p{margin:8px 0;}
-    .sig{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
-    .sig img{max-width:250px;max-height:90px;display:block;margin-bottom:8px;}
-    .line{border-top:1px solid #111;margin-top:8px;padding-top:4px;}
-    .small{font-size:12px;color:#444;}
-    .extra{margin-top:18px;padding:12px;border:1px solid #ddd;border-radius:10px;background:#f8f8f8;}
-    @media print{body{padding:12px;}}
-  </style></head><body><div class="doc">`;
-
-  const shellBottom = `
-    <div class="sig">
-      <div>
-        <img src="${sig1}">
-        <div class="line">Signature 1</div>
-      </div>
-      <div>
-        <img src="${sig2}">
-        <div class="line">Signature 2</div>
-      </div>
-    </div>
-    ${extra ? `<div class="extra"><b>Additional Clauses / Notes</b><br>${extra.replace(/\n/g,"<br>")}</div>` : ""}
-  </div></body></html>`;
-
-  if(type==="psa"){
-    generatedHTML = shellTop + `
-      <h1>PURCHASE AND SALE AGREEMENT</h1>
-      <p>This Agreement (“Agreement”) is made as of <b>${effectiveDate}</b> (“Effective Date”).</p>
-      <p><b>BETWEEN:</b></p>
-      <p>Seller: <b>${seller}</b><br>Buyer: <b>${buyer}</b> (or Assigns)</p>
-      <p>Property Address: <b>${property}</b></p>
-
-      <h2>1. PURCHASE PRICE</h2>
-      <p>Total Purchase Price: $<b>${price}</b></p>
-
-      <h2>2. EARNEST MONEY</h2>
-      <p>Earnest Money Deposit: $<b>${emd}</b>. Deposit may be held by Buyer or assigned entity and is fully refundable during the inspection period.</p>
-
-      <h2>3. INSPECTION PERIOD</h2>
-      <p>Buyer shall have a minimum of fourteen (14) days to inspect and evaluate the property. Buyer may cancel this Agreement at Buyer’s sole discretion for any reason within this period, and all earnest money shall be returned.</p>
-
-      <h2>4. ASSIGNABILITY</h2>
-      <p>This Agreement is freely assignable without further consent from Seller.</p>
-
-      <h2>5. MARKETING RIGHTS</h2>
-      <p>Seller grants Buyer the unrestricted right to market the property, advertise publicly or privately, and share property details with partners, buyers, lenders, and affiliates.</p>
-
-      <h2>6. ACCESS</h2>
-      <p>Seller agrees to provide reasonable access for inspections, contractors, appraisers, buyers, and lending partners.</p>
-
-      <h2>7. CONDITION OF PROPERTY</h2>
-      <p>Property is sold <b>AS-IS, WHERE-IS</b>. Seller makes no warranties, expressed or implied.</p>
-
-      <h2>8. BUYER’S EXIT STRATEGY</h2>
-      <p>Buyer retains full discretion to assign this Agreement, wholesale the transaction, perform a double closing, refinance, or hold the asset.</p>
-
-      <h2>9. NON-CIRCUMVENTION</h2>
-      <p>Seller agrees not to directly or indirectly engage with Buyer’s partners, buyers, or lenders without Buyer’s written consent.</p>
-
-      <h2>10. CLOSING</h2>
-      <p>Closing Date: <b>${closingDate}</b>. Buyer may extend closing if necessary for financing or assignment.</p>
-
-      <h2>11. DEFAULT</h2>
-      <p>If Seller defaults, Buyer retains equitable interest and may pursue legal and financial remedies.</p>
-
-      <h2>12. GOVERNING LAW</h2>
-      <p>This Agreement shall be governed by the laws of the state in which the property is located.</p>
-
-      <h2>SIGNATURES</h2>
-      <p>Seller Signature: ${seller}<br>Date: ${effectiveDate}</p>
-      <p>Buyer: Richardson L. / Root Of Lyfe Holdings LLC<br>Date: ${effectiveDate}</p>
-    ` + shellBottom;
-  }
-
-  if(type==="assign"){
-    generatedHTML = shellTop + `
-      <h1>ASSIGNMENT AGREEMENT</h1>
-      <p>This Assignment Agreement (“Agreement”) is made this <b>${effectiveDate}</b>.</p>
-      <p><b>BETWEEN:</b></p>
-      <p>Assignor: <b>Root Of Lyfe Holdings LLC</b><br>Assignee: <b>${assignee}</b></p>
-      <p>Property Address: <b>${property}</b></p>
-
-      <h2>1. ORIGINAL CONTRACT</h2>
-      <p>Assignor holds equitable interest in the Property under an existing Purchase Agreement.</p>
-
-      <h2>2. ASSIGNMENT</h2>
-      <p>Assignor hereby assigns all rights, title, and interest in the Purchase Agreement to Assignee.</p>
-
-      <h2>3. ASSIGNMENT FEE</h2>
-      <p>Assignee agrees to pay Assignor a fee of: $<b>${assignFee}</b>. This fee shall be paid at closing through escrow/title company.</p>
-
-      <h2>4. ASSUMPTION OF CONTRACT</h2>
-      <p>Assignee agrees to perform all obligations under the original Purchase Agreement.</p>
-
-      <h2>5. NON-CIRCUMVENTION</h2>
-      <p>Assignee agrees not to bypass, avoid, or circumvent Assignor in any transaction related to this Property.</p>
-
-      <h2>6. LIABILITY</h2>
-      <p>Upon execution of this Agreement, Assignor shall be released from all obligations under the original contract.</p>
-
-      <h2>7. CLOSING</h2>
-      <p>Closing shall occur per the terms of the original Purchase Agreement.</p>
-
-      <h2>8. ENTIRE AGREEMENT</h2>
-      <p>This document constitutes the entire agreement between Assignor and Assignee.</p>
-
-      <h2>Assignment Profit Disclosure</h2>
-      <p>Assignor may receive compensation through assignment of this contract. Assignee acknowledges and agrees to the assignment fee and waives any claim regarding the amount of such fee.</p>
-
-      <h2>SIGNATURES</h2>
-      <p>Assignor: Root Of Lyfe Holdings LLC / Richardson L.<br>Date: ${effectiveDate}</p>
-      <p>Assignee: ${assignee}<br>Date: ${effectiveDate}</p>
-    ` + shellBottom;
-  }
-
-  if(type==="broker"){
-    generatedHTML = shellTop + `
-      <h1>CLIENT BROKER FEE AGREEMENT</h1>
-      <p>This Agreement is made this <b>${effectiveDate}</b>.</p>
-      <p><b>BETWEEN:</b></p>
-      <p>Broker: <b>Root Of Lyfe Holdings LLC</b><br>Client: <b>${clientName}</b></p>
-
-      <h2>1. SERVICES</h2>
-      <p>Broker agrees to use reasonable efforts to assist Client in obtaining financing for real estate investment purposes.</p>
-
-      <h2>2. BROKER FEE</h2>
-      <p>Client agrees to pay Broker a fee equal to: <b>3% of the Loan Amount</b>.</p>
-      <p>Loan Amount: $<b>${loanAmount}</b></p>
-      <p>The fee is earned upon loan approval and payable at closing.</p>
-
-      <h2>Protection Clause (Non-Circumvention & Survival)</h2>
-      <p>Client agrees that if a loan is obtained through any lender, investor, or funding source introduced directly or indirectly by Broker within twelve (12) months of introduction, Broker shall be entitled to the agreed fee of 3%, regardless of whether Broker is directly involved at closing. This provision shall survive termination of this Agreement.</p>
-
-      <h2>3. TERM</h2>
-      <p>This Agreement shall remain in effect for a period of six (6) months from the Effective Date.</p>
-
-      <h2>4. NON-CIRCUMVENTION</h2>
-      <p>Client agrees not to directly or indirectly engage with any lender, funding source, or partner introduced by Broker without Broker’s involvement.</p>
-
-      <h2>5. NO GUARANTEE</h2>
-      <p>Broker does not guarantee approval or funding.</p>
-
-      <h2>6. RELATIONSHIP</h2>
-      <p>Broker acts as an independent contractor and not as a lender or financial advisor.</p>
-
-      <h2>7. GOVERNING LAW</h2>
-      <p>This Agreement shall be governed by the laws of the State of <b>${state}</b>.</p>
-
-      <h2>8. ENTIRE AGREEMENT</h2>
-      <p>This Agreement represents the entire understanding between the parties.</p>
-
-      <h2>SIGNATURES</h2>
-      <p>Client Name: ${clientName}<br>Date: ${effectiveDate}</p>
-      <p>Broker: Root Of Lyfe Holdings LLC / Richardson L. / Email: richman@rootoflyfe.com<br>Date: ${effectiveDate}</p>
-    ` + shellBottom;
-  }
-
-  const win = window.open("", "_blank");
-  win.document.write(generatedHTML);
-  win.document.close();
+let type=docType.value,seller=val("docSeller","__________________________"),buyer=val("docBuyer","Root Of Lyfe Holdings LLC"),assignee=val("docAssignee","__________________________"),property=val("docProperty","______________________________________"),price=val("docPrice","________________"),emd=val("docEMD","________"),assignFee=val("docAssignFee","________________"),loan=val("docLoanAmount","________________"),closing=val("docClosingDate","________________"),state=val("docState","________________"),client=val("docClientName",seller),date=val("docEffectiveDate","_____________");
+if(type==="psa"){
+generatedHTML=agreementShell("PURCHASE AND SALE AGREEMENT",`
+<p>This Agreement (“Agreement”) is made as of <b>${date}</b> (“Effective Date”).</p>
+<p><b>BETWEEN:</b></p><p>Seller: <b>${seller}</b><br>Buyer: <b>${buyer}</b> (or Assigns)</p><p>Property Address: <b>${property}</b></p>
+<h2>1. PURCHASE PRICE</h2><p>Total Purchase Price: $<b>${price}</b></p>
+<h2>2. EARNEST MONEY</h2><p>Earnest Money Deposit: $<b>${emd}</b>. Deposit may be held by Buyer or assigned entity and is fully refundable during the inspection period.</p>
+<h2>3. INSPECTION PERIOD</h2><p>Buyer shall have a minimum of fourteen (14) days to inspect and evaluate the property. Buyer may cancel this Agreement at Buyer’s sole discretion for any reason within this period, and all earnest money shall be returned.</p>
+<h2>4. ASSIGNABILITY</h2><p>This Agreement is freely assignable without further consent from Seller.</p>
+<h2>5. MARKETING RIGHTS</h2><p>Seller grants Buyer the unrestricted right to market the property, advertise publicly or privately, and share property details with partners, buyers, lenders, and affiliates.</p>
+<h2>6. ACCESS</h2><p>Seller agrees to provide reasonable access for inspections, contractors, appraisers, buyers, and lending partners.</p>
+<h2>7. CONDITION OF PROPERTY</h2><p>Property is sold <b>AS-IS, WHERE-IS</b>. Seller makes no warranties, expressed or implied.</p>
+<h2>8. BUYER’S EXIT STRATEGY</h2><p>Buyer retains full discretion to assign this Agreement, wholesale the transaction, perform a double closing, refinance, or hold the asset.</p>
+<h2>9. NON-CIRCUMVENTION</h2><p>Seller agrees not to directly or indirectly engage with Buyer’s partners, buyers, or lenders without Buyer’s written consent.</p>
+<h2>10. CLOSING</h2><p>Closing Date: <b>${closing}</b>. Buyer may extend closing if necessary for financing or assignment.</p>
+<h2>11. DEFAULT</h2><p>If Seller defaults, Buyer retains equitable interest and may pursue legal and financial remedies.</p>
+<h2>12. GOVERNING LAW</h2><p>This Agreement shall be governed by the laws of the state in which the property is located.</p>
+<h2>SIGNATURES</h2><p>Seller Signature: ${seller}<br>Date: ${date}</p><p>Buyer: Richardson L. / Root Of Lyfe Holdings LLC<br>Date: ${date}</p>`);
 }
-function printAgreement(){
-  if(!generatedHTML){
-    generateAgreement();
-    return;
-  }
-  const win = window.open("", "_blank");
-  win.document.write(generatedHTML);
-  win.document.close();
-  setTimeout(()=>win.print(),500);
+if(type==="assign"){
+generatedHTML=agreementShell("ASSIGNMENT AGREEMENT",`
+<p>This Assignment Agreement (“Agreement”) is made this <b>${date}</b>.</p><p><b>BETWEEN:</b></p>
+<p>Assignor: <b>Root Of Lyfe Holdings LLC</b><br>Assignee: <b>${assignee}</b></p><p>Property Address: <b>${property}</b></p>
+<h2>1. ORIGINAL CONTRACT</h2><p>Assignor holds equitable interest in the Property under an existing Purchase Agreement.</p>
+<h2>2. ASSIGNMENT</h2><p>Assignor hereby assigns all rights, title, and interest in the Purchase Agreement to Assignee.</p>
+<h2>3. ASSIGNMENT FEE</h2><p>Assignee agrees to pay Assignor a fee of: $<b>${assignFee}</b>. This fee shall be paid at closing through escrow/title company.</p>
+<h2>4. ASSUMPTION OF CONTRACT</h2><p>Assignee agrees to perform all obligations under the original Purchase Agreement.</p>
+<h2>5. NON-CIRCUMVENTION</h2><p>Assignee agrees not to bypass, avoid, or circumvent Assignor in any transaction related to this Property.</p>
+<h2>6. LIABILITY</h2><p>Upon execution of this Agreement, Assignor shall be released from all obligations under the original contract.</p>
+<h2>7. CLOSING</h2><p>Closing shall occur per the terms of the original Purchase Agreement.</p>
+<h2>8. ENTIRE AGREEMENT</h2><p>This document constitutes the entire agreement between Assignor and Assignee.</p>
+<h2>Assignment Profit Disclosure</h2><p>Assignor may receive compensation through assignment of this contract. Assignee acknowledges and agrees to the assignment fee and waives any claim regarding the amount of such fee.</p>`);
 }
+if(type==="broker"){
+generatedHTML=agreementShell("CLIENT BROKER FEE AGREEMENT",`
+<p>This Agreement is made this <b>${date}</b>.</p><p><b>BETWEEN:</b></p><p>Broker: <b>Root Of Lyfe Holdings LLC</b><br>Client: <b>${client}</b></p>
+<h2>1. SERVICES</h2><p>Broker agrees to use reasonable efforts to assist Client in obtaining financing for real estate investment purposes.</p>
+<h2>2. BROKER FEE</h2><p>Client agrees to pay Broker a fee equal to: <b>3% of the Loan Amount</b>.</p><p>Loan Amount: $<b>${loan}</b></p><p>The fee is earned upon loan approval and payable at closing.</p>
+<h2>Protection Clause</h2><p>Client agrees that if a loan is obtained through any lender, investor, or funding source introduced directly or indirectly by Broker within twelve (12) months of introduction, Broker shall be entitled to the agreed fee of 3%, regardless of whether Broker is directly involved at closing.</p>
+<h2>3. TERM</h2><p>This Agreement shall remain in effect for six (6) months from the Effective Date.</p>
+<h2>4. NON-CIRCUMVENTION</h2><p>Client agrees not to directly or indirectly engage with any lender, funding source, or partner introduced by Broker without Broker’s involvement.</p>
+<h2>5. NO GUARANTEE</h2><p>Broker does not guarantee approval or funding.</p>
+<h2>6. RELATIONSHIP</h2><p>Broker acts as an independent contractor and not as a lender or financial advisor.</p>
+<h2>7. GOVERNING LAW</h2><p>This Agreement shall be governed by the laws of the State of <b>${state}</b>.</p>
+<h2>8. ENTIRE AGREEMENT</h2><p>This Agreement represents the entire understanding between the parties.</p>`);
+}
+let w=window.open("","_blank");w.document.write(generatedHTML);w.document.close();
+}
+function printAgreement(){if(!generatedHTML)generateAgreement();let w=window.open("","_blank");w.document.write(generatedHTML);w.document.close();setTimeout(()=>w.print(),500)}
+function cleanFileName(t){return String(t||"agreement").replace(/[^a-z0-9]+/gi,"-").replace(/^-+|-+$/g,"").toLowerCase()}
+function downloadAgreementFile(){if(!generatedHTML)generateAgreement();let blob=new Blob([generatedHTML],{type:"text/html"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=cleanFileName("RO-Lyfe-"+docType.value+"-"+docProperty.value)+".html";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}
+function emailAgreementNotice(){let body=`RO’Lyfe Signed Agreement Generated
+
+${dealSummary()}
+
+Please attach the saved PDF or downloaded signed file.`;window.location.href=`mailto:${EMAIL}?subject=${encodeURIComponent("RO’Lyfe Signed Agreement - "+docProperty.value)}&body=${encodeURIComponent(body)}`}
 
 /* INIT */
-document.addEventListener("DOMContentLoaded", ()=>{
-  initPlayer();
-  render();
-  setupSignatureCanvas("sigOne");
-  setupSignatureCanvas("sigTwo");
+document.addEventListener("DOMContentLoaded",()=>{
+initPlayer();render();setupSignatureCanvas("sigOne");setupSignatureCanvas("sigTwo");
 });
 </script>
 </body>
