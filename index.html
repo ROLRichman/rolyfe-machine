@@ -54,6 +54,54 @@ iframe.form-embed{width:100%;height:560px;border:none;border-radius:16px;backgro
 hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:14px 0}
 @media(max-width:1100px){.hero,.three-col,.video-grid,.four-col{grid-template-columns:1fr}}
 @media(max-width:900px){.two-col,.btn-row,.btn-row-2,.btn-row-4,.pipeline{grid-template-columns:1fr}.main-title{font-size:24px}}
+
+  .buyer-card{
+  background:#0f172a;
+  padding:12px;
+  border-radius:14px;
+  margin-bottom:10px;
+}
+
+.ai-popup{
+  position:fixed;
+  right:15px;
+  bottom:15px;
+  width:360px;
+  max-width:92vw;
+  height:520px;
+  background:#0f172a;
+  border:2px solid #2d4373;
+  border-radius:18px;
+  z-index:9999;
+  box-shadow:0 20px 60px rgba(0,0,0,.55);
+  overflow:hidden;
+}
+
+.ai-popup-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px;
+  background:#141a2a;
+  font-weight:bold;
+}
+
+.ai-popup iframe{
+  width:100%;
+  height:465px;
+  border:none;
+  background:#fff;
+}
+
+.ai-close{
+  background:#dc2626;
+  color:#fff;
+  border:none;
+  width:auto;
+  padding:6px 10px;
+  border-radius:10px;
+}
+
 </style>
 </head>
 
@@ -154,6 +202,32 @@ hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:14px 0}
     <div class="pipeline-list" id="grid" style="margin-top:12px"></div>
   </div>
 
+<div class="section">
+  <h2>👥 Buyer Database + Blast System</h2>
+  <div class="small">Add contractors, investors, landlords, buyers, and private money contacts. Then blast the current deal.</div>
+
+  <input id="buyerName" placeholder="Buyer / Contractor Name">
+  <input id="buyerPhone" placeholder="Phone Number">
+  <input id="buyerEmail" placeholder="Email">
+  <input id="buyerArea" placeholder="Buying Area">
+  <input id="buyerBox" placeholder="Buy Box: price range, property type, strategy">
+  <textarea id="buyerNotes" placeholder="Notes"></textarea>
+
+  <div class="btn-row-2">
+    <button class="btn btn-green" onclick="saveBuyer()">➕ Save Buyer</button>
+    <button class="btn" onclick="clearBuyerForm()">♻ Clear Buyer Form</button>
+  </div>
+
+  <hr>
+
+  <div class="btn-row-2">
+    <button class="btn btn-gold" onclick="blastBuyerEmails()">📧 Blast Deal To Buyers</button>
+    <button class="btn btn-dark" onclick="blastBuyerText()">📱 Text First Buyer</button>
+  </div>
+
+  <div id="buyerList" style="margin-top:12px;"></div>
+</div>
+  
   <div class="section">
     <h2>💰 RO’Lyfe Funding & Deal Machine</h2>
     <h3>Broker Info</h3>
@@ -339,6 +413,175 @@ hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:14px 0}
 
 </div>
 
+let buyers = JSON.parse(localStorage.getItem("rolyfe_buyers")) || [];
+
+function saveBuyers(){
+  localStorage.setItem("rolyfe_buyers", JSON.stringify(buyers));
+}
+
+function saveBuyer(){
+  const buyer = {
+    name: buyerName.value.trim(),
+    phone: buyerPhone.value.trim(),
+    email: buyerEmail.value.trim(),
+    area: buyerArea.value.trim(),
+    box: buyerBox.value.trim(),
+    notes: buyerNotes.value.trim()
+  };
+
+  if(!buyer.name){
+    alert("Add buyer name first.");
+    return;
+  }
+
+  buyers.unshift(buyer);
+  saveBuyers();
+  renderBuyers();
+  clearBuyerForm();
+}
+
+function clearBuyerForm(){
+  ["buyerName","buyerPhone","buyerEmail","buyerArea","buyerBox","buyerNotes"].forEach(id=>{
+    document.getElementById(id).value="";
+  });
+}
+
+function renderBuyers(){
+  const box = document.getElementById("buyerList");
+  if(!box) return;
+
+  box.innerHTML = "";
+
+  buyers.forEach((b,i)=>{
+    const div = document.createElement("div");
+    div.className = "buyer-card";
+    div.innerHTML = `
+      <b>${b.name}</b><br>
+      Phone: ${b.phone || "-"}<br>
+      Email: ${b.email || "-"}<br>
+      Area: ${b.area || "-"}<br>
+      Buy Box: ${b.box || "-"}<br>
+      Notes: ${b.notes || "-"}<br>
+
+let buyers = JSON.parse(localStorage.getItem("rolyfe_buyers")) || [];
+
+function saveBuyers(){
+  localStorage.setItem("rolyfe_buyers", JSON.stringify(buyers));
+}
+
+function saveBuyer(){
+  const buyer = {
+    name: buyerName.value.trim(),
+    phone: buyerPhone.value.trim(),
+    email: buyerEmail.value.trim(),
+    area: buyerArea.value.trim(),
+    box: buyerBox.value.trim(),
+    notes: buyerNotes.value.trim()
+  };
+
+  if(!buyer.name){
+    alert("Add buyer name first.");
+    return;
+  }
+
+  buyers.unshift(buyer);
+  saveBuyers();
+  renderBuyers();
+  clearBuyerForm();
+}
+
+function clearBuyerForm(){
+  ["buyerName","buyerPhone","buyerEmail","buyerArea","buyerBox","buyerNotes"].forEach(id=>{
+    document.getElementById(id).value="";
+  });
+}
+
+function renderBuyers(){
+  const box = document.getElementById("buyerList");
+  if(!box) return;
+
+  box.innerHTML = "";
+
+  buyers.forEach((b,i)=>{
+    const div = document.createElement("div");
+    div.className = "buyer-card";
+    div.innerHTML = `
+      <b>${b.name}</b><br>
+      Phone: ${b.phone || "-"}<br>
+      Email: ${b.email || "-"}<br>
+      Area: ${b.area || "-"}<br>
+      Buy Box: ${b.box || "-"}<br>
+      Notes: ${b.notes || "-"}<br>
+
+      <div class="btn-row-2" style="margin-top:8px;">
+        <button class="btn" onclick="emailBuyer(${i})">📧 Email</button>
+        <button class="btn" onclick="textBuyer(${i})">📱 Text</button>
+      </div>
+    `;
+    box.appendChild(div);
+  });
+}
+
+function currentDealBlastMessage(){
+  return `🔥 RO’Lyfe Deal Alert
+
+Property: ${address.value || searchAddress.value}
+ARV: $${arv.value || searchArv.value}
+Ask: $${purchase.value || searchAsk.value}
+Repairs: $${rehab.value || searchRepairs.value}
+
+Cash Offer: ${document.getElementById("fundingResults").innerText}
+
+Reply BUY if interested.`;
+}
+
+function emailBuyer(i){
+  const b = buyers[i];
+  window.location.href =
+    `mailto:${b.email}?subject=${encodeURIComponent("RO’Lyfe Deal - " + (address.value || searchAddress.value))}&body=${encodeURIComponent(currentDealBlastMessage())}`;
+}
+
+function textBuyer(i){
+  const b = buyers[i];
+  window.location.href =
+    `sms:${b.phone}?body=${encodeURIComponent(currentDealBlastMessage())}`;
+}
+
+function blastBuyerEmails(){
+  const emails = buyers.map(b=>b.email).filter(Boolean).join(",");
+  if(!emails){
+    alert("No buyer emails saved yet.");
+    return;
+  }
+
+  window.location.href =
+    `mailto:${emails}?subject=${encodeURIComponent("RO’Lyfe Deal Blast - " + (address.value || searchAddress.value))}&body=${encodeURIComponent(currentDealBlastMessage())}`;
+}
+
+function blastBuyerText(){
+  const first = buyers.find(b=>b.phone);
+  if(!first){
+    alert("No buyer phone numbers saved yet.");
+    return;
+  }
+
+  window.location.href =
+    `sms:${first.phone}?body=${encodeURIComponent(currentDealBlastMessage())}`;
+}
+
+function closeAIPopup(){
+  document.getElementById("aiPopup").style.display = "none";
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  renderBuyers();
+});
+  
+      <div class="btn-row-2" style="margin-top:8px;">
+        <button class="btn" onclick="emailBuyer(${i})">📧 Email</button>
+        <button class="btn" onclick="textBuyer(${i})">📱 Text</button>
+      </div>
+    
 <script>
 const EMAIL="richman@rootoflyfe.com";
 const PHONE="2674326734";
@@ -652,5 +895,16 @@ setupSignatureCanvas("sigThree");
 });
 </script>
 
+
+
+  <div id="aiPopup" class="ai-popup">
+  <div class="ai-popup-header">
+    🤖 RO’Lyfe AI Agent
+    <button class="ai-close" onclick="closeAIPopup()">X</button>
+  </div>
+
+  <iframe src="https://form.jotform.com/253154859148062"></iframe>
+  </div>
+  
 </body>
 </html>
