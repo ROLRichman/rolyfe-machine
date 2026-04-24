@@ -439,7 +439,9 @@ input.onchange=e=>{let r=new FileReader();r.onload=()=>{leads=r.result.split("\\
 }
 
 function openZillow(addr){window.open(`https://www.zillow.com/homes/${encodeURIComponent(addr)}_rb/`,"_blank")}
-function openRedfin(addr){window.open(`https://www.redfin.com/stingray/do/location-autocomplete?location=${encodeURIComponent(addr)}`,"_blank")}
+function openRedfin(addr){
+  window.open(`https://www.redfin.com/search?searchInput=${encodeURIComponent(addr)}`, "_blank");
+}
 function searchZillow(){let a=searchAddress.value.trim();if(!a)return alert("Enter address.");openZillow(a)}
 function searchRedfin(){let a=searchAddress.value.trim();if(!a)return alert("Enter address.");openRedfin(a)}
 
