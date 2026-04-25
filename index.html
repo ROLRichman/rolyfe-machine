@@ -13,7 +13,7 @@ h1,h2,h3,h4,p{margin:0 0 10px}.main-title{text-align:center;font-size:28px;margi
 input,select,textarea{width:100%;display:block;border:none;outline:none;background:#eef3ff!important;color:#111827!important;padding:12px 14px;margin:7px 0;border-radius:16px;font-size:15px;line-height:1.35}textarea{min-height:95px;resize:vertical}input::placeholder,textarea::placeholder{color:#4b5563!important;opacity:1}
 button,.btn,a.btn{border:none;outline:none;cursor:pointer;border-radius:16px;padding:12px 14px;font-weight:bold;text-align:center;display:block;width:100%;text-decoration:none}.btn{background:#2d4373;color:#fff}.btn:hover{filter:brightness(1.08)}.btn-green{background:#22c55e;color:#04130a}.btn-gold{background:#eab308;color:#1f1300}.btn-dark{background:#0f172a;color:#fff}.btn-red{background:#dc2626;color:#fff}.btn-purple{background:#7c3aed;color:#fff}.btn-blue{background:#0284c7;color:#fff}
 .score{background:#1f2a44;padding:12px;border-radius:16px;text-align:center;font-weight:bold;margin-bottom:12px}.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}.pipe{background:#101827;border-radius:14px;padding:10px;text-align:center}.pipeline-item,.pdf-card,.buyer-card,.mini-card{background:#182133;border-radius:14px;padding:12px}.buyer-card{margin-bottom:10px}.card-header{display:flex;justify-content:space-between;gap:10px;cursor:pointer;font-weight:bold;align-items:center}.badge{display:inline-block;padding:5px 10px;border-radius:999px;background:#0f172a;font-size:12px;white-space:nowrap}.hidden{display:none}.pipeline-list{display:grid;gap:10px}.offer-box{background:#0f172a;padding:12px;border-radius:14px;line-height:1.7}.links a{color:#7fd1ff;text-decoration:none;display:block;margin:4px 0}.links a:hover{text-decoration:underline}.small{font-size:13px;color:#a9b7d7}.muted{color:#a9b7d7}.big-num{font-size:34px;font-weight:900}.sniper-wrap{background:#0f172a;border-radius:16px;padding:14px}.meter{height:18px;background:#0b1222;border-radius:999px;overflow:hidden;margin:8px 0}.meter span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#ef4444,#eab308,#22c55e);border-radius:999px}.tag{display:inline-block;background:#0f172a;border:1px solid rgba(255,255,255,.1);padding:6px 10px;border-radius:999px;font-size:12px;margin:3px}
-audio{width:100%;margin-top:8px}#audioSource{display:none}iframe.form-embed{width:100%;height:560px;border:none;border-radius:16px;background:#fff}.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.video-card{background:#0f172a;border-radius:14px;padding:8px}.video-card iframe{width:100%;height:280px;border:none;border-radius:12px;background:#000}.sig-wrap{background:#0f172a;border-radius:16px;padding:10px;margin-top:12px}.sig-canvas{width:100%;height:170px;background:#fff;border:2px solid #111;border-radius:14px;display:block;touch-action:none;cursor:crosshair}.verdict-good{color:#22c55e;font-weight:bold}.verdict-mid{color:#eab308;font-weight:bold}.verdict-bad{color:#ef4444;font-weight:bold}.verdict-hot{color:#38bdf8;font-weight:bold}hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:14px 0}
+audio{width:100%;margin-top:8px}#audioSource{display:none}iframe.form-embed{width:100%;height:560px;border:none;border-radius:16px;background:#fff}.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.video-card{background:#0f172a;border-radius:14px;padding:8px}.video-card iframe{width:100%;height:280px;border:none;border-radius:12px;background:#000}.sig-wrap{background:#0f172a;border-radius:16px;padding:10px;margin-top:12px}.sig-canvas{width:100%!important;height:180px!important;min-height:180px!important;background:#fff!important;border:3px solid #22c55e!important;border-radius:14px!important;display:block!important;touch-action:none!important;cursor:crosshair!important;margin:8px 0!important}.verdict-good{color:#22c55e;font-weight:bold}.verdict-mid{color:#eab308;font-weight:bold}.verdict-bad{color:#ef4444;font-weight:bold}.verdict-hot{color:#38bdf8;font-weight:bold}hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:14px 0}
 .ai-popup{
 display:none;
 position:fixed;
@@ -128,9 +128,209 @@ Property: ${d.address} ARV: ${money(d.arv)} Seller Ask: ${money(d.price)} Repair
 
 Notes: ${d.notes||""};window.location.href=mailto:${EMAIL}?subject=${encodeURIComponent("Offer - "+d.address)}&body=${encodeURIComponent(body)}}function autoSMS(d){let c=calcLead(d),msg=RO’Lyfe Lead
 
-${d.address} ARV: ${money(d.arv)} Ask: ${money(d.price)} Score: ${c.score}/100 Cash Offer: ${money(c.cash)} Profit: ${money(c.profit)};window.location.href=sms:${PHONE}?body=${encodeURIComponent(msg)}}function downloadOfferPDF(){let html=<html><head><title>RO’Lyfe Offer</title><style>body{font-family:Arial;padding:30px;color:#111}.box{border:1px solid #ddd;padding:20px;border-radius:14px;white-space:pre-wrap}</style></head><body><h1>RO’Lyfe Offer Summary</h1><div class="box">${dealSummary()}</div></body></html>;let w=window.open("","_blank");w.document.write(html);w.document.close();setTimeout(()=>w.print(),500)} const signaturePads={}; function setupSignatureCanvas(id){ const canvas=document.getElementById(id); if(!canvas) return; const ctx=canvas.getContext('2d'); function resize(){ const ratio=Math.max(window.devicePixelRatio||1,1); const rect=canvas.getBoundingClientRect(); const old=canvas.toDataURL('image/png'); canvas.width=Math.max(1,rect.width*ratio); canvas.height=Math.max(1,rect.height*ratio); ctx.setTransform(ratio,0,0,ratio,0,0); ctx.lineWidth=3; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.strokeStyle='#000'; ctx.fillStyle='#000'; } resize(); let drawing=false; function pos(e){ const rect=canvas.getBoundingClientRect(); const p=e.touches?e.touches[0]:e; return {x:p.clientX-rect.left,y:p.clientY-rect.top}; } function start(e){ drawing=true; const p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); e.preventDefault(); } function move(e){ if(!drawing) return; const p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); e.preventDefault(); } function end(e){ drawing=false; if(e) e.preventDefault(); } canvas.addEventListener('mousedown',start); canvas.addEventListener('mousemove',move); window.addEventListener('mouseup',end); canvas.addEventListener('mouseleave',end); canvas.addEventListener('touchstart',start,{passive:false}); canvas.addEventListener('touchmove',move,{passive:false}); canvas.addEventListener('touchend',end,{passive:false}); signaturePads[id]={canvas,ctx}; } function clearSignature(id){ const p=signaturePads[id]; if(p)p.ctx.clearRect(0,0,p.canvas.width,p.canvas.height); } function loadTypedSignature(id){ const n=prompt('Type name for signature:'); if(!n)return; const p=signaturePads[id]; if(!p)return; p.ctx.clearRect(0,0,p.canvas.width,p.canvas.height); p.ctx.font='32px cursive'; p.ctx.fillStyle='#000'; p.ctx.fillText(n,20,90); } function loadCompanySignature(id){ const p=signaturePads[id]; if(!p)return; p.ctx.clearRect(0,0,p.canvas.width,p.canvas.height); p.ctx.font='32px cursive'; p.ctx.fillStyle='#000'; p.ctx.fillText('Richardson L.',20,90); } function setDocFromLead(d){ docProperty.value=d.address||''; docPrice.value=d.price||''; docSeller.value=d.source||''; docEffectiveDate.value=new Date().toISOString().slice(0,10); } function v(id,blank){return document.getElementById(id).value||blank}function agreementShell(title,body){let sig1=sigOne.toDataURL("image/png"),sig2=sigTwo.toDataURL("image/png"),sig3=sigThree.toDataURL("image/png"),sig4=sigFour.toDataURL("image/png"),extra=customClauses.value.trim(),summary=dealSummary().replace(/ /g,"<br>");return <html><head><title>${title}</title><style>body{font-family:Arial,sans-serif;background:#fff;color:#111;padding:32px;line-height:1.5}.doc{max-width:900px;margin:auto}h1{text-align:center;font-size:26px}h2{font-size:18px;margin-top:18px}p{margin:8px 0}.sig{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}.sig img{max-width:220px;max-height:95px;display:block;margin-bottom:8px}.line{border-top:1px solid #111;padding-top:5px}.extra,.summary{margin-top:18px;padding:12px;border:1px solid #ddd;border-radius:10px;background:#f8f8f8}@media print{body{padding:12px}.sig{grid-template-columns:1fr 1fr}}</style></head><body><div class="doc"><h1>${title}</h1>${body}<div class="summary"><b>Deal Background / Generated Information</b><br>${summary}</div><div class="sig"><div><img src="${sig1}"><div class="line">Seller / Client</div></div><div><img src="${sig2}"><div class="line">Buyer / Assignor / Broker</div></div><div><img src="${sig3}"><div class="line">Assignee / Contractor / Extra Party</div></div><div><img src="${sig4}"><div class="line">Realtor / Witness / Partner</div></div></div>${extra?<div class="extra"><b>Additional Clauses / Notes</b><br>${extra.replace(/ /g,"<br>")}</div>:""}</div></body></html>} function generateAgreement(){let type=docType.value,seller=v("docSeller","__________________________"),buyer=v("docBuyer","Root Of Lyfe Holdings LLC"),assignee=v("docAssignee","__________________________"),property=v("docProperty","______________________________________"),price=v("docPrice","________________"),emd=v("docEMD","________"),assignFee=v("docAssignFee","________________"),loan=v("docLoanAmount","________________"),closing=v("docClosingDate","________________"),state=v("docState","________________"),client=v("docClientName",seller),date=v("docEffectiveDate","_____________");if(type==="psa"){generatedHTML=agreementShell("PURCHASE AND SALE AGREEMENT",<p>This Agreement is made as of <b>${date}</b>.</p><p><b>BETWEEN:</b></p><p>Seller: <b>${seller}</b><br>Buyer: <b>${buyer}</b> (or Assigns)</p><p>Property Address: <b>${property}</b></p><h2>1. PURCHASE PRICE</h2><p>Total Purchase Price: $<b>${price}</b></p><h2>2. EARNEST MONEY</h2><p>Earnest Money Deposit: $<b>${emd}</b>. Deposit may be held by Buyer or assigned entity and is fully refundable during the inspection period.</p><h2>3. INSPECTION PERIOD</h2><p>Buyer shall have at least fourteen (14) days to inspect and may cancel at Buyer’s sole discretion during this period.</p><h2>4. ASSIGNABILITY</h2><p>This Agreement is freely assignable without further consent from Seller.</p><h2>5. MARKETING RIGHTS</h2><p>Seller grants Buyer the right to market and share details with partners, buyers, lenders, and affiliates.</p><h2>6. ACCESS</h2><p>Seller agrees to provide reasonable access for inspections, contractors, appraisers, buyers, and lending partners.</p><h2>7. CONDITION</h2><p>Property is sold <b>AS-IS, WHERE-IS</b>.</p><h2>8. EXIT STRATEGY</h2><p>Buyer may assign, wholesale, double close, refinance, or hold.</p><h2>9. NON-CIRCUMVENTION</h2><p>Seller shall not bypass Buyer’s partners, buyers, or lenders without Buyer’s written consent.</p><h2>10. CLOSING</h2><p>Closing Date: <b>${closing}</b>.</p><h2>11. DEFAULT</h2><p>If Seller defaults, Buyer retains equitable interest and may pursue remedies.</p><h2>12. GOVERNING LAW</h2><p>Governed by the state where the property is located.</p><h2>SIGNATURES</h2><p>Seller: ${seller}<br>Date: ${date}</p><p>Buyer: Richardson L. / Root Of Lyfe Holdings LLC<br>Date: ${date}</p>)}if(type==="assign"){generatedHTML=agreementShell("ASSIGNMENT AGREEMENT",<p>This Assignment Agreement is made this <b>${date}</b>.</p><p>Assignor: <b>Root Of Lyfe Holdings LLC</b><br>Assignee: <b>${assignee}</b></p><p>Property: <b>${property}</b></p><h2>1. ORIGINAL CONTRACT</h2><p>Assignor holds equitable interest under an existing Purchase Agreement.</p><h2>2. ASSIGNMENT</h2><p>Assignor assigns all rights, title, and interest to Assignee.</p><h2>3. ASSIGNMENT FEE</h2><p>Assignee agrees to pay Assignor $<b>${assignFee}</b> at closing through escrow/title.</p><h2>4. ASSUMPTION</h2><p>Assignee agrees to perform all obligations under the original agreement.</p><h2>5. NON-CIRCUMVENTION</h2><p>Assignee agrees not to bypass Assignor.</p><h2>6. RELEASE</h2><p>Assignor shall be released from obligations after execution.</p><h2>7. CLOSING</h2><p>Closing follows original Purchase Agreement.</p><h2>Assignment Profit Disclosure</h2><p>Assignee acknowledges the assignment fee and waives claims regarding the amount.</p>)}if(type==="broker"){generatedHTML=agreementShell("CLIENT BROKER FEE AGREEMENT",<p>This Agreement is made this <b>${date}</b>.</p><p>Broker: <b>Root Of Lyfe Holdings LLC</b><br>Client: <b>${client}</b></p><h2>1. SERVICES</h2><p>Broker will assist Client in obtaining real estate investment financing.</p><h2>2. BROKER FEE</h2><p>Client agrees to pay Broker <b>3% of the Loan Amount</b>. Loan Amount: $<b>${loan}</b>.</p><h2>Protection Clause</h2><p>If funding is obtained through a source introduced by Broker within twelve (12) months, Broker is entitled to the fee.</p><h2>3. TERM</h2><p>Six (6) months from Effective Date.</p><h2>4. NON-CIRCUMVENTION</h2><p>Client agrees not to bypass Broker with introduced sources.</p><h2>5. NO GUARANTEE</h2><p>Broker does not guarantee approval or funding.</p><h2>6. RELATIONSHIP</h2><p>Broker acts as independent contractor, not lender or financial advisor.</p><h2>7. GOVERNING LAW</h2><p>State of <b>${state}</b>.</p>)}if(type==="realtor"){generatedHTML=agreementShell("REALTOR / PARTNER AGREEMENT",<p>This Agreement is made this <b>${date}</b>.</p><p>RO’Lyfe: <b>Root Of Lyfe Holdings LLC</b><br>Partner/Realtor: <b>${seller}</b></p><p>Property / Territory: <b>${property}</b></p><h2>1. PURPOSE</h2><p>Parties agree to cooperate on property opportunities, lead review, deal packaging, buyer outreach, and funding coordination.</p><h2>2. NON-CIRCUMVENTION</h2><p>Parties agree not to bypass each other on introduced sellers, buyers, contractors, lenders, or deal sources.</p><h2>3. COMPENSATION</h2><p>Any compensation shall be agreed in writing or shown on settlement, assignment, broker, or referral documentation.</p><h2>4. NO GUARANTEE</h2><p>No party guarantees funding, sale, closing, or profit.</p><h2>5. TERM</h2><p>This agreement survives for twelve (12) months from introduction of a deal/contact.</p>)}let w=window.open("","_blank");w.document.write(generatedHTML);w.document.close()} function printAgreement(){if(!generatedHTML)generateAgreement();let w=window.open("","_blank");w.document.write(generatedHTML);w.document.close();setTimeout(()=>w.print(),500)}function cleanFileName(t){return String(t||"agreement").replace(/[^a-z0-9]+/gi,"-").replace(/^-+|-+$/g,"").toLowerCase()}function downloadAgreementFile(){if(!generatedHTML)generateAgreement();let blob=new Blob([generatedHTML],{type:"text/html"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=cleanFileName("RO-Lyfe-"+docType.value+"-"+docProperty.value)+".html";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}function emailAgreementNotice(){let body=RO’Lyfe Signed Agreement Generated
+${d.address} ARV: ${money(d.arv)} Ask: ${money(d.price)} Score: ${c.score}/100 Cash Offer: ${money(c.cash)} Profit: ${money(c.profit)};window.location.href=sms:${PHONE}?body=${encodeURIComponent(msg)}}function downloadOfferPDF(){let html=<html><head><title>RO’Lyfe Offer</title><style>body{font-family:Arial;padding:30px;color:#111}.box{border:1px solid #ddd;padding:20px;border-radius:14px;white-space:pre-wrap}</style></head><body><h1>RO’Lyfe Offer Summary</h1><div class="box">${dealSummary()}</div>
 
-${dealSummary()}
+<script>
+/* ===== RO'LYFE EMERGENCY FIX: SIGNATURES + CALCULATORS + AI ===== */
+(function(){
+  function $(id){return document.getElementById(id)}
+  function money(n){return '$'+Math.round(Number(n)||0).toLocaleString()}
+
+  window.closeAIPopup=function(e){
+    if(e){e.preventDefault();e.stopPropagation();}
+    var p=$('aiPopup'), b=$('aiOpenBtn');
+    if(p)p.style.display='none';
+    if(b)b.style.display='block';
+  };
+  window.openAIPopup=function(){
+    var p=$('aiPopup'), b=$('aiOpenBtn');
+    if(p)p.style.display='block';
+    if(b)b.style.display='none';
+  };
+
+  window.calcLead=function(d){
+    var arv=+d.arv||0, price=+d.price||0, repairs=+d.repairs||0, fee=+d.fee||0;
+    var total=price+repairs+fee;
+    var profit=(arv*.7)-price-repairs-fee;
+    var roi=total?profit/total*100:0;
+    var score=0;
+    score+=arv&&price?Math.max(0,Math.min(35,((arv-price)/arv)*50)):0;
+    score+=profit>0?Math.min(35,profit/1500):0;
+    score+=roi>0?Math.min(20,roi/2):0;
+    score+=repairs&&arv?(repairs/arv<.25?10:repairs/arv<.4?5:0):5;
+    score=Math.round(Math.max(0,Math.min(100,score)));
+    var verdict='<span class="verdict-bad">🚫 Numbers weak. Re-check.</span>';
+    var label='PASS / RENEGOTIATE';
+    if(score>=75){verdict='<span class="verdict-hot">🎯 SNIPER DEAL — LOCK IT IN</span>';label='SNIPER'}
+    else if(score>=56){verdict='<span class="verdict-good">👍🏾 GREAT DEAL — WORK YOUR NUMBERS</span>';label='BUILD'}
+    else if(score>=31){verdict='<span class="verdict-mid">💯 Watchlist — Check repairs and seller flexibility.</span>';label='WATCH'}
+    return {cash:arv*.5,creative:arv*.75,sellerFinance:arv*.8,mao70:(arv*.7)-repairs-fee,overage:arv-price,profit:profit,roi:roi,total:total,score:score,label:label,verdict:verdict};
+  };
+
+  window.updateSniper=function(c){
+    if($('sniperScore'))$('sniperScore').innerHTML=c.score;
+    if($('sniperMeter'))$('sniperMeter').style.width=c.score+'%';
+    if($('sniperLabel'))$('sniperLabel').innerHTML=c.label+' — '+c.verdict;
+    if($('strategyBox'))$('strategyBox').innerHTML='<b>Strategy:</b><br>'+(
+      c.score>=75?'Move fast: verify title/repairs, get signature, line up buyer/lender.':
+      c.score>=56?'Good candidate: tighten repairs and negotiate seller terms.':
+      c.score>=31?'Do not chase yet: ask for price drop, seller finance, or more access.':'Pass unless seller moves hard.'
+    )+'<br><br><b>Profit:</b> '+money(c.profit)+'<br><b>ROI:</b> '+c.roi.toFixed(1)+'%<br><b>MAO:</b> '+money(c.mao70);
+  };
+
+  window.runEstimator=function(){
+    var d={arv:+($('searchArv')?.value)||0,price:+($('searchAsk')?.value)||0,repairs:+($('searchRepairs')?.value)||0,fee:+($('searchFee')?.value)||0};
+    var c=window.calcLead(d);
+    if($('estimatorResults'))$('estimatorResults').innerHTML='Score: '+c.score+'/100<br>ARV: '+money(d.arv)+'<br>Ask: '+money(d.price)+'<br>Repairs: '+money(d.repairs)+'<br>Fee: '+money(d.fee)+'<br>Total Cost: '+money(c.total)+'<br>Overage: '+money(c.overage)+'<br>70% MAO: '+money(c.mao70)+'<br>Estimated Profit: '+money(c.profit)+'<br>ROI: '+c.roi.toFixed(1)+'%<br>Verdict: '+c.verdict;
+    window.updateSniper(c);
+  };
+
+  window.calcFunding=function(){
+    var d={arv:+($('arv')?.value)||0,price:+($('purchase')?.value)||0,repairs:+($('rehab')?.value)||0,fee:+($('fee')?.value)||0};
+    var cashPct=+($('cashPct')?.value)||50, carryPct=+($('carryPct')?.value)||65, creativePct=+($('creativePct')?.value)||75;
+    var c=window.calcLead(d);
+    if($('fundingResults'))$('fundingResults').innerHTML='Score: '+c.score+'/100<br>Cash Offer: '+money(d.arv*(cashPct/100))+'<br>Seller Carry: '+money(d.arv*(carryPct/100))+'<br>Seller Finance: '+money(d.arv*(creativePct/100))+'<br>Overage: '+money(c.overage)+'<br>Profit: '+money(c.profit)+'<br>ROI: '+c.roi.toFixed(1)+'%<br>Verdict: '+c.verdict;
+    window.updateSniper(c);
+  };
+
+  window.calcRepairs=function(){
+    var ids=['repDemo','repRoof','repHVAC','repElectrical','repPlumbing','repKitchen','repBath','repFlooring','repPaint','repWindows','repDoors','repLandscaping','repGarage','repPermits','repContingency','repOther'];
+    var total=ids.reduce(function(a,id){return a+(+($(id)?.value)||0)},0);
+    window.lastRepairTotal=total;
+    if($('repairResults'))$('repairResults').innerHTML='Total Rehab: '+money(total)+'<br>Demo: '+money($('repDemo')?.value)+' | Roof: '+money($('repRoof')?.value)+' | HVAC: '+money($('repHVAC')?.value)+' | Electrical: '+money($('repElectrical')?.value)+' | Plumbing: '+money($('repPlumbing')?.value)+' | Kitchen: '+money($('repKitchen')?.value)+' | Baths: '+money($('repBath')?.value)+' | Flooring: '+money($('repFlooring')?.value)+' | Other: '+money($('repOther')?.value);
+  };
+
+  window.sendRepairsToDeal=function(){
+    window.calcRepairs();
+    if($('rehab'))$('rehab').value=window.lastRepairTotal||0;
+    if($('searchRepairs'))$('searchRepairs').value=window.lastRepairTotal||0;
+    if($('leadRepairs'))$('leadRepairs').value=window.lastRepairTotal||0;
+    window.calcFunding();
+    window.runEstimator();
+  };
+
+  window.setupSignatureCanvas=function(id){
+    var canvas=$(id); if(!canvas)return;
+    var ctx=canvas.getContext('2d');
+    function resize(){
+      var ratio=Math.max(window.devicePixelRatio||1,1);
+      var rect=canvas.getBoundingClientRect();
+      canvas.width=Math.max(1,rect.width*ratio);
+      canvas.height=Math.max(1,180*ratio);
+      canvas.style.height='180px';
+      ctx.setTransform(ratio,0,0,ratio,0,0);
+      ctx.lineWidth=3;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#000';ctx.fillStyle='#000';
+    }
+    resize();
+    var drawing=false;
+    function pos(e){var r=canvas.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return{x:p.clientX-r.left,y:p.clientY-r.top}}
+    function start(e){drawing=true;var p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);e.preventDefault()}
+    function move(e){if(!drawing)return;var p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();e.preventDefault()}
+    function end(e){drawing=false;if(e)e.preventDefault()}
+    canvas.onmousedown=start;canvas.onmousemove=move;canvas.onmouseleave=end;
+    window.addEventListener('mouseup',end);
+    canvas.ontouchstart=start;canvas.ontouchmove=move;canvas.ontouchend=end;
+    if(!window.signaturePads)window.signaturePads={};
+    window.signaturePads[id]={canvas:canvas,ctx:ctx};
+  };
+
+  window.clearSignature=function(id){var p=window.signaturePads&&window.signaturePads[id];if(p)p.ctx.clearRect(0,0,p.canvas.width,p.canvas.height)};
+  window.loadTypedSignature=function(id){var n=prompt('Type name for signature:');if(!n)return;var p=window.signaturePads&&window.signaturePads[id];if(!p)return;p.ctx.clearRect(0,0,p.canvas.width,p.canvas.height);p.ctx.font='32px cursive';p.ctx.fillStyle='#000';p.ctx.fillText(n,20,90)};
+  window.loadCompanySignature=function(id){var p=window.signaturePads&&window.signaturePads[id];if(!p)return;p.ctx.clearRect(0,0,p.canvas.width,p.canvas.height);p.ctx.font='32px cursive';p.ctx.fillStyle='#000';p.ctx.fillText('Richardson L.',20,90)};
+
+  document.addEventListener('DOMContentLoaded',function(){
+    ['sigOne','sigTwo','sigThree','sigFour'].forEach(window.setupSignatureCanvas);
+    var p=$('aiPopup'),b=$('aiOpenBtn');
+    if(p)p.style.display='none';
+    if(b)b.style.display='block';
+  });
+})();
+</script></body></html>`;let w=window.open("","_blank");w.document.write(html);w.document.close();setTimeout(()=>w.print(),500)}
+const signaturePads={};
+function setupSignatureCanvas(id){
+  const canvas=document.getElementById(id);
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  function resize(){
+    const ratio=Math.max(window.devicePixelRatio||1,1);
+    const rect=canvas.getBoundingClientRect();
+    const old=canvas.toDataURL('image/png');
+    canvas.width=Math.max(1,rect.width*ratio);
+    canvas.height=Math.max(1,rect.height*ratio);
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    ctx.lineWidth=3;
+    ctx.lineCap='round';
+    ctx.lineJoin='round';
+    ctx.strokeStyle='#000';
+    ctx.fillStyle='#000';
+  }
+  resize();
+  let drawing=false;
+  function pos(e){
+    const rect=canvas.getBoundingClientRect();
+    const p=e.touches?e.touches[0]:e;
+    return {x:p.clientX-rect.left,y:p.clientY-rect.top};
+  }
+  function start(e){
+    drawing=true;
+    const p=pos(e);
+    ctx.beginPath();
+    ctx.moveTo(p.x,p.y);
+    e.preventDefault();
+  }
+  function move(e){
+    if(!drawing) return;
+    const p=pos(e);
+    ctx.lineTo(p.x,p.y);
+    ctx.stroke();
+    e.preventDefault();
+  }
+  function end(e){
+    drawing=false;
+    if(e) e.preventDefault();
+  }
+  canvas.addEventListener('mousedown',start);
+  canvas.addEventListener('mousemove',move);
+  window.addEventListener('mouseup',end);
+  canvas.addEventListener('mouseleave',end);
+  canvas.addEventListener('touchstart',start,{passive:false});
+  canvas.addEventListener('touchmove',move,{passive:false});
+  canvas.addEventListener('touchend',end,{passive:false});
+  signaturePads[id]={canvas,ctx};
+}
+function clearSignature(id){
+  const p=signaturePads[id];
+  if(p)p.ctx.clearRect(0,0,p.canvas.width,p.canvas.height);
+}
+function loadTypedSignature(id){
+  const n=prompt('Type name for signature:');
+  if(!n)return;
+  const p=signaturePads[id];
+  if(!p)return;
+  p.ctx.clearRect(0,0,p.canvas.width,p.canvas.height);
+  p.ctx.font='32px cursive';
+  p.ctx.fillStyle='#000';
+  p.ctx.fillText(n,20,90);
+}
+function loadCompanySignature(id){
+  const p=signaturePads[id];
+  if(!p)return;
+  p.ctx.clearRect(0,0,p.canvas.width,p.canvas.height);
+  p.ctx.font='32px cursive';
+  p.ctx.fillStyle='#000';
+  p.ctx.fillText('Richardson L.',20,90);
+}
+function setDocFromLead(d){
+  docProperty.value=d.address||'';
+  docPrice.value=d.price||'';
+  docSeller.value=d.source||'';
+  docEffectiveDate.value=new Date().toISOString().slice(0,10);
+}
+function v(id,blank){return document.getElementById(id).value||blank}function agreementShell(title,body){let sig1=sigOne.toDataURL("image/png"),sig2=sigTwo.toDataURL("image/png"),sig3=sigThree.toDataURL("image/png"),sig4=sigFour.toDataURL("image/png"),extra=customClauses.value.trim(),summary=dealSummary().replace(/
+/g,"<br>");return `<html><head><title>${title}</title><style>body{font-family:Arial,sans-serif;background:#fff;color:#111;padding:32px;line-height:1.5}.doc{max-width:900px;margin:auto}h1{text-align:center;font-size:26px}h2{font-size:18px;margin-top:18px}p{margin:8px 0}.sig{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}.sig img{max-width:220px;max-height:95px;display:block;margin-bottom:8px}.line{border-top:1px solid #111;padding-top:5px}.extra,.summary{margin-top:18px;padding:12px;border:1px solid #ddd;border-radius:10px;background:#f8f8f8}@media print{body{padding:12px}.sig{grid-template-columns:1fr 1fr}}</style></head><body><div class="doc"><h1>${title}</h1>${body}<div class="summary"><b>Deal Background / Generated Information</b><br>${summary}</div><div class="sig"><div><img src="${sig1}"><div class="line">Seller / Client</div></div><div><img src="${sig2}"><div class="line">Buyer / Assignor / Broker</div></div><div><img src="${sig3}"><div class="line">Assignee / Contractor / Extra Party</div></div><div><img src="${sig4}"><div class="line">Realtor / Witness / Partner</div></div></div>${extra?`<div class="extra"><b>Additional Clauses / Notes</b><br>${extra.replace(/
+/g,"<br>")}</div>`:""}</div></body></html>`}
+function generateAgreement(){let type=docType.value,seller=v("docSeller","__________________________"),buyer=v("docBuyer","Root Of Lyfe Holdings LLC"),assignee=v("docAssignee","__________________________"),property=v("docProperty","______________________________________"),price=v("docPrice","________________"),emd=v("docEMD","________"),assignFee=v("docAssignFee","________________"),loan=v("docLoanAmount","________________"),closing=v("docClosingDate","________________"),state=v("docState","________________"),client=v("docClientName",seller),date=v("docEffectiveDate","_____________");if(type==="psa"){generatedHTML=agreementShell("PURCHASE AND SALE AGREEMENT",`<p>This Agreement is made as of <b>${date}</b>.</p><p><b>BETWEEN:</b></p><p>Seller: <b>${seller}</b><br>Buyer: <b>${buyer}</b> (or Assigns)</p><p>Property Address: <b>${property}</b></p><h2>1. PURCHASE PRICE</h2><p>Total Purchase Price: $<b>${price}</b></p><h2>2. EARNEST MONEY</h2><p>Earnest Money Deposit: $<b>${emd}</b>. Deposit may be held by Buyer or assigned entity and is fully refundable during the inspection period.</p><h2>3. INSPECTION PERIOD</h2><p>Buyer shall have at least fourteen (14) days to inspect and may cancel at Buyer’s sole discretion during this period.</p><h2>4. ASSIGNABILITY</h2><p>This Agreement is freely assignable without further consent from Seller.</p><h2>5. MARKETING RIGHTS</h2><p>Seller grants Buyer the right to market and share details with partners, buyers, lenders, and affiliates.</p><h2>6. ACCESS</h2><p>Seller agrees to provide reasonable access for inspections, contractors, appraisers, buyers, and lending partners.</p><h2>7. CONDITION</h2><p>Property is sold <b>AS-IS, WHERE-IS</b>.</p><h2>8. EXIT STRATEGY</h2><p>Buyer may assign, wholesale, double close, refinance, or hold.</p><h2>9. NON-CIRCUMVENTION</h2><p>Seller shall not bypass Buyer’s partners, buyers, or lenders without Buyer’s written consent.</p><h2>10. CLOSING</h2><p>Closing Date: <b>${closing}</b>.</p><h2>11. DEFAULT</h2><p>If Seller defaults, Buyer retains equitable interest and may pursue remedies.</p><h2>12. GOVERNING LAW</h2><p>Governed by the state where the property is located.</p><h2>SIGNATURES</h2><p>Seller: ${seller}<br>Date: ${date}</p><p>Buyer: Richardson L. / Root Of Lyfe Holdings LLC<br>Date: ${date}</p>`)}if(type==="assign"){generatedHTML=agreementShell("ASSIGNMENT AGREEMENT",`<p>This Assignment Agreement is made this <b>${date}</b>.</p><p>Assignor: <b>Root Of Lyfe Holdings LLC</b><br>Assignee: <b>${assignee}</b></p><p>Property: <b>${property}</b></p><h2>1. ORIGINAL CONTRACT</h2><p>Assignor holds equitable interest under an existing Purchase Agreement.</p><h2>2. ASSIGNMENT</h2><p>Assignor assigns all rights, title, and interest to Assignee.</p><h2>3. ASSIGNMENT FEE</h2><p>Assignee agrees to pay Assignor $<b>${assignFee}</b> at closing through escrow/title.</p><h2>4. ASSUMPTION</h2><p>Assignee agrees to perform all obligations under the original agreement.</p><h2>5. NON-CIRCUMVENTION</h2><p>Assignee agrees not to bypass Assignor.</p><h2>6. RELEASE</h2><p>Assignor shall be released from obligations after execution.</p><h2>7. CLOSING</h2><p>Closing follows original Purchase Agreement.</p><h2>Assignment Profit Disclosure</h2><p>Assignee acknowledges the assignment fee and waives claims regarding the amount.</p>`)}if(type==="broker"){generatedHTML=agreementShell("CLIENT BROKER FEE AGREEMENT",`<p>This Agreement is made this <b>${date}</b>.</p><p>Broker: <b>Root Of Lyfe Holdings LLC</b><br>Client: <b>${client}</b></p><h2>1. SERVICES</h2><p>Broker will assist Client in obtaining real estate investment financing.</p><h2>2. BROKER FEE</h2><p>Client agrees to pay Broker <b>3% of the Loan Amount</b>. Loan Amount: $<b>${loan}</b>.</p><h2>Protection Clause</h2><p>If funding is obtained through a source introduced by Broker within twelve (12) months, Broker is entitled to the fee.</p><h2>3. TERM</h2><p>Six (6) months from Effective Date.</p><h2>4. NON-CIRCUMVENTION</h2><p>Client agrees not to bypass Broker with introduced sources.</p><h2>5. NO GUARANTEE</h2><p>Broker does not guarantee approval or funding.</p><h2>6. RELATIONSHIP</h2><p>Broker acts as independent contractor, not lender or financial advisor.</p><h2>7. GOVERNING LAW</h2><p>State of <b>${state}</b>.</p>`)}if(type==="realtor"){generatedHTML=agreementShell("REALTOR / PARTNER AGREEMENT",`<p>This Agreement is made this <b>${date}</b>.</p><p>RO’Lyfe: <b>Root Of Lyfe Holdings LLC</b><br>Partner/Realtor: <b>${seller}</b></p><p>Property / Territory: <b>${property}</b></p><h2>1. PURPOSE</h2><p>Parties agree to cooperate on property opportunities, lead review, deal packaging, buyer outreach, and funding coordination.</p><h2>2. NON-CIRCUMVENTION</h2><p>Parties agree not to bypass each other on introduced sellers, buyers, contractors, lenders, or deal sources.</p><h2>3. COMPENSATION</h2><p>Any compensation shall be agreed in writing or shown on settlement, assignment, broker, or referral documentation.</p><h2>4. NO GUARANTEE</h2><p>No party guarantees funding, sale, closing, or profit.</p><h2>5. TERM</h2><p>This agreement survives for twelve (12) months from introduction of a deal/contact.</p>`)}let w=window.open("","_blank");w.document.write(generatedHTML);w.document.close()}
+function printAgreement(){if(!generatedHTML)generateAgreement();let w=window.open("","_blank");w.document.write(generatedHTML);w.document.close();setTimeout(()=>w.print(),500)}function cleanFileName(t){return String(t||"agreement").replace(/[^a-z0-9]+/gi,"-").replace(/^-+|-+$/g,"").toLowerCase()}function downloadAgreementFile(){if(!generatedHTML)generateAgreement();let blob=new Blob([generatedHTML],{type:"text/html"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=cleanFileName("RO-Lyfe-"+docType.value+"-"+docProperty.value)+".html";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}function emailAgreementNotice(){let body=`RO’Lyfe Signed Agreement Generated${dealSummary()}
 
 Please attach the saved PDF or downloaded signed file.;window.location.href=mailto:${EMAIL}?subject=${encodeURIComponent("RO’Lyfe Signed Agreement - "+docProperty.value)}&body=${encodeURIComponent(body)}`} function generateDealSummaryText(){aiSummary.value=dealSummary()+"
 
