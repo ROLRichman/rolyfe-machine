@@ -74,3 +74,83 @@ renderBuyers()
 
 </script></body>
 </html>
+
+
+
+<!-- FULL RO'LYFE DEAL OS — 
+!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RO'Lyfe Deal OS Ultimate</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b0f1a;color:#fff;font-family:Arial}
+.wrapper{max-width:1200px;margin:auto;padding:12px}
+.section{background:#141a2a;padding:14px;border-radius:14px;margin-bottom:14px}
+input,textarea{width:100%;padding:12px;margin:6px 0;border-radius:12px;border:none}
+button{padding:12px;border:none;border-radius:12px;width:100%;cursor:pointer}
+.btn{background:#2d4373;color:#fff}
+.btn-green{background:#22c55e;color:#000}
+.offer-box{background:#0f172a;padding:12px;border-radius:12px;margin-top:10px}
+</style></head>
+<body><div class="wrapper"><h1>🔥 RO'Lyfe Deal OS (CLEAN BUILD)</h1><div class="section">
+<h2>Deal Analyzer</h2>
+<input id="arv" placeholder="ARV">
+<input id="price" placeholder="Purchase Price">
+<input id="repairs" placeholder="Repairs">
+<input id="fee" placeholder="Fee">
+<button class="btn-green" onclick="analyzeDeal()">Analyze</button>
+<div id="result" class="offer-box">Waiting...</div>
+</div><div class="section">
+<h2>Buyer List</h2>
+<input id="bName" placeholder="Name">
+<input id="bPhone" placeholder="Phone">
+<button class="btn" onclick="saveBuyer()">Save Buyer</button>
+<div id="buyers"></div>
+</div></div><script>
+
+function money(n){return "$"+Math.round(n||0).toLocaleString()}
+
+function analyzeDeal(){
+let arv=+document.getElementById("arv").value||0
+let price=+document.getElementById("price").value||0
+let repairs=+document.getElementById("repairs").value||0
+let fee=+document.getElementById("fee").value||0
+
+let profit=(arv*0.7)-price-repairs-fee
+let result=""
+
+if(profit>40000) result="🔥 GREAT DEAL"
+else if(profit>15000) result="👍 SOLID"
+else result="🚫 BAD DEAL"
+
+document.getElementById("result").innerHTML=
+`Profit: ${money(profit)}<br>${result}`
+}
+
+let buyers=JSON.parse(localStorage.getItem("buyers"))||[]
+
+function saveBuyer(){
+let name=document.getElementById("bName").value
+let phone=document.getElementById("bPhone").value
+
+buyers.push({name,phone})
+localStorage.setItem("buyers",JSON.stringify(buyers))
+renderBuyers()
+}
+
+function renderBuyers(){
+let box=document.getElementById("buyers")
+box.innerHTML=""
+
+buyers.forEach(b=>{
+let div=document.createElement("div")
+div.innerHTML=`${b.name} - ${b.phone}`
+box.appendChild(div)
+})
+}
+
+renderBuyers()
+
+</script></body>
+</html>
